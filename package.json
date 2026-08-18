@@ -1,0 +1,19 @@
+{
+  "name": "gogold",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo Gogold — jeux de slots HTML5 publiés sur Stake Engine.",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "turbo run format"
+  },
+  "devDependencies": {
+    "turbo": "2.4.4"
+  },
+  "engines": {
+    "node": ">=22.16.0"
+  },
+  "packageManager": "pnpm@10.5.0"
+}
