@@ -2,20 +2,21 @@
 
 Scripts et outils servant à automatiser le développement des jeux Gogold.
 
+## Contenu
+
+- [`assets/`](assets/) — mesure et validation des assets runtime, preset
+  TexturePacker. Voir [`docs/ASSET_PIPELINE.md`](../docs/ASSET_PIPELINE.md).
+
 Exemples futurs :
 
-- validation des assets
 - compression des images
-- génération TexturePacker
 - validation des noms de fichiers
-- contrôle du poids du frontend
 - création automatique d'un nouveau jeu
-- build
 - validation avant publication Stake
 
 ## Statut
 
-Aucun outil n'est implémenté à ce jour. Ce dossier réserve l'emplacement et
+Seul l'outillage assets est implémenté. Le reste réserve l'emplacement et
 documente son rôle.
 
 ## Ce que ce dossier ne fait PAS

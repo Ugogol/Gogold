@@ -1,0 +1,34 @@
+__pycache__
+*/.pyc
+*.prof
+*/setup.txt
+*/setup.toml
+*.egg-info/
+*/SOURCES.txt
+
+**/library/**
+**/configs/*
+**/forces/*
+**/books/*
+**/lookup_tables/*
+**/books_compressed/*
+**temp_multi_threaded_files
+
+
+**/target/*
+**/debug/*
+**release/*
+**/optimization_files/**
+
+/env
+*.env
+*.DS_Store
+*.toml
+
+**/site/*
+
+
+# GoGold : Cargo.toml est du source de build (optimiseur Rust), pas un fichier
+# de parametres genere. La regle upstream "*.toml" ci-dessus le masquerait alors
+# que Stake le versionne. setup.toml reste ignore : il est reecrit a chaque run.
+!optimization_program/Cargo.toml
