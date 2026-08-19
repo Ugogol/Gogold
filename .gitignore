@@ -47,7 +47,9 @@ Thumbs.db
 **/library/books/
 **/library/lookup_tables/
 **/library/publish_files/
-uploads/
+# Ancré à la racine : math/uploads/ est du code source du Math SDK Stake,
+# pas un artefact de publication (voir docs/MATH.md).
+/uploads/
 
 # Assets binaires : servis par CDN, jamais versionnés
 **/src/game/resources/
