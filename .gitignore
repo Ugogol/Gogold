@@ -51,6 +51,11 @@ Thumbs.db
 # pas un artefact de publication (voir docs/MATH.md).
 /uploads/
 
+# Masters artistiques : jamais versionnés (voir source-assets/README.md).
+# Stratégie de stockage (drive d'équipe ou Git LFS) non décidée à ce stade.
+source-assets/*
+!source-assets/README.md
+
 # Assets binaires : servis par CDN, jamais versionnés
 **/src/game/resources/
 **/src/game/sounds/
