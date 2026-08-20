@@ -72,6 +72,8 @@ Avant toute modification importante :
 9. implémenter
 10. tester
 11. vérifier `git diff`
+12. appliquer la DoD correspondante avant de déclarer terminé —
+    `docs/DEFINITION_OF_DONE.md`
 
 ## Source of truth
 
@@ -159,6 +161,7 @@ Assets / animation      docs/ASSETS.md · docs/ASSET_PIPELINE.md
 Validation visuelle     docs/STORYBOOK.md
 Debug d'un round        docs/DEBUG_PANEL.md
 CI                      docs/CI.md
+Definition of Done      docs/DEFINITION_OF_DONE.md
 Contribution / Git      docs/CONTRIBUTING.md
 Règles IA               docs/AI_RULES.md
 ```

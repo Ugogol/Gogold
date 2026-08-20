@@ -26,6 +26,10 @@ Tester.
 
 Créer une Pull Request.
 
-Faire relire.
+Appliquer la checklist correspondante de `docs/DEFINITION_OF_DONE.md`.
+Le template de PR la rappelle.
+
+Faire relire : pour une modification importante, l'auteur n'est pas le
+validateur final.
 
 Fusionner dans main.

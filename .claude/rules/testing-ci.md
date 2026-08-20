@@ -49,6 +49,10 @@ introduire.
 
 La CI valide : elle ne déploie rien et ne publie rien.
 
+La CI ne couvre que l'automatisable. Avant de déclarer un travail terminé,
+appliquer la checklist correspondante de `docs/DEFINITION_OF_DONE.md` — le rendu
+visuel, les devices, l'audio et le Bet Replay restent manuels.
+
 ## Couverture d'un futur jeu
 
 Une nouvelle `apps/<game>/` entre automatiquement dans la CI si son
