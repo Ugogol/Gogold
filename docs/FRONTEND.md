@@ -49,8 +49,8 @@ Sample officiel Stake, copié **sans aucune modification fonctionnelle**.
 > **Ce n'est pas un jeu Gogold.** C'est un sample technique servant de smoke test
 > pour vérifier que l'installation, le build et Storybook fonctionnent.
 
-Il ne doit pas être renommé, rebrandé, ni transformé en jeu Gogold. `apps/grogg/`
-reste un placeholder vide et distinct.
+Il ne doit pas être renommé, rebrandé, ni transformé en jeu Gogold. Un futur jeu
+vit dans sa propre app `apps/<game>/`, distincte.
 
 ## Ce que Stake fournit déjà
 

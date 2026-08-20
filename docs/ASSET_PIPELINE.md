@@ -140,14 +140,15 @@ un confort.
 Au-delà, le gain visuel devient invisible et le coût mémoire réel : une texture
 double en largeur coûte **quatre fois** la mémoire GPU.
 
-> Ces facteurs sont à revalider quand la grille de Grogg et son `SYMBOL_SIZE`
-> seront fixés. La méthode ne changera pas ; les nombres, peut-être.
+> Ces facteurs sont à revalider quand la grille du premier jeu Gogold et son
+> `SYMBOL_SIZE` seront fixés. La méthode ne changera pas ; les nombres, peut-être.
 
 ### Deux règles qui ne se négocient pas
 
 - **Un master n'est jamais agrandi.** On descend toujours d'une source plus
   grande. Un asset upscalé se voit.
-- **Plafond de texture 2048 × 2048** (`CLAUDE.md`). Au-delà, découper ou réduire —
+- **Plafond de texture 2048 × 2048** — convention Gogold, appliquée par le preset
+  `tooling/assets/texturepacker/`. Ce n'est pas une exigence Stake. Au-delà, découper ou réduire —
   ne pas activer le multipack par défaut.
 
 ---
@@ -462,4 +463,4 @@ Il ne définit pas les conventions de nommage (voir `ASSETS.md`), ne convertit
 aucun asset, n'installe aucune chaîne de compression automatique, et ne fixe
 aucun budget par catégorie tant que nous n'avons pas mesuré de vrai jeu.
 
-Il ne crée aucun asset Grogg.
+Il ne crée aucun asset de jeu.

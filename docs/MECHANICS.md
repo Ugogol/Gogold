@@ -218,7 +218,7 @@ Le sample le plus riche en mécaniques de wild et de prix.
 
 `0_0_lines_feature_match`, `fifty_fifty`, `template`. `template` est
 vraisemblablement le point de départ d'un nouveau jeu — **à inspecter avant de
-créer le math de Grogg**.
+créer le math d'un nouveau jeu**.
 
 ## 6. Matrice des mécaniques
 
@@ -423,25 +423,21 @@ Bet Replay est une exigence d'approbation pour les nouveaux jeux Stake.
 
 Aucun Bet Replay n'est développé ici.
 
-## 16. Grogg — mécaniques candidates
+## 16. Futurs jeux — mécaniques non définies
 
 ```text
-Grogg mechanics not formally defined in repository yet.
+No game mechanics formally defined in repository yet.
 ```
 
-Vérifié : `apps/grogg/README.md` est un placeholder explicite, et aucun document
-du repository ne décrit de mécanique de Grogg.
+Vérifié : aucun document du repository ne décrit les mécaniques d'un jeu Gogold,
+et aucune roadmap produit n'existe. `<game>`, `game-002` et `game-003`
+n'apparaissent que comme illustrations d'arborescence dans `ARCHITECTURE.md`.
+**Aucun jeu n'est inventé ici.**
 
 ⚠️ `barrelFill` / `barrelFull` apparaissent dans `ASSETS.md`, mais **uniquement
 comme exemples de nommage** — `ASSETS.md` précise lui-même qu'aucun event de ce
-type n'est créé. Ce ne sont **pas** des mécaniques déclarées de Grogg et elles ne
-doivent pas être interprétées ainsi.
-
-### Future games — mechanics TBD
-
-Aucune roadmap produit n'existe dans le repository. `game-002` / `game-003`
-n'apparaissent que comme illustrations d'arborescence dans `ARCHITECTURE.md`.
-**Aucun jeu n'est inventé ici.**
+type n'est créé. Ce ne sont **pas** des mécaniques déclarées et elles ne doivent
+pas être interprétées ainsi.
 
 ## 17. Ce que Gogold doit réutiliser
 
@@ -532,7 +528,7 @@ Aucune mécanique n'introduit de couche runtime serveur Gogold.
 Il ne crée aucune mécanique, aucun package, aucune interface, aucun event,
 aucune story, aucun force file, aucun code math ni frontend.
 
-Il n'invente aucune roadmap produit et aucune mécanique de Grogg.
+Il n'invente aucune roadmap produit et aucune mécanique de jeu.
 
 Il n'affirme comme générique que ce que le SDK expose réellement comme tel : tout
 le reste est marqué [PATTERN SAMPLE] ou `NON IDENTIFIÉ`.
