@@ -1,0 +1,54 @@
+{
+	"_comment": "Scénarios de debug de ce jeu. Chaque scénario SÉLECTIONNE des books déjà produits par le Math SDK — aucun résultat n'est fabriqué. select.type 'force' utilise les force records Stake (critère -> bookIds) ; select.type 'payout' filtre sur des champs déjà calculés par le Math. payoutMultiplier est exprimé en centièmes dans les sorties Math de ce jeu (500000 = 5000x = wincap).",
+	"booksPerScenario": 2,
+	"scenarios": [
+		{
+			"id": "base-no-win",
+			"label": "Base — aucun gain",
+			"mode": "base",
+			"select": { "type": "payout", "max": 0 }
+		},
+		{
+			"id": "base-small-win",
+			"label": "Base — petit gain (0.1x - 5x)",
+			"mode": "base",
+			"select": { "type": "payout", "min": 10, "max": 500 }
+		},
+		{
+			"id": "base-big-win",
+			"label": "Base — gros gain (>= 100x)",
+			"mode": "base",
+			"select": { "type": "payout", "min": 10000 }
+		},
+		{
+			"id": "base-max-win",
+			"label": "Base — MAX WIN (5000x, 0.11% des rounds)",
+			"mode": "base",
+			"select": { "type": "payout", "min": 500000 }
+		},
+		{
+			"id": "base-scatter-3",
+			"label": "Base — 3 scatters",
+			"mode": "base",
+			"select": {
+				"type": "force",
+				"search": { "gametype": "basegame", "kind": "3", "symbol": "scatter" }
+			}
+		},
+		{
+			"id": "base-five-of-a-kind-h1",
+			"label": "Base — 5 identiques H1",
+			"mode": "base",
+			"select": {
+				"type": "force",
+				"search": { "gametype": "basegame", "kind": "5", "symbol": "H1" }
+			}
+		},
+		{
+			"id": "bonus-round",
+			"label": "Bonus — round acheté",
+			"mode": "bonus",
+			"select": { "type": "payout", "min": 0 }
+		}
+	]
+}
