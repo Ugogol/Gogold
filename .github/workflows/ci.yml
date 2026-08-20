@@ -1,0 +1,145 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Une seule CI par branche/PR : un nouveau commit annule la précédente.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Validation uniquement — aucun déploiement, aucune publication.
+permissions:
+  contents: read
+
+env:
+  # Aligné sur engines.node de package.json (>=22.16.0) et sur la baseline vérifiée
+  # localement. À maintenir en phase avec package.json — voir docs/CI.md.
+  NODE_VERSION: '22.16.0'
+  # Le Math SDK exige Python >= 3.12 (math/setup.py).
+  PYTHON_VERSION: '3.13'
+
+jobs:
+  frontend-quality:
+    name: Frontend Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # La version de pnpm est lue depuis `packageManager` de package.json.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      # ---- BLOQUANT ----
+      - name: Asset validation
+        run: |
+          found=0
+          for dir in apps/*/static/assets; do
+            [ -d "$dir" ] || continue
+            found=1
+            echo "::group::$dir"
+            node tooling/assets/check-assets.mjs "$dir"
+            echo "::endgroup::"
+          done
+          if [ "$found" = "0" ]; then
+            echo "Aucun dossier apps/*/static/assets trouvé."
+            exit 1
+          fi
+
+      # ---- INFORMATIF ----
+      # Défaut upstream connu : le Web SDK épingle eslint@9 mais livre encore la
+      # configuration legacy .eslintrc.cjs. Reproduit à l'identique dans l'upstream
+      # Stake intact. Non bloquant tant que ce défaut existe — voir docs/CI.md.
+      - name: Lint (informational — known upstream failure)
+        continue-on-error: true
+        run: pnpm run lint
+
+      # ---- INFORMATIF ----
+      # 96 erreurs préexistantes, toutes dans du code Stake upstream (0 dans du code
+      # Gogold). Ne peut pas être bloquant sans corriger l'upstream — voir docs/CI.md.
+      - name: Typecheck (informational — upstream baseline errors)
+        continue-on-error: true
+        env:
+          # svelte-check charge apps/lines/src/stories/data/base_books.ts (20 MB).
+          NODE_OPTIONS: --max-old-space-size=8192
+        run: pnpm run typecheck
+
+  frontend-build:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      # Build global : toute app possédant une tâche `build` est couverte
+      # automatiquement, y compris une future slot.
+      - name: Production build
+        run: pnpm run build
+
+      # Vérifie qu'aucun code de développement n'a atteint le build
+      # (Debug Panel, fixtures DEV, bypass RGS) et publie les tailles.
+      - name: Production safety + size report
+        run: node tooling/ci/check-production-build.mjs
+
+  math-tests:
+    name: Math Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: math
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: math/requirements.txt
+
+      # Méthode d'installation officielle Stake (équivalent des cibles du Makefile).
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      # Doit passer APRÈS requirements.txt : sa première ligne installe un editable
+      # distant épinglé sur un commit plus ancien. Cet appel le remplace par notre
+      # copie locale.
+      - name: Install local Math SDK (editable)
+        run: python -m pip install -e .
+
+      # Garde-fou : prouve que les tests portent bien sur math/ de ce repository,
+      # et non sur la copie distante de Stake.
+      - name: Verify the local Math SDK is the one under test
+        run: |
+          python - <<'PY'
+          import pathlib
+          from src.config.paths import PROJECT_PATH
+          here = pathlib.Path('.').resolve()
+          used = pathlib.Path(PROJECT_PATH).resolve()
+          assert used == here, f"Math SDK testé = {used}, attendu {here}"
+          print("OK — Math SDK testé :", used)
+          PY
+
+      - name: PyTest
+        run: python -m pytest tests/ -q

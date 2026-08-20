@@ -69,6 +69,8 @@ Documentation disponible :
 - `docs/MATH.md`
 - `docs/ASSET_PIPELINE.md`
 - `docs/STORYBOOK.md`
+- `docs/DEBUG_PANEL.md`
+- `docs/CI.md`
 
 Lecture indicative :
 
@@ -718,6 +720,25 @@ Math :
 - force mechanisms officiels pour les scénarios rares lorsque disponibles
 
 Ne pas inventer une nouvelle infrastructure de test si Stake fournit déjà le mécanisme nécessaire.
+
+## Contrôles CI
+
+Les contrôles automatiques exécutés sur chaque PR vers `main` sont décrits dans
+`docs/CI.md`. Commandes reproductibles en local :
+
+```
+pnpm install --frozen-lockfile
+pnpm run build
+node tooling/assets/check-assets.mjs apps/<game>/static/assets
+node tooling/ci/check-production-build.mjs
+cd math && python -m pytest tests/ -q
+```
+
+Bloquants : build frontend, validation des assets, sécurité du build de
+production, tests Math.
+
+Informatifs tant que le défaut upstream existe : `pnpm run lint` et
+`pnpm run typecheck`.
 
 ---
 
