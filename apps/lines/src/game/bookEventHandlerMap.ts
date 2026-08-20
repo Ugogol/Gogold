@@ -5,6 +5,7 @@ import { stateBet, stateUi } from 'state-shared';
 import { sequence } from 'utils-shared/sequence';
 
 import { eventEmitter } from './eventEmitter';
+import { isLocalDebugMode } from './devDebugMode';
 import { playBookEvent } from './utils';
 import { winLevelMap, type WinLevel, type WinLevelData } from './winLevelMap';
 import { stateGame, stateGameDerived } from './stateGame.svelte';
@@ -49,7 +50,10 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		const isBonusGame = checkIsMultipleRevealEvents({ bookEvents });
 		if (isBonusGame) {
 			eventEmitter.broadcast({ type: 'stopButtonEnable' });
-			recordBookEvent({ bookEvent });
+			// GOGOLD — en mode debug local il n'y a pas de session RGS : enregistrer la
+			// progression du round provoquerait un POST /bet/event vers un rgs_url vide.
+			// Inerte en production, où isLocalDebugMode() est replié à false.
+			if (!isLocalDebugMode()) recordBookEvent({ bookEvent });
 		}
 
 		stateGame.gameType = bookEvent.gameType;
