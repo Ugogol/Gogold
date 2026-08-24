@@ -6,10 +6,24 @@
 
 	const context = getContext();
 
-	// `normalBackgroundLayout` fixe une seule dimension : le sprite garde son
-	// ratio et couvre le canvas quel que soit le format d'écran.
+	/**
+	 * Deux fonds, un par orientation.
+	 *
+	 * `isStacked()` est le regroupement Stake des layouts « debout » — portrait et
+	 * presque carré. `apps/lines` s'en sert déjà pour son positionnement portrait.
+	 *
+	 * Chaque fond a son propre helper de cadrage : `normalBackgroundLayout` et
+	 * `portraitBackgroundLayout` lisent respectivement `backgroundRatio.normal` et
+	 * `backgroundRatio.portrait`, déclarés dans `stateLayout.ts` d'après les
+	 * dimensions RÉELLES de chaque asset. C'est ce qui produit le comportement
+	 * cover : un ratio faux étirerait sur le mauvais axe et laisserait des bandes.
+	 */
+	const stacked = $derived(context.stateLayoutDerived.isStacked());
+
 	const backgroundProps = $derived(
-		context.stateLayoutDerived.normalBackgroundLayout({ scale: 1 }),
+		stacked
+			? context.stateLayoutDerived.portraitBackgroundLayout({ scale: 1 })
+			: context.stateLayoutDerived.normalBackgroundLayout({ scale: 1 }),
 	);
 </script>
 
@@ -19,4 +33,9 @@
 	zIndex={zIndexes.background.backdrop}
 />
 
-<Sprite key="background" anchor={{ x: 0.5, y: 0.5 }} zIndex={zIndexes.background.normal} {...backgroundProps} />
+<Sprite
+	key={stacked ? 'backgroundMobile' : 'background'}
+	anchor={{ x: 0.5, y: 0.5 }}
+	zIndex={zIndexes.background.normal}
+	{...backgroundProps}
+/>

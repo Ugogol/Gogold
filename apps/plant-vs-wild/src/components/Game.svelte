@@ -7,6 +7,7 @@
 	import Background from './Background.svelte';
 	import BoardCells from './BoardCells.svelte';
 	import Board from './Board.svelte';
+	import TumbleBoard from './TumbleBoard.svelte';
 	import { isLocalVisualMode } from '../game/devVisualMode';
 
 	/**
@@ -41,6 +42,7 @@
 	<MainContainer>
 		<BoardCells />
 		<Board />
+		<TumbleBoard />
 	</MainContainer>
 
 	{#if VisualOverlay}

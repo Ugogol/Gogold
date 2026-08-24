@@ -12,6 +12,16 @@
  * Le fichier s'appelle `symboles.json` (orthographe du livrable) : ne pas le
  * renommer sans regénérer l'atlas, `meta.image` y fait référence.
  *
+ * Deux fonds : `background` (1920×1080) pour les layouts couchés, `backgroundMobile`
+ * (1080×1920) pour les layouts debout. Le choix se fait dans `Background.svelte`
+ * via `isStacked()`.
+ *
+ * Les fonds de Bonus livrés par le graphiste sont conservés dans
+ * `source-assets/plant-vs-wild/backgrounds/`, pas dans `static/` : `adapter-static`
+ * copie `static/` en bloc, sans élaguer ce qu'`assets.ts` ne déclare pas — un
+ * fichier non déclaré y serait donc embarqué dans le build sans jamais être
+ * chargé. À remettre en runtime quand les Free Spins existeront.
+ *
  * Aucun décor de plateau : le cadre autour de la grille a été abandonné
  * (étape 3). La grille est constituée des seules cases, dessinées en Graphics.
  * `board.psd` / `board.webp` sont conservés dans `source-assets/plant-vs-wild/`.
@@ -22,6 +32,11 @@ export default {
 	background: {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/background/background.webp', import.meta.url).href,
+		preload: true,
+	},
+	backgroundMobile: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/background/background-mobile.webp', import.meta.url).href,
 		preload: true,
 	},
 	symbols: {

@@ -17,5 +17,9 @@
 	y={props.reelSymbol.symbolY.current}
 	animating={props.reelSymbol.symbolState === 'land' || props.reelSymbol.symbolState === 'win'}
 >
-	<Symbol state={props.reelSymbol.symbolState} rawSymbol={props.reelSymbol.rawSymbol} />
+	<Symbol
+		state={props.reelSymbol.symbolState}
+		rawSymbol={props.reelSymbol.rawSymbol}
+		oncomplete={props.reelSymbol.oncomplete}
+	/>
 </SymbolWrap>

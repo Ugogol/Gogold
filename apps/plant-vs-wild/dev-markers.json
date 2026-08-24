@@ -1,0 +1,10 @@
+[
+	"VisualPanel",
+	"VisualOverlay",
+	"isLocalVisualMode",
+	"VISUAL_QUERY_KEY",
+	"DevBookPlayer",
+	"isLocalBookMode",
+	"BOOK_QUERY_KEY",
+	"base_book_cascade"
+]

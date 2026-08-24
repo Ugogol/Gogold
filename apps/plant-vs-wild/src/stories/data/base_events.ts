@@ -14,38 +14,44 @@ import type { BookEvent } from '../../game/typesBookEvent';
  *
  * Toutes décrivent LE MÊME scénario, pour être lisibles ensemble :
  *
- *   plateau initial          le Wild est en (reel 1, row 1)
- *   cluster L1               (0,0) (0,1) (1,0) (2,0) + le Wild  → 5 cases
- *   le Wild rejoint (0,0)    charge 1
+ *   plateau initial          le Wild est en (reel 1, row 2)
+ *   cluster L1               (0,1) (0,2) (1,1) (2,1) + le Wild  → 5 cases
+ *   le Wild rejoint (0,1)    charge 1
  *   les 4 autres cases       disparaissent puis sont recomplétées
  *
  * Les montants sont en centièmes de mise, comme dans les books Stake :
  * 130 se lit 1,30×.
+ *
+ * ⚠️ Un `Position.row` est l'index dans le reel PADDÉ : 0 est la ligne de
+ * padding haute, 1 à 5 les lignes visibles, 6 le padding bas. Convention Stake,
+ * vérifiée sur leurs books réels. `gridMultipliers` fait exception : il ne
+ * couvre que les lignes visibles, donc 5×5 sans décalage.
  */
 
 /** Case du Wild au départ. */
-const WILD_FROM = { reel: 1, row: 1 };
+const WILD_FROM = { reel: 1, row: 2 };
 /** Case du groupe gagnant que le Wild rejoint. */
-const WILD_TO = { reel: 0, row: 0 };
+const WILD_TO = { reel: 0, row: 1 };
 
 /** Les 5 cases du cluster, Wild compris. */
 const CLUSTER_POSITIONS = [
-	{ reel: 0, row: 0 },
 	{ reel: 0, row: 1 },
-	{ reel: 1, row: 0 },
-	{ reel: 2, row: 0 },
+	{ reel: 0, row: 2 },
+	{ reel: 1, row: 1 },
+	{ reel: 2, row: 1 },
 	WILD_FROM,
 ];
 
 const reveal: BookEvent = {
 	index: 0,
 	type: 'reveal',
+	// 7 lignes : padding, 5 lignes visibles, padding. Voir base_book_cascade.ts.
 	board: [
-		[{ name: 'L1' }, { name: 'L1' }, { name: 'L2' }, { name: 'H1' }, { name: 'L3' }],
-		[{ name: 'L1' }, { name: 'W' }, { name: 'L4' }, { name: 'L2' }, { name: 'H2' }],
-		[{ name: 'L1' }, { name: 'L3' }, { name: 'H3' }, { name: 'L4' }, { name: 'L1' }],
-		[{ name: 'H2' }, { name: 'L4' }, { name: 'L2' }, { name: 'L3' }, { name: 'L1' }],
-		[{ name: 'L4' }, { name: 'L2' }, { name: 'H1' }, { name: 'L1' }, { name: 'L3' }],
+		[{ name: 'L3' }, { name: 'L1' }, { name: 'L1' }, { name: 'L2' }, { name: 'H1' }, { name: 'L3' }, { name: 'L4' }],
+		[{ name: 'L2' }, { name: 'L1' }, { name: 'W' }, { name: 'L4' }, { name: 'L2' }, { name: 'H2' }, { name: 'L3' }],
+		[{ name: 'H3' }, { name: 'L1' }, { name: 'L3' }, { name: 'H3' }, { name: 'L4' }, { name: 'L1' }, { name: 'L2' }],
+		[{ name: 'L4' }, { name: 'H2' }, { name: 'L4' }, { name: 'L2' }, { name: 'L3' }, { name: 'L1' }, { name: 'H1' }],
+		[{ name: 'L1' }, { name: 'L4' }, { name: 'L2' }, { name: 'H1' }, { name: 'L1' }, { name: 'L3' }, { name: 'H2' }],
 	],
 	paddingPositions: [0, 0, 0, 0, 0],
 	gameType: 'basegame',
@@ -80,7 +86,7 @@ const winInfo: BookEvent = {
 				globalMult: 1,
 				clusterMult: 1,
 				winWithoutMult: 1.3,
-				overlay: { reel: 1, row: 0 },
+				overlay: { reel: 1, row: 1 },
 			},
 		},
 	],
@@ -147,10 +153,10 @@ const tumbleBoard: BookEvent = {
 	index: 6,
 	type: 'tumbleBoard',
 	explodingSymbols: [
-		{ reel: 0, row: 1 },
-		{ reel: 1, row: 0 },
+		{ reel: 0, row: 2 },
 		{ reel: 1, row: 1 },
-		{ reel: 2, row: 0 },
+		{ reel: 1, row: 2 },
+		{ reel: 2, row: 1 },
 	],
 	newSymbols: [[{ name: 'H3' }], [{ name: 'L2' }, { name: 'L4' }], [{ name: 'H1' }], [], []],
 };
@@ -188,7 +194,7 @@ const wildFeatureRage: BookEvent = {
 	index: 14,
 	type: 'wildFeature',
 	feature: 'rage',
-	wildTo: { reel: 2, row: 2 },
+	wildTo: { reel: 2, row: 3 },
 };
 
 /**
@@ -199,15 +205,15 @@ const wildFeatureSnake: BookEvent = {
 	index: 15,
 	type: 'wildFeature',
 	feature: 'wildSnake',
-	from: { reel: 0, row: 0 },
+	from: { reel: 0, row: 1 },
 	path: [
-		{ reel: 0, row: 1 },
 		{ reel: 0, row: 2 },
-		{ reel: 1, row: 2 },
-		{ reel: 2, row: 2 },
+		{ reel: 0, row: 3 },
+		{ reel: 1, row: 3 },
 		{ reel: 2, row: 3 },
+		{ reel: 2, row: 4 },
 	],
-	to: { reel: 2, row: 4 },
+	to: { reel: 2, row: 5 },
 	symbol: 'L3',
 };
 
@@ -217,9 +223,9 @@ const wildFeatureSplit: BookEvent = {
 	type: 'wildFeature',
 	feature: 'wildSplit',
 	positions: [
-		{ reel: 0, row: 4 },
-		{ reel: 2, row: 2 },
-		{ reel: 4, row: 0 },
+		{ reel: 0, row: 5 },
+		{ reel: 2, row: 3 },
+		{ reel: 4, row: 1 },
 	],
 };
 

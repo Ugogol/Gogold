@@ -6,6 +6,7 @@
 	import Game from '../components/Game.svelte';
 	import { setContext } from '../game/context';
 	import { isLocalVisualMode } from '../game/devVisualMode';
+	import { isLocalBookMode } from '../game/devBookMode';
 
 	import messagesMap from '../i18n/messagesMap';
 
@@ -32,6 +33,17 @@
 		}
 	});
 
+	// Lecteur de book mocké, activé par `?book=true`. Même garde.
+	const bookMode = IS_DEV && isLocalBookMode();
+
+	let DevBookPlayer = $state<Component | null>(null);
+
+	$effect(() => {
+		if (IS_DEV && bookMode && !DevBookPlayer) {
+			import('../dev/DevBookPlayer.svelte').then((module) => (DevBookPlayer = module.default));
+		}
+	});
+
 	setContext();
 </script>
 
@@ -45,4 +57,8 @@
 
 {#if VisualPanel}
 	<VisualPanel />
+{/if}
+
+{#if DevBookPlayer}
+	<DevBookPlayer />
 {/if}

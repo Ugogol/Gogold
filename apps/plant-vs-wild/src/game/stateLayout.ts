@@ -21,7 +21,7 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 	 */
 	backgroundRatio: {
 		normal: 1920 / 1080,
-		portrait: 1920 / 1080,
+		portrait: 1080 / 1920,
 	},
 	mainSizesMap: MAIN_SIZES_MAP,
 });

@@ -184,8 +184,17 @@ type BookEventFreeSpinEnd = {
  * Seul le vrai Wild progresse : les Wild temporaires de Wild Split ne font
  * jamais monter ce compteur.
  *
- * Place dans la séquence : après `updateGrid`, avant `tumbleBoard`. Le Wild
- * quitte sa case avant que le groupe ne disparaisse — il n'est jamais détruit.
+ * Contrainte d'ordre CERTAINE, et seule certitude à ce stade :
+ *
+ *     connexion résolue
+ *       → le Wild rejoint la destination fournie par le Book
+ *       → nouveaux symboles / refill
+ *
+ * Le Wild n'est jamais détruit : s'il doit disparaître, il ne se déplace pas.
+ *
+ * La place exacte de cet event vis-à-vis de `updateGrid` n'est PAS tranchée —
+ * elle le sera pendant l'étape Wild, quand l'animation existera. Ne pas la
+ * figer ici.
  */
 type BookEventWildMove = {
 	index: number;

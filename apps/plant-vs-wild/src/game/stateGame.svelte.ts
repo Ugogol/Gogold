@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import type { Tween } from 'svelte/motion';
 
 import { createEnhanceBoard, createReelForCascading } from 'utils-slots';
 
-import type { GameType } from './types';
+import type { GameType, RawSymbol, SymbolState } from './types';
 import { stateLayoutDerived } from './stateLayout';
 import {
 	SYMBOL_SIZE,
@@ -40,9 +41,26 @@ const board = _.range(BOARD_DIMENSIONS.x).map((reelIndex) => {
 export type Reel = (typeof board)[number];
 export type ReelSymbol = Reel['reelState']['symbols'][number];
 
+/**
+ * Symbole du plateau de tumble — le plateau temporaire sur lequel se joue la
+ * cascade, distinct du plateau normal. C'est le découpage de `apps/cluster` :
+ * pendant la cascade le plateau normal est masqué, le plateau de tumble anime
+ * l'explosion et la chute, puis le résultat est reversé au plateau normal.
+ */
+export type TumbleSymbol = {
+	symbolY: Tween<number>;
+	rawSymbol: RawSymbol;
+	symbolState: SymbolState;
+	oncomplete: () => void;
+};
+
 export const stateGame = $state({
 	board,
 	gameType: 'basegame' as GameType,
+	/** Symboles qui arrivent par le haut pendant la cascade. */
+	tumbleBoardAdding: [] as TumbleSymbol[][],
+	/** Symboles déjà en place au moment où la cascade commence. */
+	tumbleBoardBase: [] as TumbleSymbol[][],
 });
 
 /**
@@ -70,11 +88,23 @@ const boardLayout = () => {
 const boardRaw = () =>
 	board.map((reel) => reel.reelState.symbols.map((reelSymbol) => reelSymbol.rawSymbol));
 
+/**
+ * Plateau de tumble complet : les arrivants au-dessus, les rescapés en dessous.
+ * L'index dans ce tableau est l'index de plateau — 0 est la ligne de padding
+ * haute, hors champ.
+ */
+const tumbleBoardCombined = () =>
+	stateGame.tumbleBoardAdding.map((tumbleReelAdding, reelIndex) => [
+		...tumbleReelAdding,
+		...(stateGame.tumbleBoardBase[reelIndex] ?? []),
+	]);
+
 const { enhanceBoard } = createEnhanceBoard();
 const enhancedBoard = enhanceBoard({ board: stateGame.board });
 
 export const stateGameDerived = {
 	boardLayout,
 	boardRaw,
+	tumbleBoardCombined,
 	enhancedBoard,
 };
