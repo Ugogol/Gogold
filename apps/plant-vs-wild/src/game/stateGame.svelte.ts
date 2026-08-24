@@ -7,6 +7,7 @@ import { stateLayoutDerived } from './stateLayout';
 import {
 	SYMBOL_SIZE,
 	BOARD_SIZES,
+	LAYOUT_BANDS,
 	INITIAL_BOARD,
 	BOARD_DIMENSIONS,
 	SPIN_OPTIONS_DEFAULT,
@@ -44,13 +45,27 @@ export const stateGame = $state({
 	gameType: 'basegame' as GameType,
 });
 
-const boardLayout = () => ({
-	x: stateLayoutDerived.mainLayout().width * 0.5,
-	y: stateLayoutDerived.mainLayout().height * 0.5,
-	anchor: { x: 0.5, y: 0.5 },
-	pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },
-	...BOARD_SIZES,
-});
+/**
+ * Centre de la grille dans l'espace de design du jeu.
+ *
+ * Horizontalement : centré. Verticalement : centré dans la bande qui reste une
+ * fois le logo et la game bar réservés — pas au milieu de l'écran, sinon la
+ * grille descend sous l'UI sur les layouts où celle-ci est haute (portrait).
+ *
+ *   y = logo + (hauteur − logo − gameBar) / 2
+ */
+const boardLayout = () => {
+	const mainLayout = stateLayoutDerived.mainLayout();
+	const bands = LAYOUT_BANDS[stateLayoutDerived.layoutType()];
+
+	return {
+		x: mainLayout.width * 0.5,
+		y: (mainLayout.height + bands.logo - bands.gameBar) * 0.5,
+		anchor: { x: 0.5, y: 0.5 },
+		pivot: { x: BOARD_SIZES.width / 2, y: BOARD_SIZES.height / 2 },
+		...BOARD_SIZES,
+	};
+};
 
 const boardRaw = () =>
 	board.map((reel) => reel.reelState.symbols.map((reelSymbol) => reelSymbol.rawSymbol));

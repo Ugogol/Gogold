@@ -26,6 +26,10 @@ const FORBIDDEN_MARKERS = [
 	'debugScenarios',
 	'isLocalDebugMode',
 	'DEBUG_QUERY_KEY',
+	'VisualPanel',
+	'VisualOverlay',
+	'isLocalVisualMode',
+	'VISUAL_QUERY_KEY',
 ];
 
 /** Seuls les fichiers texte sont scannés — le reste du build est binaire. */

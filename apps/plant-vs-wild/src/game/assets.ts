@@ -12,9 +12,9 @@
  * Le fichier s'appelle `symboles.json` (orthographe du livrable) : ne pas le
  * renommer sans regénérer l'atlas, `meta.image` y fait référence.
  *
- * Le décor `sprites/board/board.webp` reste sur le disque mais n'est plus
- * déclaré : plus aucun composant ne l'affiche, le préchargement serait du poids
- * mort. Le redéclarer quand un nouveau cadre arrivera.
+ * Aucun décor de plateau : le cadre autour de la grille a été abandonné
+ * (étape 3). La grille est constituée des seules cases, dessinées en Graphics.
+ * `board.psd` / `board.webp` sont conservés dans `source-assets/plant-vs-wild/`.
  *
  * Aucun son, aucune animation Spine à ce stade.
  */
