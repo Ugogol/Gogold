@@ -41,7 +41,6 @@ export default {
 		L3: { paytable: null },
 		L4: { paytable: null },
 		W: { paytable: null, special_properties: ['wild'] },
-		S: { paytable: null, special_properties: ['scatter'] },
 	},
 	paddingReels: {
 		basegame: '',

@@ -1,16 +1,22 @@
 <script lang="ts">
-	import { Rectangle } from 'pixi-svelte';
+	import { Rectangle, Sprite } from 'pixi-svelte';
 
 	import { getContext } from '../game/context';
 	import { zIndexes } from '../game/constants';
 
-	/** Fond provisoire : aucune image n'est intégrée à ce stade. */
 	const context = getContext();
+
+	// `normalBackgroundLayout` fixe une seule dimension : le sprite garde son
+	// ratio et couvre le canvas quel que soit le format d'écran.
+	const backgroundProps = $derived(
+		context.stateLayoutDerived.normalBackgroundLayout({ scale: 1 }),
+	);
 </script>
 
 <Rectangle
+	{...context.stateLayoutDerived.canvasSizes()}
+	backgroundColor={0x000000}
 	zIndex={zIndexes.background.backdrop}
-	width={context.stateLayoutDerived.canvasSizes().width}
-	height={context.stateLayoutDerived.canvasSizes().height}
-	backgroundColor={0x101a12}
 />
+
+<Sprite key="background" anchor={{ x: 0.5, y: 0.5 }} zIndex={zIndexes.background.normal} {...backgroundProps} />

@@ -17,7 +17,7 @@ const reveal: BookEvent = {
 		[{ name: 'H1' }, { name: 'L2' }, { name: 'L3' }, { name: 'L1' }, { name: 'H2' }],
 		[{ name: 'L4' }, { name: 'H3' }, { name: 'L1' }, { name: 'L2' }, { name: 'L3' }],
 		[{ name: 'L2' }, { name: 'L1' }, { name: 'W' }, { name: 'H4' }, { name: 'L4' }],
-		[{ name: 'H2' }, { name: 'L3' }, { name: 'L4' }, { name: 'S' }, { name: 'L1' }],
+		[{ name: 'H2' }, { name: 'L3' }, { name: 'L4' }, { name: 'H4' }, { name: 'L1' }],
 		[{ name: 'L1' }, { name: 'L4' }, { name: 'H1' }, { name: 'L3' }, { name: 'L2' }],
 	],
 	paddingPositions: [0, 0, 0, 0, 0],

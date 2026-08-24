@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { Container, Rectangle, Text } from 'pixi-svelte';
+	import { Sprite } from 'pixi-svelte';
 
 	import type { SymbolState, RawSymbol } from '../game/types';
-	import { SYMBOL_SIZE, SYMBOL_STATE_STYLE } from '../game/constants';
-	import { getSymbolPlaceholder } from '../game/utils';
+	import { SYMBOL_ASSET_MAP, SYMBOL_DISPLAY_SIZE } from '../game/constants';
 
 	/**
-	 * Rendu PROVISOIRE d'un symbole.
+	 * Rend un symbole depuis l'atlas `sprites/symbols`.
 	 *
-	 * Aucun asset n'est intégré : le symbole est dessiné avec les primitives
-	 * PixiJS pour rendre la grille lisible. Ce composant sera remplacé par le
-	 * rendu sprite/Spine du sample Stake quand les assets du jeu existeront.
+	 * Aucun état visuel n'est encore différencié : `state` est accepté pour que
+	 * la signature reste stable, mais tous les états affichent la frame statique.
+	 * Les animations viendront avec les assets correspondants.
 	 */
 	type Props = {
 		x?: number;
@@ -20,30 +19,15 @@
 	};
 
 	const props: Props = $props();
-	const placeholder = $derived(getSymbolPlaceholder({ rawSymbol: props.rawSymbol }));
-	const stateStyle = $derived(SYMBOL_STATE_STYLE[props.state] ?? SYMBOL_STATE_STYLE.static);
-	const size = $derived(SYMBOL_SIZE * 0.88);
+	const assetKey = $derived(SYMBOL_ASSET_MAP[props.rawSymbol.name]);
+	const size = SYMBOL_DISPLAY_SIZE;
 </script>
 
-<Container x={props.x ?? 0} y={props.y ?? 0}>
-	<Rectangle
-		anchor={{ x: 0.5, y: 0.5 }}
-		width={size}
-		height={size}
-		borderRadius={12}
-		backgroundColor={placeholder.fill}
-		backgroundAlpha={stateStyle.alpha}
-		borderColor={stateStyle.borderColor}
-		borderWidth={3}
-	/>
-	<Text
-		anchor={{ x: 0.5, y: 0.5 }}
-		text={placeholder.label}
-		style={{
-			fontFamily: 'system-ui, sans-serif',
-			fontSize: SYMBOL_SIZE * 0.3,
-			fontWeight: '700',
-			fill: 0xf5f5f0,
-		}}
-	/>
-</Container>
+<Sprite
+	key={assetKey}
+	x={props.x ?? 0}
+	y={props.y ?? 0}
+	anchor={{ x: 0.5, y: 0.5 }}
+	width={size}
+	height={size}
+/>

@@ -1,10 +1,23 @@
 import type { RawSymbol, SymbolState } from './types';
 
 /**
- * Grille 5×5. Le sample Stake `apps/cluster` est en 7×7 avec SYMBOL_SIZE 80
- * (560 px de large) ; on garde une largeur de plateau comparable en 5 colonnes.
+ * Grille 5×5. `SYMBOL_SIZE` est le PAS de la grille : la distance entre deux
+ * centres de cases, pas la taille dessinée d'une case.
+ *
+ * 96 vient du cadrage retenu à l'étape 2 (grille de 480 px dans un canevas de
+ * design haut de 800 px). Le décor `sprites/board` a été déposé depuis ; la
+ * valeur peut être revue librement quand un nouveau décor arrivera.
  */
-export const SYMBOL_SIZE = 110;
+export const SYMBOL_SIZE = 96;
+
+/**
+ * Espace laissé entre deux cases. Le PAS de la grille reste `SYMBOL_SIZE` :
+ * ajuster l'écartement ne déplace aucun centre de case.
+ */
+export const CELL_GAP = 10;
+
+/** Côté de la case dessinée, gouttière déduite. */
+export const CELL_SIZE = SYMBOL_SIZE - CELL_GAP;
 
 export const REEL_PADDING = 0.53;
 
@@ -15,7 +28,7 @@ const COLUMN_PATTERNS: RawSymbol['name'][][] = [
 	['L1', 'H1', 'L2', 'L3', 'L1', 'H2', 'L4'],
 	['L2', 'L3', 'H3', 'L1', 'L2', 'L4', 'H1'],
 	['L3', 'L1', 'L4', 'H4', 'W', 'L2', 'L3'],
-	['H2', 'L4', 'L2', 'L3', 'L1', 'S', 'L2'],
+	['H2', 'L4', 'L2', 'L3', 'L1', 'H4', 'L2'],
 	['L4', 'L2', 'H1', 'L1', 'L3', 'L4', 'H3'],
 ];
 
@@ -70,34 +83,37 @@ export const zIndexes = {
 };
 
 /**
- * Apparence PROVISOIRE des symboles.
+ * Correspondance symbole → frame de l'atlas `sprites/symbols`.
  *
- * Aucun asset n'est intégré à ce stade : chaque symbole est dessiné avec les
- * primitives PixiJS (rectangle + texte) pour que la grille soit lisible sans
- * embarquer les assets du sample Stake — qui ne peuvent pas servir de contenu
- * final (voir docs/DEFINITION_OF_DONE.md).
+ * Les frames de l'atlas gardent leur nom de fichier exact (`h1.png`, `wild_01.png`),
+ * conformement au pattern Stake. Tout vient du meme atlas : aucun sprite isole.
+ * `assets.ts` déclare l'atlas ; c'est cette table qui fait le lien avec les
+ * identifiants math.
  *
- * Remplacé par de vrais assets à l'étape dédiée, en suivant docs/ASSET_PIPELINE.md.
+ * H4 est intégré mais n'est pas utilisé par le Base Game à ce stade.
+ * Aucun scatter : aucun asset n'a été fourni pour ce symbole.
  */
-export const SYMBOL_PLACEHOLDER_MAP = {
-	H1: { fill: 0x2f6f3e, label: 'H1' },
-	H2: { fill: 0x3d8b4f, label: 'H2' },
-	H3: { fill: 0x4ea862, label: 'H3' },
-	H4: { fill: 0x6cc177, label: 'H4' },
-	L1: { fill: 0x8a6b3f, label: 'L1' },
-	L2: { fill: 0xa4834f, label: 'L2' },
-	L3: { fill: 0xbe9c60, label: 'L3' },
-	L4: { fill: 0xd8b673, label: 'L4' },
-	W: { fill: 0x8b2f3e, label: 'W' },
-	S: { fill: 0xc9a227, label: 'S' },
+export const SYMBOL_ASSET_MAP = {
+	H1: 'h1.png',
+	H2: 'h2.png',
+	H3: 'h3.png',
+	H4: 'h4.png',
+	L1: 'l1.png',
+	L2: 'l2.png',
+	L3: 'l3.png',
+	L4: 'l4.png',
+	W: 'wild_01.png',
 } as const;
 
-/** Teinte appliquée par-dessus le symbole selon son état d'affichage. */
-export const SYMBOL_STATE_STYLE: Record<string, { alpha: number; borderColor: number }> = {
-	static: { alpha: 1, borderColor: 0x1b1b1b },
-	spin: { alpha: 0.9, borderColor: 0x1b1b1b },
-	land: { alpha: 1, borderColor: 0xffffff },
-	win: { alpha: 1, borderColor: 0xffd166 },
-	postWinStatic: { alpha: 0.75, borderColor: 0x1b1b1b },
-	explosion: { alpha: 0.35, borderColor: 0xffd166 },
-};
+/**
+ * Taille d'affichage d'un symbole, en proportion de `CELL_SIZE` — donc de la
+ * case dessinée, pas du pas de la grille : le symbole tient dans sa case et
+ * laisse voir le marquage.
+ *
+ * Les sources sont en 512×512 et sont réduites au rendu — elles ne sont pas
+ * redimensionnées de façon destructive (docs/ASSET_PIPELINE.md).
+ */
+export const SYMBOL_DISPLAY_RATIO = 0.92;
+
+/** Côté dessiné d'un symbole. */
+export const SYMBOL_DISPLAY_SIZE = CELL_SIZE * SYMBOL_DISPLAY_RATIO;
