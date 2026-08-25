@@ -79,7 +79,21 @@
 			);
 		});
 
-	/** Les symboles déjà en place, recopiés depuis le plateau normal. */
+	/**
+	 * Les symboles déjà en place, recopiés depuis le plateau normal.
+	 *
+	 * L'ÉTAT est repris aussi, pas seulement le `rawSymbol` : une case que le Wild
+	 * vient de quitter est en `hidden`. Sans ça, elle réapparaîtrait le temps du
+	 * tumble et on verrait le Wild exploser alors qu'il est déjà parti.
+	 */
+	/**
+	 * Les symboles déjà en place, recopiés depuis le plateau normal.
+	 *
+	 * Seul le `rawSymbol` est repris, jamais l'état — comme chez Stake. Reprendre
+	 * l'état paraissait utile pour le Wild, mais provoque un interblocage : les
+	 * symboles déjà en `postWinStatic` n'émettent alors plus le `oncomplete`
+	 * qu'attend `tumbleBoardExplode`, et la cascade se fige. Vérifié.
+	 */
 	const initTumbleBoardBase = () =>
 		context.stateGameDerived
 			.boardRaw()

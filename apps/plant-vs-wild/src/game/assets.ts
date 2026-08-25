@@ -9,8 +9,12 @@
  * exposées dans la map globale des textures sous leur nom de frame exact :
  * `h1.png`, `l1.png`, `wild_01.png`… — voir SYMBOL_ASSET_MAP dans constants.ts.
  *
- * Le fichier s'appelle `symboles.json` (orthographe du livrable) : ne pas le
- * renommer sans regénérer l'atlas, `meta.image` y fait référence.
+ * L'atlas porte les 16 frames : 8 symboles, les 4 états du Wild et les 4 du
+ * Super Wild (ces derniers pas encore utilisés, le Bonus n'existe pas).
+ *
+ * Le nom de base `symbols` est celui du dossier ET celui que `meta.image`
+ * référence. Ne pas le changer d'un côté sans l'autre : un `meta.image` qui ne
+ * correspond pas au fichier fait échouer le chargement en silence.
  *
  * Deux fonds : `background` (1920×1080) pour les layouts couchés, `backgroundMobile`
  * (1080×1920) pour les layouts debout. Le choix se fait dans `Background.svelte`
@@ -41,7 +45,7 @@ export default {
 	},
 	symbols: {
 		type: 'sprites',
-		src: new URL('../../assets/sprites/symbols/symboles.json', import.meta.url).href,
+		src: new URL('../../assets/sprites/symbols/symbols.json', import.meta.url).href,
 		preload: true,
 	},
 } as const;

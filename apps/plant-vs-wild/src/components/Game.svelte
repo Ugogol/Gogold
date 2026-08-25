@@ -8,6 +8,7 @@
 	import BoardCells from './BoardCells.svelte';
 	import Board from './Board.svelte';
 	import TumbleBoard from './TumbleBoard.svelte';
+	import WildFlight from './WildFlight.svelte';
 	import { isLocalVisualMode } from '../game/devVisualMode';
 
 	/**
@@ -43,6 +44,7 @@
 		<BoardCells />
 		<Board />
 		<TumbleBoard />
+		<WildFlight />
 	</MainContainer>
 
 	{#if VisualOverlay}

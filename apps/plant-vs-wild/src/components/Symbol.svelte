@@ -4,10 +4,17 @@
 	import { Sprite } from 'pixi-svelte';
 
 	import type { SymbolState, RawSymbol } from '../game/types';
-	import { SYMBOL_ASSET_MAP, SYMBOL_DISPLAY_SIZE } from '../game/constants';
+	import {
+		SYMBOL_ASSET_MAP,
+		SYMBOL_DISPLAY_SIZE,
+		WILD_CHARGE_ASSET_MAP,
+	} from '../game/constants';
 
 	/**
 	 * Rend un symbole depuis l'atlas `sprites/symbols`.
+	 *
+	 * Pour le Wild, la texture dépend de la charge que le Book a placée sur le
+	 * symbole. Le frontend ne calcule ni n'incrémente rien : il lit une table.
 	 *
 	 * `oncomplete` est le contrat Stake : le plateau change l'état d'un symbole
 	 * puis ATTEND ce rappel avant de passer à l'étape suivante. Il doit donc être
@@ -17,8 +24,7 @@
 	 * immédiatement faute d'animation Spine.
 	 *
 	 * Les transitions ci-dessous sont volontairement minimales : elles servent à
-	 * rendre l'ordre des étapes lisible, pas à être le rendu final. Aucune
-	 * animation d'explosion n'a encore été livrée.
+	 * rendre l'ordre des étapes lisible, pas à être le rendu final.
 	 */
 	type Props = {
 		x?: number;
@@ -29,7 +35,12 @@
 	};
 
 	const props: Props = $props();
-	const assetKey = $derived(SYMBOL_ASSET_MAP[props.rawSymbol.name]);
+
+	const assetKey = $derived(
+		props.rawSymbol.name === 'W'
+			? (WILD_CHARGE_ASSET_MAP[props.rawSymbol.charge ?? 0] ?? WILD_CHARGE_ASSET_MAP[0])
+			: SYMBOL_ASSET_MAP[props.rawSymbol.name],
+	);
 
 	const sizeRatio = new Tween(1);
 	const alpha = new Tween(1);
@@ -46,6 +57,11 @@
 				sizeRatio.set(0.15, { duration: 220, easing: cubicOut }),
 				alpha.set(0, { duration: 220, easing: cubicOut }),
 			]);
+		} else if (state === 'hidden') {
+			// Le Wild en vol est dessiné par `WildFlight` : la case le réserve
+			// sans l'afficher, pour qu'il n'y ait jamais deux Wild à l'écran.
+			sizeRatio.set(1, { duration: 0 });
+			alpha.set(0, { duration: 0 });
 		} else {
 			// Remise à l'état neutre, sans transition : un symbole réutilisé après
 			// une explosion doit redevenir visible immédiatement.

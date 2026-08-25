@@ -249,6 +249,26 @@ export const SYMBOL_ASSET_MAP = {
 } as const;
 
 /**
+ * Texture du Wild selon sa charge.
+ *
+ * Table explicite plutôt qu'un calcul : la charge 4 — l'état d'attente du Bonus —
+ * réutilise volontairement la texture de l'état 3. Il n'existe pas de cinquième
+ * visuel, et le frontend ne fait donc aucun min/max pour en déduire un.
+ *
+ * Les quatre états viennent de l'atlas, comme tous les autres symboles.
+ */
+export const WILD_CHARGE_ASSET_MAP: Record<number, string> = {
+	0: 'wild_01.png',
+	1: 'wild_02.png',
+	2: 'wild_03.png',
+	3: 'wild_04.png',
+	4: 'wild_04.png',
+};
+
+/** Durée du vol du Wild vers sa destination, en millisecondes. */
+export const WILD_MOVE_DURATION = 420;
+
+/**
  * Taille d'affichage d'un symbole, en proportion de `CELL_SIZE` — donc de la
  * case dessinée, pas du pas de la grille : le symbole tient dans sa case et
  * laisse voir le marquage.

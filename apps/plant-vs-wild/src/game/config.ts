@@ -15,6 +15,15 @@
  */
 export const DEV_GAME_ID = 'dev_plant_vs_wild';
 
+/**
+ * Nombre de connexions du Wild menant au Bonus.
+ *
+ * Règle de jeu fixe, donc configuration — jamais un champ de bookEvent. Le
+ * frontend ne compte pas : il reçoit la charge absolue dans `wildMove` et se
+ * sert de cette valeur uniquement pour savoir quand afficher l'état d'attente.
+ */
+export const WILD_MAX_CHARGE = 4;
+
 export default {
 	providerName: 'gogold',
 	gameName: 'plant_vs_wild',

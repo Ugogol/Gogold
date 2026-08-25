@@ -6,5 +6,6 @@
 	"DevBookPlayer",
 	"isLocalBookMode",
 	"BOOK_QUERY_KEY",
-	"base_book_cascade"
+	"base_book_cascade",
+	"base_book_wild"
 ]
