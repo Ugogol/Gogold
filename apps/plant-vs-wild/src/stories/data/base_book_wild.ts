@@ -62,15 +62,15 @@ export const bookWildAtReveal: Bet = {
 // ─── La connexion : 3 symboles identiques + le Wild ──────────────────────────
 
 /** Position du Wild avant la connexion. */
-const WILD_FROM = { reel: 2, row: 3 };
+export const WILD_FROM = { reel: 2, row: 3 };
 /** Destination, choisie par le Math parmi les cases libérées. */
-const WILD_TO = { reel: 1, row: 3 };
+export const WILD_TO = { reel: 1, row: 3 };
 
 /**
  * Les 4 cases de la connexion : trois L1 plus le Wild. C'est le Math qui
  * l'établit — jamais le frontend, qui ne sait pas qu'un Wild remplace un symbole.
  */
-const CONNECTION_POSITIONS = [
+export const CONNECTION_POSITIONS = [
 	{ reel: 1, row: 2 },
 	{ reel: 1, row: 3 },
 	{ reel: 2, row: 2 },

@@ -27,6 +27,7 @@
 		SYMBOL_DISPLAY_SIZE,
 		WILD_CHARGE_ASSET_MAP,
 		WILD_MOVE_DURATION,
+		zIndexes,
 	} from '../game/constants';
 
 	/**
@@ -106,7 +107,7 @@
 </script>
 
 {#if show}
-	<BoardContainer>
+	<BoardContainer zIndex={zIndexes.wildFlight}>
 		<Sprite
 			key={assetKey}
 			x={x.current}

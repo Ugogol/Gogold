@@ -16,6 +16,7 @@
 	import { BoardContext } from 'components-shared';
 
 	import { getContext } from '../game/context';
+	import { zIndexes } from '../game/constants';
 	import BoardContainer from './BoardContainer.svelte';
 	import BoardMask from './BoardMask.svelte';
 	import BoardBase from './BoardBase.svelte';
@@ -47,14 +48,14 @@
 
 {#if show}
 	<BoardContext animate={false}>
-		<BoardContainer>
+		<BoardContainer zIndex={zIndexes.board}>
 			<BoardMask />
 			<BoardBase />
 		</BoardContainer>
 	</BoardContext>
 
 	<BoardContext animate={true}>
-		<BoardContainer>
+		<BoardContainer zIndex={zIndexes.board}>
 			<BoardBase />
 		</BoardContainer>
 	</BoardContext>

@@ -218,11 +218,23 @@ export const SPIN_OPTIONS_FAST = {
 	symbolFallOutInterval: 0,
 };
 
+/**
+ * Ordre de dessin des calques.
+ *
+ * `pixi-svelte` trie les enfants par zIndex à chaque ajout : c'est ce qui fait
+ * autorité, pas l'ordre de montage. Indispensable ici — le plateau se démonte et
+ * se remonte à chaque tumble, et repasserait sinon devant les multiplicateurs.
+ */
 export const zIndexes = {
 	background: {
 		backdrop: -3,
 		normal: -2,
 	},
+	boardCells: 0,
+	board: 1,
+	tumbleBoard: 2,
+	multiplierGrid: 3,
+	wildFlight: 4,
 };
 
 /**
@@ -264,6 +276,32 @@ export const WILD_CHARGE_ASSET_MAP: Record<number, string> = {
 	3: 'wild_04.png',
 	4: 'wild_04.png',
 };
+
+/**
+ * Badge de multiplicateur de case.
+ *
+ * Tout est dérivé de `CELL_SIZE` : aucune des 25 positions n'est écrite en dur,
+ * et le badge suit la cellule sur tous les layouts.
+ *
+ * Volontairement sobre : un texte sur une pastille sombre. Pas de police bitmap
+ * — le projet n'en embarque aucune — pas de Spine, pas de filtre. À 25 cases,
+ * un glow permanent coûterait plus qu'il n'apporte.
+ */
+export const MULTIPLIER_BADGE = {
+	/** Position verticale dans la cellule, en fraction de sa hauteur. */
+	offsetRatio: 0.34,
+	height: 26,
+	paddingX: 12,
+	/** Largeur approximative d'un caractère, pour dimensionner la pastille. */
+	charWidth: 11,
+	fontFamily: 'system-ui, sans-serif',
+	fontSize: 19,
+	fill: 0xffe9a8,
+	backgroundColor: 0x120c04,
+	backgroundAlpha: 0.82,
+	borderColor: 0xffc94d,
+	borderAlpha: 0.55,
+} as const;
 
 /** Durée du vol du Wild vers sa destination, en millisecondes. */
 export const WILD_MOVE_DURATION = 420;

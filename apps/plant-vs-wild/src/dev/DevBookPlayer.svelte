@@ -12,6 +12,7 @@
 	import { WILD_MAX_CHARGE } from '../game/config';
 	import cascade from '../stories/data/base_book_cascade';
 	import wild from '../stories/data/base_book_wild';
+	import multiplier from '../stories/data/base_book_multiplier';
 
 	const SCENARIOS = [
 		{ id: 'cascade', label: 'Cascade simple (sans Wild)', events: cascade.bookEvents },
@@ -29,6 +30,31 @@
 			id: 'bonus-pending',
 			label: `Connexion · charge 3 → ${WILD_MAX_CHARGE} (bonus pending)`,
 			events: wild.bookWildBonusPending.state,
+		},
+		{
+			id: 'mult-cascade',
+			label: 'Multiplicateurs · 2 cascades (x2 puis x4)',
+			events: multiplier.bookMultiplierCascade.state,
+		},
+		{
+			id: 'mult-reset',
+			label: 'Multiplicateurs · nouveau spin (reset)',
+			events: multiplier.bookMultiplierResetSpin.state,
+		},
+		{
+			id: 'mult-final',
+			label: 'Multiplicateurs · fin de pari (finalWin)',
+			events: multiplier.bookMultiplierFinalWin.state,
+		},
+		{
+			id: 'mult-full',
+			label: 'Multiplicateurs · grille pleine, jusqu au cap x4096',
+			events: [multiplier.multiplierEvents.reveal, multiplier.multiplierEvents.full],
+		},
+		{
+			id: 'mult-wild',
+			label: 'Multiplicateurs · avec le Wild',
+			events: multiplier.bookMultiplierWithWild.state,
 		},
 	];
 

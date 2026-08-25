@@ -6,6 +6,7 @@
 
 	import Background from './Background.svelte';
 	import BoardCells from './BoardCells.svelte';
+	import MultiplierGrid from './MultiplierGrid.svelte';
 	import Board from './Board.svelte';
 	import TumbleBoard from './TumbleBoard.svelte';
 	import WildFlight from './WildFlight.svelte';
@@ -14,8 +15,15 @@
 	/**
 	 * Squelette de PLANT VS WILD.
 	 *
-	 * Composition : décor → grille 5×5 → 25 cases → symboles. Il n'y a
-	 * volontairement aucun cadre autour de la grille (étape 3).
+	 * Composition : décor → grille 5×5 → 25 cases → symboles → multiplicateurs.
+	 * Il n'y a volontairement aucun cadre autour de la grille (étape 3).
+	 *
+	 * ⚠️ Le calque des multiplicateurs est dessiné AU-DESSUS des symboles, alors
+	 * que `apps/cluster` le place en dessous. Ses symboles sont des Spine posés
+	 * dans un cadre `payframe` qui laisse la place au chiffre ; les nôtres sont
+	 * des cartes opaques qui remplissent la case — en dessous, le badge est
+	 * totalement masqué (vérifié à l'écran). Le multiplicateur reste malgré tout
+	 * un calque indexé par la case, jamais lié au Sprite d'un symbole.
 	 *
 	 * Ni UI de mise, ni son, ni écran de chargement, ni machine de pari : ces
 	 * briques arriveront avec le contrat RGS/math.
@@ -44,6 +52,7 @@
 		<BoardCells />
 		<Board />
 		<TumbleBoard />
+		<MultiplierGrid />
 		<WildFlight />
 	</MainContainer>
 

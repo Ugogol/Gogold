@@ -4,7 +4,7 @@
 
 	import BoardContainer from './BoardContainer.svelte';
 	import { getSymbolX, getSymbolY } from '../game/utils';
-	import { CELL_SIZE, CELL_STYLE, BOARD_DIMENSIONS } from '../game/constants';
+	import { CELL_SIZE, CELL_STYLE, BOARD_DIMENSIONS, zIndexes } from '../game/constants';
 
 	/**
 	 * Les 25 cases de la grille, dessinées sous les symboles.
@@ -21,7 +21,7 @@
 	const rows = _.range(BOARD_DIMENSIONS.y);
 </script>
 
-<BoardContainer>
+<BoardContainer zIndex={zIndexes.boardCells}>
 	{#each columns as column (column)}
 		{#each rows as row (row)}
 			<Rectangle

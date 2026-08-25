@@ -14,8 +14,8 @@ import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEv
  * positions qui explosent et les symboles qui arrivent viennent tous du book.
  * Le frontend ne cherche aucun cluster.
  *
- * Les events du contrat encore sans handler (`updateGrid`,
- * `wildFeature`, `freeSpin*`…) arriveront avec leurs mécaniques. Le map Stake
+ * Les events du contrat encore sans handler (`wildFeature`, `freeSpin*`…)
+ * arriveront avec leurs mécaniques. Le map Stake
  * n'est pas exhaustif : un event sans handler ne casse rien.
  */
 /**
@@ -114,6 +114,24 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 			to: bookEvent.to,
 			charge: bookEvent.charge,
 		});
+	},
+
+	/**
+	 * État COMPLET de la grille de multiplicateurs, fourni par le Book.
+	 *
+	 * Le frontend ne calcule aucune progression : il affiche ce qu'il reçoit. La
+	 * remise à zéro du Base Game n'est pas une décision d'ici non plus — c'est un
+	 * `updateGrid` rempli de zéros que le Math envoie après le `reveal`.
+	 */
+	updateGrid: async (bookEvent: BookEventOfType<'updateGrid'>) => {
+		eventEmitter.broadcast({ type: 'multiplierGridShow' });
+		eventEmitter.broadcast({ type: 'multiplierGridUpdate', grid: bookEvent.gridMultipliers });
+	},
+
+	/** Fin du pari : la grille est vidée et masquée, comme dans `apps/cluster`. */
+	finalWin: async () => {
+		eventEmitter.broadcast({ type: 'multiplierGridClear' });
+		eventEmitter.broadcast({ type: 'multiplierGridHide' });
 	},
 
 	/** Fin de résolution du spin. Le montant est une donnée du book, pas un calcul. */

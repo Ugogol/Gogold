@@ -30,6 +30,7 @@
 	import BoardMask from './BoardMask.svelte';
 	import { getSymbolY } from '../game/utils';
 	import { getContext } from '../game/context';
+	import { zIndexes } from '../game/constants';
 	import type { TumbleSymbol } from '../game/stateGame.svelte';
 
 	/**
@@ -163,14 +164,14 @@
 
 {#if show}
 	<BoardContext animate={false}>
-		<BoardContainer>
+		<BoardContainer zIndex={zIndexes.tumbleBoard}>
 			<BoardMask />
 			<TumbleBoardBase />
 		</BoardContainer>
 	</BoardContext>
 
 	<BoardContext animate={true}>
-		<BoardContainer>
+		<BoardContainer zIndex={zIndexes.tumbleBoard}>
 			<TumbleBoardBase />
 		</BoardContainer>
 	</BoardContext>
