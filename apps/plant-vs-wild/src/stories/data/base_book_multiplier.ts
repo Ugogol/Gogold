@@ -28,7 +28,7 @@ const reel = (...names: SymbolName[]): RawSymbol[] => names.map((name) => ({ nam
 type Position = { reel: number; row: number };
 
 /** Grille 5×5 remplie de zéros : le x1 implicite partout. */
-const emptyGrid = (): number[][] => Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => 0));
+export const emptyGrid = (): number[][] => Array.from({ length: 5 }, () => Array.from({ length: 5 }, () => 0));
 
 /**
  * Écrit des valeurs dans une grille, à partir de positions du BOARD.
@@ -36,7 +36,7 @@ const emptyGrid = (): number[][] => Array.from({ length: 5 }, () => Array.from({
  * C'est un outil de fixture, pas du code de jeu : il pose les valeurs qu'on lui
  * donne, il n'en calcule aucune.
  */
-const withValues = (
+export const withValues = (
 	base: number[][],
 	entries: { positions: Position[]; value: number }[],
 ): number[][] => {

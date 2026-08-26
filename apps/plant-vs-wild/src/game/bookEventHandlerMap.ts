@@ -6,6 +6,7 @@ import type { BookEventHandlerMap } from 'utils-book';
 import { eventEmitter } from './eventEmitter';
 import { stateGame, stateGameDerived } from './stateGame.svelte';
 import type { BookEvent, BookEventOfType, BookEventContext } from './typesBookEvent';
+import type { Position } from './types';
 
 /**
  * Traduction bookEvent → emitterEvents.
@@ -55,6 +56,12 @@ const assertWildDestinationIsReleased = (
 	}
 };
 
+/** Mise en évidence de cases, reprise de `apps/cluster`. */
+const animateSymbols = async ({ positions }: { positions: Position[] }) => {
+	eventEmitter.broadcast({ type: 'boardShow' });
+	await eventEmitter.broadcastAsync({ type: 'boardWithAnimateSymbols', symbolPositions: positions });
+};
+
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {
 	reveal: async (bookEvent: BookEventOfType<'reveal'>) => {
 		stateGame.gameType = bookEvent.gameType;
@@ -64,11 +71,7 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 
 	/** Met en évidence les cases désignées par le Math. Il ne les cherche pas. */
 	winInfo: async (bookEvent: BookEventOfType<'winInfo'>) => {
-		eventEmitter.broadcast({ type: 'boardShow' });
-		await eventEmitter.broadcastAsync({
-			type: 'boardWithAnimateSymbols',
-			symbolPositions: _.flatten(bookEvent.wins.map((win) => win.positions)),
-		});
+		await animateSymbols({ positions: _.flatten(bookEvent.wins.map((win) => win.positions)) });
 	},
 
 	/**
@@ -128,10 +131,155 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 		eventEmitter.broadcast({ type: 'multiplierGridUpdate', grid: bookEvent.gridMultipliers });
 	},
 
+	/**
+	 * Déclenchement du Bonus.
+	 *
+	 * Le Math le place APRÈS la résolution complète du spin : le frontend
+	 * n'interrompt donc jamais une cascade, c'est structurel. `positions` est
+	 * animé avant l'annonce — chez nous la case du Wild, chez Stake les scatters.
+	 *
+	 * `gameType` est l'unique source du mode. Aucun état Bonus parallèle.
+	 *
+	 * La grille de multiplicateurs n'est PAS touchée : elle est donc héritée du
+	 * spin déclencheur, ce que la mécanique PLANT VS WILD demande.
+	 */
+	freeSpinTrigger: async (bookEvent: BookEventOfType<'freeSpinTrigger'>) => {
+		await animateSymbols({ positions: bookEvent.positions });
+
+		eventEmitter.broadcast({ type: 'freeSpinIntroShow' });
+		await eventEmitter.broadcastAsync({
+			type: 'freeSpinIntroUpdate',
+			totalFreeSpins: bookEvent.totalFs,
+		});
+		stateGame.gameType = 'freegame';
+		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
+
+		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
+		eventEmitter.broadcast({
+			type: 'freeSpinCounterUpdate',
+			current: 0,
+			total: bookEvent.totalFs,
+		});
+	},
+
+	/**
+	 * Retrigger. `totalFs` est le NOUVEAU total, pas l'incrément : le frontend
+	 * n'additionne rien. Comme le trigger, il arrive après la fin des cascades.
+	 */
+	freeSpinRetrigger: async (bookEvent: BookEventOfType<'freeSpinRetrigger'>) => {
+		await animateSymbols({ positions: bookEvent.positions });
+
+		eventEmitter.broadcast({ type: 'freeSpinIntroShow' });
+		await eventEmitter.broadcastAsync({
+			type: 'freeSpinIntroUpdate',
+			totalFreeSpins: bookEvent.totalFs,
+		});
+		eventEmitter.broadcast({ type: 'freeSpinIntroHide' });
+
+		eventEmitter.broadcast({ type: 'freeSpinCounterUpdate', total: bookEvent.totalFs });
+	},
+
+	/** Compteur. Les deux valeurs viennent du Book, rien n'est incrémenté ici. */
+	updateFreeSpin: async (bookEvent: BookEventOfType<'updateFreeSpin'>) => {
+		eventEmitter.broadcast({ type: 'freeSpinCounterShow' });
+		eventEmitter.broadcast({
+			type: 'freeSpinCounterUpdate',
+			current: bookEvent.amount,
+			total: bookEvent.total,
+		});
+	},
+
+	/**
+	 * Sortie du Bonus : retour au mode Base, compteur masqué. Le montant est une
+	 * donnée MOCK du book, aucun calcul.
+	 */
+	freeSpinEnd: async (bookEvent: BookEventOfType<'freeSpinEnd'>) => {
+		eventEmitter.broadcast({ type: 'freeSpinOutroShow' });
+		await eventEmitter.broadcastAsync({
+			type: 'freeSpinOutroCountUp',
+			amount: bookEvent.amount,
+		});
+		stateGame.gameType = 'basegame';
+		eventEmitter.broadcast({ type: 'freeSpinOutroHide' });
+		eventEmitter.broadcast({ type: 'freeSpinCounterHide' });
+	},
+
 	/** Fin du pari : la grille est vidée et masquée, comme dans `apps/cluster`. */
 	finalWin: async () => {
 		eventEmitter.broadcast({ type: 'multiplierGridClear' });
 		eventEmitter.broadcast({ type: 'multiplierGridHide' });
+	},
+
+	/**
+	 * Features Bonus — Rage, Wild Snake et Wild Split.
+	 *
+	 * Le handler ne décide rien : ni quelle feature, ni quelles cases, ni le
+	 * nouveau plateau. Il transcrit ce que le Book donne et laisse la résolution
+	 * normale reprendre ensuite. Aucun mode de jeu n'est créé : `gameType` reste
+	 * `freegame` pendant toute la séquence.
+	 *
+	 * Les trois features sont traitées : Rage, Wild Snake, Wild Split.
+	 */
+	wildFeature: async (bookEvent: BookEventOfType<'wildFeature'>) => {
+		if (bookEvent.feature === 'rage') {
+			await eventEmitter.broadcastAsync({
+				type: 'featureAnnounce',
+				title: 'RAGE',
+				subtitle: 'LE WILD SE RECENTRE',
+			});
+
+			// La charge n'est PAS une donnée de Rage : le Wild se déplace sans
+			// gagner de connexion. On rejoue donc celle qu'il porte déjà — la lire
+			// n'est pas une décision, c'est de l'affichage.
+			const wild =
+				stateGame.board[bookEvent.wildFrom.reel]?.reelState.symbols[bookEvent.wildFrom.row];
+
+			await eventEmitter.broadcastAsync({
+				type: 'boardWildMove',
+				from: bookEvent.wildFrom,
+				to: bookEvent.wildTo,
+				charge: wild?.rawSymbol.charge ?? 0,
+			});
+			// Renouvellement SUR PLACE, via l'event Stake `boardSettle` déjà utilisé
+			// par la cascade. Pas de `tumbleBoard` : sa physique de chute
+			// déplacerait le Wild qu'on vient de recentrer.
+			eventEmitter.broadcast({ type: 'boardSettle', board: bookEvent.board });
+			// La grille de multiplicateurs n'est pas touchée : Rage ne la modifie
+			// jamais.
+			return;
+		}
+
+		if (bookEvent.feature === 'wildSnake') {
+			await eventEmitter.broadcastAsync({
+				type: 'featureAnnounce',
+				title: 'WILD SNAKE',
+				subtitle: `LE WILD RAMPE VERS ${bookEvent.symbol}`,
+			});
+			await eventEmitter.broadcastAsync({
+				type: 'boardWildSnake',
+				from: bookEvent.from,
+				path: bookEvent.path,
+				to: bookEvent.to,
+				symbol: bookEvent.symbol,
+			});
+			// Plateau final fourni par le Book : source de vérité. Le frontend ne
+			// reconstruit rien depuis `path`. Les multiplicateurs ne sont pas
+			// touchés — Snake n'émet aucun `updateGrid`.
+			eventEmitter.broadcast({ type: 'boardSettle', board: bookEvent.board });
+			return;
+		}
+
+		if (bookEvent.feature === 'wildSplit') {
+			await eventEmitter.broadcastAsync({
+				type: 'featureAnnounce',
+				title: 'WILD SPLIT',
+				subtitle: `${bookEvent.positions.length} WILD TEMPORAIRES`,
+			});
+			await eventEmitter.broadcastAsync({
+				type: 'boardWildSplit',
+				positions: bookEvent.positions,
+			});
+		}
 	},
 
 	/** Fin de résolution du spin. Le montant est une donnée du book, pas un calcul. */

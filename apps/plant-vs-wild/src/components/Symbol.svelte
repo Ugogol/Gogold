@@ -8,6 +8,7 @@
 		SYMBOL_ASSET_MAP,
 		SYMBOL_DISPLAY_SIZE,
 		WILD_CHARGE_ASSET_MAP,
+		WILD_TEMPORARY,
 	} from '../game/constants';
 
 	/**
@@ -36,9 +37,16 @@
 
 	const props: Props = $props();
 
+	/**
+	 * Un Wild TEMPORAIRE n'a pas de charge : il garde la texture de l'état 0, et
+	 * se distingue du Wild permanent par une opacité et une taille réduites.
+	 */
+	const isTemporaryWild = $derived(props.rawSymbol.name === 'W' && props.rawSymbol.temporary === true);
+
 	const assetKey = $derived(
 		props.rawSymbol.name === 'W'
-			? (WILD_CHARGE_ASSET_MAP[props.rawSymbol.charge ?? 0] ?? WILD_CHARGE_ASSET_MAP[0])
+			? (WILD_CHARGE_ASSET_MAP[isTemporaryWild ? 0 : (props.rawSymbol.charge ?? 0)] ??
+				WILD_CHARGE_ASSET_MAP[0])
 			: SYMBOL_ASSET_MAP[props.rawSymbol.name],
 	);
 
@@ -79,7 +87,9 @@
 		void play(state);
 	});
 
-	const size = $derived(SYMBOL_DISPLAY_SIZE * sizeRatio.current);
+	const size = $derived(
+		SYMBOL_DISPLAY_SIZE * sizeRatio.current * (isTemporaryWild ? WILD_TEMPORARY.sizeRatio : 1),
+	);
 </script>
 
 <Sprite
@@ -89,5 +99,5 @@
 	anchor={{ x: 0.5, y: 0.5 }}
 	width={size}
 	height={size}
-	alpha={alpha.current}
+	alpha={alpha.current * (isTemporaryWild ? WILD_TEMPORARY.alpha : 1)}
 />

@@ -12,6 +12,18 @@ export type RawSymbol = {
 	multiplier?: number;
 	scatter?: boolean;
 	charge?: number;
+	/**
+	 * Marque un Wild TEMPORAIRE, posé par Wild Split.
+	 *
+	 * Le Wild standard est unique et persistant ; les temporaires sont à usage
+	 * unique et n'ont pas de charge. Sans ce champ, quatre Wild à l'écran seraient
+	 * indistinguables et le frontend ne saurait plus lequel `wildMove` suit.
+	 *
+	 * Extension du contrat de l'étape 4, qui affirmait que « leur caractère
+	 * éphémère ne demande aucun champ » — c'était faux dès qu'ils coexistent avec
+	 * le Wild principal.
+	 */
+	temporary?: boolean;
 };
 export type BetMode = keyof typeof config.betModes;
 export type GameType = keyof typeof config.paddingReels;

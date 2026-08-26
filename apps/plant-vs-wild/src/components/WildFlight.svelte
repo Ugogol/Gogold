@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import type { Position } from '../game/types';
+	import type { Position, SymbolName } from '../game/types';
 
 	/**
 	 * Déplacement du Wild vers la case que le Book lui a désignée.
@@ -7,12 +7,25 @@
 	 * Un seul emitterEvent : le mouvement, le changement de charge et la
 	 * libération de l'ancienne case forment une seule étape indivisible.
 	 */
-	export type EmitterEventWildFlight = {
-		type: 'boardWildMove';
-		from: Position;
-		to: Position;
-		charge: number;
-	};
+	export type EmitterEventWildFlight =
+		| {
+				type: 'boardWildMove';
+				from: Position;
+				to: Position;
+				charge: number;
+		  }
+		/**
+		 * Wild Snake : le Wild rampe de `from` vers `to` en suivant `path`, dans
+		 * l'ordre exact fourni par le Book. Chaque case traversée prend `symbol`.
+		 * Aucun trajet n'est calculé ici — ni direction, ni longueur, ni symbole.
+		 */
+		| {
+				type: 'boardWildSnake';
+				from: Position;
+				path: Position[];
+				to: Position;
+				symbol: SymbolName;
+		  };
 </script>
 
 <script lang="ts">
@@ -27,6 +40,7 @@
 		SYMBOL_DISPLAY_SIZE,
 		WILD_CHARGE_ASSET_MAP,
 		WILD_MOVE_DURATION,
+		WILD_SNAKE_STEP_DURATION,
 		zIndexes,
 	} from '../game/constants';
 
@@ -59,7 +73,84 @@
 	const assetKey = $derived(WILD_CHARGE_ASSET_MAP[charge] ?? WILD_CHARGE_ASSET_MAP[0]);
 	const size = $derived(SYMBOL_DISPLAY_SIZE * sizeRatio.current);
 
+	/** Le symbole du plateau à une position, ou `undefined` si hors limites. */
+	const symbolAt = (position: Position) =>
+		context.stateGame.board[position.reel]?.reelState.symbols[position.row];
+
+	/**
+	 * Contrôle de COHÉRENCE DE FIXTURE, développement uniquement.
+	 *
+	 * Trajet non vide, cases dans les limites, pas orthogonal, aucune case
+	 * revisitée. Rien n'est corrigé ni calculé : on signale un Book incohérent.
+	 * `import.meta.env.DEV` est replié à `false` en production, la fonction y
+	 * disparaît.
+	 */
+	const assertSnakePath = (from: Position, path: Position[], to: Position) => {
+		if (!import.meta.env.DEV) return;
+
+		const steps = [from, ...path, to];
+		if (path.length === 0) console.error('boardWildSnake : trajet vide', { from, to });
+
+		const seen = new Set<string>();
+		steps.forEach((step, index) => {
+			const key = `${step.reel}:${step.row}`;
+			if (seen.has(key)) console.error('boardWildSnake : case revisitée', step);
+			seen.add(key);
+
+			if (!symbolAt(step)) console.error('boardWildSnake : case hors plateau', step);
+
+			if (index === 0) return;
+			const previous = steps[index - 1];
+			const distance =
+				Math.abs(step.reel - previous.reel) + Math.abs(step.row - previous.row);
+			if (distance !== 1) {
+				console.error('boardWildSnake : pas non orthogonal', { previous, step });
+			}
+		});
+	};
+
 	context.eventEmitter.subscribeOnMount({
+		boardWildSnake: async (event) => {
+			const { from, path, to, symbol } = event;
+			assertSnakePath(from, path, to);
+
+			const source = symbolAt(from);
+			if (!source) return;
+
+			charge = source.rawSymbol.charge ?? 0;
+			x.set(getSymbolX(from.reel), { duration: 0 });
+			y.set(rowToY(from.row), { duration: 0 });
+			sizeRatio.set(1, { duration: 0 });
+			show = true;
+			source.symbolState = 'hidden';
+
+			// Un pas à la fois, dans l'ordre du Book. Chaque case traversée est
+			// convertie au symbole fourni dès que le Wild y arrive.
+			for (const step of path) {
+				await Promise.all([
+					x.set(getSymbolX(step.reel), {
+						duration: WILD_SNAKE_STEP_DURATION,
+						easing: cubicInOut,
+					}),
+					y.set(rowToY(step.row), { duration: WILD_SNAKE_STEP_DURATION, easing: cubicInOut }),
+				]);
+
+				const crossed = symbolAt(step);
+				if (crossed) {
+					crossed.rawSymbol = { name: symbol };
+					crossed.symbolState = 'static';
+				}
+			}
+
+			await Promise.all([
+				x.set(getSymbolX(to.reel), { duration: WILD_SNAKE_STEP_DURATION, easing: cubicInOut }),
+				y.set(rowToY(to.row), { duration: WILD_SNAKE_STEP_DURATION, easing: cubicInOut }),
+			]);
+
+			// Le plateau final vient du Book : le handler applique `boardSettle`
+			// juste après. Rien n'est déduit ici de la case d'arrivée.
+			show = false;
+		},
 		boardWildMove: async (event) => {
 			const { from, to } = event;
 			const source = context.stateGame.board[from.reel]?.reelState.symbols[from.row];

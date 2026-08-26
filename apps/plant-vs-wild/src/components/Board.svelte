@@ -8,7 +8,12 @@
 		| {
 				type: 'boardWithAnimateSymbols';
 				symbolPositions: Position[];
-		  };
+		  }
+		/**
+		 * Pose les Wild TEMPORAIRES de Wild Split aux cases fournies par le Book.
+		 * Le frontend ne choisit aucune position : il transcrit.
+		 */
+		| { type: 'boardWildSplit'; positions: Position[] };
 </script>
 
 <script lang="ts">
@@ -30,6 +35,24 @@
 		boardSettle: ({ board }) => context.stateGameDerived.enhancedBoard.settle(board),
 		boardShow: () => (show = true),
 		boardHide: () => (show = false),
+		boardWildSplit: async ({ positions }) => {
+			const getPromises = () =>
+				positions.map(async (position) => {
+					const reelSymbol = context.stateGame.board[position.reel]?.reelState.symbols[position.row];
+					if (!reelSymbol) {
+						console.error('boardWildSplit : position hors plateau', position);
+						return;
+					}
+					// `temporary` est ce qui les distingue du Wild permanent : pas de
+					// charge, usage unique, et `wildMove` ne les suit jamais.
+					reelSymbol.rawSymbol = { name: 'W', temporary: true };
+					reelSymbol.symbolState = 'win';
+					await waitForResolve((resolve) => (reelSymbol.oncomplete = resolve));
+					reelSymbol.symbolState = 'static';
+				});
+
+			await Promise.all(getPromises());
+		},
 		boardWithAnimateSymbols: async ({ symbolPositions }) => {
 			const getPromises = () =>
 				symbolPositions.map(async (position) => {

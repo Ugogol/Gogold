@@ -1,4 +1,5 @@
 import type { BookEvent } from '../../game/typesBookEvent';
+import type { RawSymbol } from '../../game/types';
 
 /**
  * Fixtures de développement — DÉTERMINISTES et fabriquées à la main.
@@ -42,17 +43,20 @@ const CLUSTER_POSITIONS = [
 	WILD_FROM,
 ];
 
+/** Plateau de référence du catalogue : 7 lignes, padding compris. */
+const REVEAL_BOARD: RawSymbol[][] = [
+	[{ name: 'L3' }, { name: 'L1' }, { name: 'L1' }, { name: 'L2' }, { name: 'H1' }, { name: 'L3' }, { name: 'L4' }],
+	[{ name: 'L2' }, { name: 'L1' }, { name: 'W' }, { name: 'L4' }, { name: 'L2' }, { name: 'H2' }, { name: 'L3' }],
+	[{ name: 'H3' }, { name: 'L1' }, { name: 'L3' }, { name: 'H3' }, { name: 'L4' }, { name: 'L1' }, { name: 'L2' }],
+	[{ name: 'L4' }, { name: 'H2' }, { name: 'L4' }, { name: 'L2' }, { name: 'L3' }, { name: 'L1' }, { name: 'H1' }],
+	[{ name: 'L1' }, { name: 'L4' }, { name: 'L2' }, { name: 'H1' }, { name: 'L1' }, { name: 'L3' }, { name: 'H2' }],
+];
+
 const reveal: BookEvent = {
 	index: 0,
 	type: 'reveal',
 	// 7 lignes : padding, 5 lignes visibles, padding. Voir base_book_cascade.ts.
-	board: [
-		[{ name: 'L3' }, { name: 'L1' }, { name: 'L1' }, { name: 'L2' }, { name: 'H1' }, { name: 'L3' }, { name: 'L4' }],
-		[{ name: 'L2' }, { name: 'L1' }, { name: 'W' }, { name: 'L4' }, { name: 'L2' }, { name: 'H2' }, { name: 'L3' }],
-		[{ name: 'H3' }, { name: 'L1' }, { name: 'L3' }, { name: 'H3' }, { name: 'L4' }, { name: 'L1' }, { name: 'L2' }],
-		[{ name: 'L4' }, { name: 'H2' }, { name: 'L4' }, { name: 'L2' }, { name: 'L3' }, { name: 'L1' }, { name: 'H1' }],
-		[{ name: 'L1' }, { name: 'L4' }, { name: 'L2' }, { name: 'H1' }, { name: 'L1' }, { name: 'L3' }, { name: 'H2' }],
-	],
+	board: REVEAL_BOARD,
 	paddingPositions: [0, 0, 0, 0, 0],
 	gameType: 'basegame',
 	anticipation: [0, 0, 0, 0, 0],
@@ -189,12 +193,19 @@ const updateFreeSpin: BookEvent = { index: 12, type: 'updateFreeSpin', amount: 1
 
 const freeSpinEnd: BookEvent = { index: 13, type: 'freeSpinEnd', amount: 4200, winLevel: 3 };
 
-/** Wild recentré ; le renouvellement des autres cases suit en `tumbleBoard`. */
+/**
+ * Wild recentré, et plateau renouvelé fourni tel quel.
+ *
+ * Le renouvellement N'EST PAS un `tumbleBoard` : sa physique de chute
+ * déplacerait le Wild qu'on vient de recentrer. Voir `typesBookEvent.ts`.
+ */
 const wildFeatureRage: BookEvent = {
 	index: 14,
 	type: 'wildFeature',
 	feature: 'rage',
+	wildFrom: WILD_FROM,
 	wildTo: { reel: 2, row: 3 },
+	board: REVEAL_BOARD,
 };
 
 /**
@@ -215,6 +226,7 @@ const wildFeatureSnake: BookEvent = {
 	],
 	to: { reel: 2, row: 5 },
 	symbol: 'L3',
+	board: REVEAL_BOARD,
 };
 
 /** 3 Wild temporaires. Ils ne font pas monter la charge du vrai Wild. */

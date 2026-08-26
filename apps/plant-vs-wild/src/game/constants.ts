@@ -229,6 +229,8 @@ export const zIndexes = {
 	background: {
 		backdrop: -3,
 		normal: -2,
+		/** Le fond Bonus se superpose au fond Base pendant le fondu croisé. */
+		bonus: -1,
 	},
 	boardCells: 0,
 	board: 1,
@@ -302,6 +304,70 @@ export const MULTIPLIER_BADGE = {
 	borderColor: 0xffc94d,
 	borderAlpha: 0.55,
 } as const;
+
+/**
+ * Compteur de Free Spins et bandeau d'annonce.
+ *
+ * Volontairement sobres : ni police bitmap ni Spine dans le projet, et le polish
+ * final de l'UI n'est pas l'objet de cette étape.
+ */
+export const FREE_SPIN_PANEL = {
+	width: 300,
+	height: 46,
+	fontFamily: 'system-ui, sans-serif',
+	fontSize: 24,
+	fill: 0xffe9a8,
+	backgroundColor: 0x120c04,
+	backgroundAlpha: 0.82,
+	borderColor: 0xffc94d,
+	borderAlpha: 0.55,
+} as const;
+
+/** Durées de transition, en millisecondes. */
+export const TRANSITION_DURATION = {
+	/** Fondu croisé entre le fond Base et le fond Bonus. */
+	background: 600,
+	/** Apparition et disparition du compteur. */
+	counter: 300,
+	/** Apparition et disparition du bandeau. */
+	banner: 250,
+} as const;
+
+export const FREE_SPIN_BANNER = {
+	width: 620,
+	/** Part maximale de la largeur d'écran que le bandeau peut occuper. */
+	maxWidthRatio: 0.92,
+	height: 240,
+	holdDuration: 1100,
+	fontFamily: 'system-ui, sans-serif',
+	titleSize: 64,
+	subtitleSize: 28,
+	titleFill: 0xffe9a8,
+	subtitleFill: 0xffc94d,
+	backgroundColor: 0x0b0704,
+	backgroundAlpha: 0.9,
+	borderColor: 0xffc94d,
+	borderAlpha: 0.7,
+	veilColor: 0x000000,
+	veilAlpha: 0.55,
+	zIndex: 50,
+} as const;
+
+/**
+ * Rendu d'un Wild TEMPORAIRE (Wild Split).
+ *
+ * Il porte toujours la texture de l'état 0 — il n'a pas de charge — et une
+ * opacité réduite pour se distinguer du Wild permanent. Distinction provisoire :
+ * la vraie différenciation visuelle relève de la DA, aucun asset dédié n'a été
+ * livré.
+ */
+export const WILD_TEMPORARY = {
+	alpha: 0.72,
+	sizeRatio: 0.88,
+} as const;
+
+/** Durée d'un PAS du Wild Snake, en millisecondes. Un trajet peut faire 24 cases. */
+export const WILD_SNAKE_STEP_DURATION = 135;
 
 /** Durée du vol du Wild vers sa destination, en millisecondes. */
 export const WILD_MOVE_DURATION = 420;

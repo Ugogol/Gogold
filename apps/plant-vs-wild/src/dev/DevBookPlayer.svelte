@@ -13,6 +13,8 @@
 	import cascade from '../stories/data/base_book_cascade';
 	import wild from '../stories/data/base_book_wild';
 	import multiplier from '../stories/data/base_book_multiplier';
+	import bonus from '../stories/data/base_book_bonus';
+	import feature from '../stories/data/base_book_feature';
 
 	const SCENARIOS = [
 		{ id: 'cascade', label: 'Cascade simple (sans Wild)', events: cascade.bookEvents },
@@ -55,6 +57,41 @@
 			id: 'mult-wild',
 			label: 'Multiplicateurs · avec le Wild',
 			events: multiplier.bookMultiplierWithWild.state,
+		},
+		{
+			id: 'bonus-full',
+			label: 'BONUS · Base → 10 FS → retrigger +5 → sortie',
+			events: bonus.bookBonus.state,
+		},
+		{
+			id: 'bonus-nowin',
+			label: 'BONUS · 2 Free Spins sans gain',
+			events: bonus.bookBonusNoWinSpins.state,
+		},
+		{
+			id: 'bonus-after',
+			label: 'BONUS · spin Base suivant (reset)',
+			events: bonus.bookAfterBonus.state,
+		},
+		{
+			id: 'feature-rage',
+			label: 'FEATURE · Rage (recentrage + renouvellement)',
+			events: feature.bookRage.state,
+		},
+		{
+			id: 'feature-snake',
+			label: 'FEATURE · Wild Snake (trajet court, Low)',
+			events: feature.bookWildSnake.state,
+		},
+		{
+			id: 'feature-snake-long',
+			label: 'FEATURE · Wild Snake (trajet long, High)',
+			events: feature.bookWildSnakeLong.state,
+		},
+		{
+			id: 'feature-split',
+			label: 'FEATURE · Wild Split (3 temporaires)',
+			events: feature.bookWildSplit.state,
 		},
 	];
 

@@ -10,6 +10,8 @@
 	import Board from './Board.svelte';
 	import TumbleBoard from './TumbleBoard.svelte';
 	import WildFlight from './WildFlight.svelte';
+	import FreeSpinCounter from './FreeSpinCounter.svelte';
+	import FreeSpinBanner from './FreeSpinBanner.svelte';
 	import { isLocalVisualMode } from '../game/devVisualMode';
 
 	/**
@@ -55,6 +57,9 @@
 		<MultiplierGrid />
 		<WildFlight />
 	</MainContainer>
+
+	<FreeSpinCounter />
+	<FreeSpinBanner />
 
 	{#if VisualOverlay}
 		<VisualOverlay />

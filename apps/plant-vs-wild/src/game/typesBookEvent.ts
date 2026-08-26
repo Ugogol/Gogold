@@ -115,7 +115,26 @@ type BookEventSetTotalWin = {
 	amount: number;
 };
 
-/** Fin du pari complet, tous spins confondus. */
+/**
+ * Fin du PARI COMPLET, tous spins confondus — pas la fin d'un spin.
+ *
+ * ⚠️ CONTRAINTE POUR LE MATH — `finalWin` ne doit JAMAIS être émis entre deux
+ * Free Spins. Son handler vide et masque la grille de multiplicateurs ; le
+ * placer entre deux Free Spins détruirait la persistance que la mécanique
+ * PLANT VS WILD exige.
+ *
+ * La fin d'un spin — Base comme Free Spin — se marque avec `setTotalWin`.
+ * Ordre correct en Bonus :
+ *
+ *     … updateFreeSpin → reveal → … → setTotalWin      un Free Spin
+ *     … updateFreeSpin → reveal → … → setTotalWin      le suivant
+ *     freeSpinEnd                                      sortie du Bonus
+ *     finalWin                                         fin du pari, une seule fois
+ *
+ * C'est la sémantique des books Stake réels, vérifiée sur le sample : 50
+ * `finalWin` pour 124 `setTotalWin` en base, 50 pour 621 en bonus — soit un
+ * `finalWin` par book et un `setTotalWin` par spin.
+ */
 type BookEventFinalWin = {
 	index: number;
 	type: 'finalWin';
@@ -215,6 +234,11 @@ type BookEventWildMove = {
  * occupent la même place dans la séquence — à l'intérieur du spin, une fois les
  * cascades épuisées, avant son `setTotalWin`.
  *
+ * ⚠️ CONTRAINTE POUR LE MATH — AU PLUS UNE feature par spin. Décision validée :
+ * pas d'enchaînement Snake → Split → Rage dans la même résolution. Plus lisible
+ * pour le joueur, beaucoup plus simple à équilibrer, et cela évite l'explosion
+ * combinatoire. Le frontend n'impose rien : c'est le Book qui doit s'y tenir.
+ *
  * TODO_FUTURE_CONTRACT : Super Bonus, roue 0/BONUS/x10000, Max Win, Bonus Buy,
  * Spin Boosted, Wild préchargé, mise augmentée. Hors périmètre, aucun event.
  */
@@ -223,33 +247,83 @@ type BookEventWildFeature =
 			index: number;
 			type: 'wildFeature';
 			feature: 'rage';
-			/** Case où le Wild est recentré. Le renouvellement des autres cases
-			 *  arrive ensuite par un `tumbleBoard` normal ; les multiplicateurs
-			 *  persistent par simple absence d'un `updateGrid` de remise à zéro. */
+			/** Case actuelle du Wild. Fournie explicitement plutôt que cherchée sur
+			 *  le plateau : le frontend ne localise rien, il transcrit. */
+			wildFrom: Position;
+			/** Case où le Wild est recentré. */
 			wildTo: Position;
+			/**
+			 * Plateau complet après renouvellement, Wild compris et déjà à `wildTo`.
+			 *
+			 * ⚠️ Pourquoi un plateau et non un `tumbleBoard`, comme l'annonçait le
+			 * contrat de l'étape 4 : le tumble fait TOMBER les rescapés. Renouveler
+			 * toutes les cases sauf celle du Wild y ferait chuter le Wild jusqu'en
+			 * bas de sa colonne — constaté à l'écran. Rage remplace SUR PLACE, ce
+			 * que `tumbleBoard` ne sait pas exprimer.
+			 *
+			 * Les multiplicateurs ne sont pas touchés : Rage n'émet aucun
+			 * `updateGrid`, donc la grille acquise reste intacte.
+			 */
+			board: RawSymbol[][];
 	  }
 	| {
 			index: number;
 			type: 'wildFeature';
 			feature: 'wildSnake';
+			/**
+			 * Le Wild rampe orthogonalement de `from` vers `to` en suivant `path`,
+			 * sans repasser sur une case déjà visitée. Le trajet, sa longueur et son
+			 * symbole viennent tous du Math.
+			 *
+			 * ⚠️ Le Snake NE CHARGE PAS le Wild. Décision validée : c'est une feature
+			 * de transformation, pas une connexion. Aucun `wildMove` n'accompagne
+			 * donc cet event. Si le plateau qu'il produit forme ensuite un vrai
+			 * cluster impliquant le Wild, CETTE connexion-là charge normalement, par
+			 * le `wildMove` habituel.
+			 */
 			from: Position;
 			/** Trajet ordonné, `from` et `to` exclus. */
 			path: Position[];
 			to: Position;
 			/** Symbole appliqué aux cases du trajet. Le frontend le recopie sur les
 			 *  cases fournies — il ne choisit ni le trajet, ni le symbole, ni la
-			 *  longueur. Le plateau résultant n'est pas retransmis. */
+			 *  longueur.
+			 *
+			 *  Les proportions 65 % Low / 35 % High et la rareté de H4 appartiennent
+			 *  au Math : rien de tout cela n'existe côté frontend. */
 			symbol: SymbolName;
+			/**
+			 * Plateau complet après le Snake — SOURCE DE VÉRITÉ FINALE.
+			 *
+			 * Le frontend anime la traversée puis applique ce plateau tel quel. Il
+			 * ne reconstruit rien, ne déduit rien de `path` : le Math pourra donc
+			 * changer la règle sans toucher au frontend.
+			 *
+			 * ⚠️ Ce que devient la case de départ, et si la case d'arrivée porte le
+			 * Wild ou le symbole converti, dépend ENTIÈREMENT de ce plateau —
+			 * décision validée : aucune règle n'est figée côté frontend, le Book
+			 * tranche. Le game design pourra donc changer d'avis sans toucher au
+			 * code, en fournissant simplement un autre plateau.
+			 */
+			board: RawSymbol[][];
 	  }
 	| {
 			index: number;
 			type: 'wildFeature';
 			feature: 'wildSplit';
-			/** Les 3 Wild temporaires. Ils disparaissent ensuite comme n'importe
-			 *  quel symbole, via le `explodingSymbols` d'un `tumbleBoard` : leur
-			 *  caractère éphémère ne demande aucun champ. La règle « un seul Wild »
-			 *  n'est pas touchée — le Wild permanent reste celui que `wildMove`
-			 *  suit. */
+			/**
+			 * Les 3 Wild temporaires, posés aux cases indiquées.
+			 *
+			 * Ils portent `temporary: true` sur le plateau : c'est ce qui les
+			 * distingue du Wild permanent, seul à posséder une charge et seul que
+			 * `wildMove` suit. La règle « un seul Wild standard » n'est donc pas
+			 * touchée — quatre Wild peuvent coexister, un seul est le vrai.
+			 *
+			 * Leur consommation n'a pas de champ dédié : le Math les fait
+			 * disparaître par le `explodingSymbols` d'un `tumbleBoard`, comme
+			 * n'importe quel symbole. Le frontend ne détecte jamais qu'un
+			 * temporaire « vient d'aider » une connexion.
+			 */
 			positions: Position[];
 	  };
 
