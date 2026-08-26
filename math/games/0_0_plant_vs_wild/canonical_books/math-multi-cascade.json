@@ -1,0 +1,686 @@
+{
+ "id": 136,
+ "payoutMultiplier": 240,
+ "events": [
+  {
+   "index": 0,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L3"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    26,
+    20,
+    12,
+    14,
+    31
+   ],
+   "gameType": "basegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 1,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 2,
+   "type": "winInfo",
+   "totalWin": 100,
+   "wins": [
+    {
+     "symbol": "L2",
+     "clusterSize": 4,
+     "win": 40,
+     "positions": [
+      {
+       "reel": 1,
+       "row": 4
+      },
+      {
+       "reel": 2,
+       "row": 4
+      },
+      {
+       "reel": 3,
+       "row": 4
+      },
+      {
+       "reel": 4,
+       "row": 4
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 1,
+      "winWithoutMult": 40,
+      "overlay": {
+       "reel": 2,
+       "row": 4
+      }
+     }
+    },
+    {
+     "symbol": "L1",
+     "clusterSize": 4,
+     "win": 60,
+     "positions": [
+      {
+       "reel": 1,
+       "row": 3
+      },
+      {
+       "reel": 2,
+       "row": 3
+      },
+      {
+       "reel": 3,
+       "row": 3
+      },
+      {
+       "reel": 4,
+       "row": 3
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 1,
+      "winWithoutMult": 60,
+      "overlay": {
+       "reel": 2,
+       "row": 3
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 3,
+   "type": "updateTumbleWin",
+   "amount": 100
+  },
+  {
+   "index": 4,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     2,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     2,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     2,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     2,
+     2,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 5,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "W"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ]
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 1,
+     "row": 3
+    },
+    {
+     "reel": 1,
+     "row": 4
+    },
+    {
+     "reel": 2,
+     "row": 3
+    },
+    {
+     "reel": 2,
+     "row": 4
+    },
+    {
+     "reel": 3,
+     "row": 3
+    },
+    {
+     "reel": 3,
+     "row": 4
+    },
+    {
+     "reel": 4,
+     "row": 3
+    },
+    {
+     "reel": 4,
+     "row": 4
+    }
+   ]
+  },
+  {
+   "index": 6,
+   "type": "winInfo",
+   "totalWin": 80,
+   "wins": [
+    {
+     "symbol": "L2",
+     "clusterSize": 6,
+     "win": 80,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      },
+      {
+       "reel": 3,
+       "row": 1
+      },
+      {
+       "reel": 4,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 1,
+      "winWithoutMult": 80,
+      "overlay": {
+       "reel": 2,
+       "row": 1
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 7,
+   "type": "updateTumbleWin",
+   "amount": 180
+  },
+  {
+   "index": 8,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     2,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     2,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     0,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     0,
+     2,
+     2,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 9,
+   "type": "wildMove",
+   "from": {
+    "reel": 2,
+    "row": 1
+   },
+   "to": {
+    "reel": 2,
+    "row": 1
+   },
+   "charge": 1
+  },
+  {
+   "index": 10,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     }
+    ]
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 0,
+     "row": 1
+    },
+    {
+     "reel": 1,
+     "row": 1
+    },
+    {
+     "reel": 2,
+     "row": 2
+    },
+    {
+     "reel": 3,
+     "row": 1
+    },
+    {
+     "reel": 4,
+     "row": 1
+    }
+   ]
+  },
+  {
+   "index": 11,
+   "type": "winInfo",
+   "totalWin": 60,
+   "wins": [
+    {
+     "symbol": "L3",
+     "clusterSize": 4,
+     "win": 60,
+     "positions": [
+      {
+       "reel": 1,
+       "row": 2
+      },
+      {
+       "reel": 2,
+       "row": 2
+      },
+      {
+       "reel": 3,
+       "row": 2
+      },
+      {
+       "reel": 4,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 2,
+      "winWithoutMult": 30,
+      "overlay": {
+       "reel": 2,
+       "row": 2
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 12,
+   "type": "updateTumbleWin",
+   "amount": 240
+  },
+  {
+   "index": 13,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     2,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     2,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     4,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     2,
+     2,
+     2,
+     0
+    ],
+    [
+     2,
+     2,
+     2,
+     2,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 14,
+   "type": "wildMove",
+   "from": {
+    "reel": 2,
+    "row": 2
+   },
+   "to": {
+    "reel": 1,
+    "row": 2
+   },
+   "charge": 2
+  },
+  {
+   "index": 15,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [],
+    [],
+    [
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     }
+    ]
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 2,
+     "row": 2
+    },
+    {
+     "reel": 3,
+     "row": 2
+    },
+    {
+     "reel": 4,
+     "row": 2
+    }
+   ]
+  },
+  {
+   "index": 16,
+   "type": "setWin",
+   "amount": 240,
+   "winLevel": 4
+  },
+  {
+   "index": 17,
+   "type": "setTotalWin",
+   "amount": 240
+  },
+  {
+   "index": 18,
+   "type": "finalWin",
+   "amount": 240
+  }
+ ],
+ "criteria": "basegame",
+ "baseGameWins": 2.4,
+ "freeGameWins": 0.0
+}
