@@ -20,13 +20,35 @@
 import { readdir, stat, readFile, appendFile } from 'node:fs/promises';
 import { join, relative, basename } from 'node:path';
 
-/** Marqueurs qui ne doivent jamais atteindre un build de production. */
+/**
+ * Marqueurs communs à toutes les apps.
+ *
+ * Ce script est un outil du monorepo : il ne doit contenir aucun nom propre à un
+ * jeu. Une app qui possède son propre outillage DEV déclare ses marqueurs dans
+ * `apps/<app>/dev-markers.json` — un simple tableau de chaînes — et ils sont
+ * ajoutés à cette liste pour cette app uniquement.
+ */
 const FORBIDDEN_MARKERS = [
 	'DebugPanel',
 	'debugScenarios',
 	'isLocalDebugMode',
 	'DEBUG_QUERY_KEY',
 ];
+
+/** Marqueurs déclarés par l'app elle-même. Fichier optionnel. */
+async function readAppMarkers(appDir) {
+	try {
+		const raw = await readFile(join(appDir, 'dev-markers.json'), 'utf8');
+		const parsed = JSON.parse(raw);
+		if (!Array.isArray(parsed) || parsed.some((marker) => typeof marker !== 'string')) {
+			console.error(`  ⚠ ${appDir}/dev-markers.json ignoré : un tableau de chaînes est attendu.`);
+			return [];
+		}
+		return parsed;
+	} catch {
+		return [];
+	}
+}
 
 /** Seuls les fichiers texte sont scannés — le reste du build est binaire. */
 const TEXT_EXTENSIONS = new Set(['.html', '.js', '.mjs', '.cjs', '.css', '.json', '.map', '.txt']);
@@ -66,13 +88,13 @@ async function directorySize(dir) {
 }
 
 /** Cherche les marqueurs interdits dans les fichiers texte du build. */
-async function findMarkers(buildDir) {
+async function findMarkers(buildDir, markers) {
 	const hits = [];
 	await walk(buildDir, async (file) => {
 		const dot = file.lastIndexOf('.');
 		if (dot === -1 || !TEXT_EXTENSIONS.has(file.slice(dot).toLowerCase())) return;
 		const content = await readFile(file, 'utf8');
-		for (const marker of FORBIDDEN_MARKERS) {
+		for (const marker of markers) {
 			if (content.includes(marker)) hits.push({ file: relative(buildDir, file), marker });
 		}
 	});
@@ -133,10 +155,12 @@ async function main() {
 		const buildDir = join(appDir, 'build');
 		const assetsDir = join(appDir, 'static', 'assets');
 
+		const markers = [...FORBIDDEN_MARKERS, ...(await readAppMarkers(appDir))];
+
 		const [buildSize, assetsSize, hits] = await Promise.all([
 			directorySize(buildDir),
 			directorySize(assetsDir),
-			findMarkers(buildDir),
+			findMarkers(buildDir, markers),
 		]);
 
 		console.log(`\n${appDir}`);
@@ -148,7 +172,7 @@ async function main() {
 			console.log(`  ✗ ${hits.length} marqueur(s) de développement dans le build :`);
 			for (const hit of hits) console.log(`      ${hit.marker} → ${hit.file}`);
 		} else {
-			console.log(`  ✓ aucun marqueur de développement (${FORBIDDEN_MARKERS.join(', ')})`);
+			console.log(`  ✓ aucun marqueur de développement (${markers.join(', ')})`);
 		}
 
 		rows.push({

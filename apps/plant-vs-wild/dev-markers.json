@@ -1,0 +1,18 @@
+[
+	"VisualPanel",
+	"VisualOverlay",
+	"isLocalVisualMode",
+	"VISUAL_QUERY_KEY",
+	"DevBookPlayer",
+	"isLocalBookMode",
+	"BOOK_QUERY_KEY",
+	"base_book_cascade",
+	"base_book_wild",
+	"base_book_multiplier",
+	"base_book_bonus",
+	"base_book_feature",
+	"DebugPanel",
+	"debugScenarios",
+	"genericSpins",
+	"NEXT GENERIC"
+]
