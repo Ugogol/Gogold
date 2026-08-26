@@ -26,7 +26,7 @@ Un dossier = un jeu.
 
 ```text
 apps/
-├── grogg/
+├── <game>/
 ├── game-002/
 └── game-003/
 ```

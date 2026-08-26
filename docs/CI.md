@@ -315,10 +315,9 @@ Aucune modification de `ci.yml` n'est nécessaire : le build est global, la
 validation d'assets boucle sur `apps/*/static/assets`, et
 `check-production-build.mjs` découvre les apps possédant un `build/`.
 
-> ⚠️ Une app **sans script `build`** n'est testée par rien. C'est le cas
-> aujourd'hui de `apps/grogg/` (placeholder). Au moment de la transformer en vrai
-> jeu, vérifier que son `package.json` déclare bien `build` — sinon elle sera
-> créée mais jamais testée.
+> ⚠️ Une app **sans script `build`** n'est testée par rien. Au moment de créer une
+> nouvelle slot, vérifier que son `package.json` déclare bien `build` — sinon elle
+> sera créée mais jamais testée.
 
 **Math** — un nouveau `math/games/<game>/` est couvert par les tests génériques
 de `math/tests/`, qui portent sur `math/src/`. Aucune action.

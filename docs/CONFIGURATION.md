@@ -41,7 +41,7 @@ diverger. Le jour où elles divergent, le jeu affiche autre chose que ce qu'il
 paie — et c'est un bug de certification, pas un bug d'affichage.
 
 A6 fixe donc **qui possède quoi**, avant que la moindre ligne de configuration
-Grogg soit écrite.
+de jeu soit écrite.
 
 ## 2. Principe : une seule source de vérité
 
@@ -503,8 +503,8 @@ Diagnostiqué ici, **non décidé, non implémenté** :
    Stake le font à la main.
 2. **Contrôle de cohérence Python ↔ TypeScript** pour les `bookEvent` (noms et
    payloads). Aucun mécanisme n'est fourni par Stake.
-3. **Emplacement du repo math** (`gogold-math` séparé, comme prévu par
-   `CLAUDE.md`) et son articulation avec ce monorepo.
+3. ~~Emplacement du repo math~~ — **tranché** : le Math SDK vit dans `math/` de
+   ce monorepo (voir `docs/MATH.md`). Il n'y a pas de repository séparé.
 4. Un éventuel package partagé (`packages/…`) pour le contrat. **Rien n'est créé
    aujourd'hui** : ce serait une abstraction prématurée avant le premier jeu.
 
@@ -530,7 +530,7 @@ Avant d'ajouter une valeur de configuration, se poser ces questions dans l'ordre
 
 ## Ce que ce document ne fait PAS
 
-Il ne crée aucune configuration Grogg, aucun `game.config.ts` Gogold, aucun
+Il ne crée aucune configuration de jeu, aucun `game.config.ts` Gogold, aucun
 package de configuration, aucun schéma cross-language, aucun générateur, aucun
 event, aucun client RGS, aucun build et aucun fichier de publication.
 
