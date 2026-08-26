@@ -36,11 +36,11 @@
 	// Lecteur de book mocké, activé par `?book=true`. Même garde.
 	const bookMode = IS_DEV && isLocalBookMode();
 
-	let DevBookPlayer = $state<Component | null>(null);
+	let DebugPanel = $state<Component | null>(null);
 
 	$effect(() => {
-		if (IS_DEV && bookMode && !DevBookPlayer) {
-			import('../dev/DevBookPlayer.svelte').then((module) => (DevBookPlayer = module.default));
+		if (IS_DEV && bookMode && !DebugPanel) {
+			import('../dev/DebugPanel.svelte').then((module) => (DebugPanel = module.default));
 		}
 	});
 
@@ -59,6 +59,6 @@
 	<VisualPanel />
 {/if}
 
-{#if DevBookPlayer}
-	<DevBookPlayer />
+{#if DebugPanel}
+	<DebugPanel />
 {/if}
