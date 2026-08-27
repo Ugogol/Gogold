@@ -22,10 +22,43 @@ MAX_POSITION_MULT = 4096
 #: Nombre de Wild temporaires produits par le Wild Split.
 SPLIT_WILD_COUNT = 3
 
+# ─────────────────────────────────────────────────────────────────────────────
+# PARAMÈTRES DE BALANCING
+#
+# Tout ce qui suit est destiné à être RÉGLÉ. Les règles mécaniques — 5x5,
+# connexion minimum 4, progression x2 -> x4096, 10 Free Spins, retrigger +5,
+# une seule feature par dead spin, H4 réservé au Bonus — ne sont PAS des
+# paramètres : ce sont des invariants, vérifiés par math/tests/plant_vs_wild/.
+#
+# Le levier principal reste les BANDES (`reels/BR0.csv`, `reels/FR0.csv`) :
+# elles portent à elles seules la distribution des symboles, la fréquence
+# d'apparition du Wild au reveal comme au refill, et le symbole tiré lors d'un
+# remplacement. Cette distribution n'est volontairement dupliquée nulle part.
+#
+# La paytable est TEST_ONLY : voir plus bas dans `GameConfig`.
+# ─────────────────────────────────────────────────────────────────────────────
+
 #: TEST_ONLY - longueur (min, max) du trajet du Wild Snake, en pas.
 #: Le minimum de 3 garantit un groupe de 4 cases converties : le contrat
 #: frontend exige un trajet non vide et la connexion doit exister.
 SNAKE_PATH_LENGTH = (3, 5)
+
+#: TEST_ONLY - symbole vers lequel le Wild Snake rampe.
+#:
+#: Poids uniformes pour l'instant : le partage Low/High et la rareté de H4 ne
+#: sont PAS décidés. H4 est absent du Base Game, comme partout ailleurs.
+SNAKE_SYMBOL_WEIGHTS = {
+    "basegame": {"L1": 1, "L2": 1, "L3": 1, "L4": 1, "H1": 1, "H2": 1, "H3": 1},
+    "freegame": {"L1": 1, "L2": 1, "L3": 1, "L4": 1, "H1": 1, "H2": 1, "H3": 1, "H4": 1},
+}
+
+#: TEST_ONLY - feature tirée sur un dead spin éligible du Bonus.
+#:
+#: `none` seul : AUCUNE fréquence de feature n'est décidée à ce stade, donc
+#: aucune ne se déclenche d'elle-même. Les tests et les books canoniques
+#: forcent la feature explicitement. C'est LE paramètre à trancher avant
+#: l'optimisation.
+DEAD_SPIN_FEATURE_WEIGHTS = {"none": 1, "rage": 0, "wildSnake": 0, "wildSplit": 0}
 
 
 class GameConfig(Config):
@@ -96,6 +129,8 @@ class GameConfig(Config):
         self.maximum_board_mult = MAX_POSITION_MULT
         self.split_wild_count = SPLIT_WILD_COUNT
         self.snake_path_length = SNAKE_PATH_LENGTH
+        self.snake_symbol_weights = SNAKE_SYMBOL_WEIGHTS
+        self.dead_spin_feature_weights = DEAD_SPIN_FEATURE_WEIGHTS
 
         #: H4 n'apparaît qu'en Bonus. Garanti par les bandes : BR0 n'en contient
         #: aucun, FR0 en contient. Vérifié par les tests.

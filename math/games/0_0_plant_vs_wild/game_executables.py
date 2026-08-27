@@ -19,6 +19,7 @@ from game_events import (
     wild_move_event,
 )
 from src.calculations.cluster import Cluster
+from src.calculations.statistics import get_random_outcome
 from src.events.events import update_freespin_event
 
 
@@ -288,13 +289,15 @@ class GameExecutables(GameCalculations):
     def select_dead_spin_feature(self):
         """Quelle feature déclencher, ou `None`.
 
-        Les fréquences ne sont pas décidées à cette étape. Par défaut aucune
-        feature ne part : les tests et les books canoniques utilisent
-        `forced_features`, et le balancing branchera une vraie distribution.
+        Les poids vivent dans `game_config.DEAD_SPIN_FEATURE_WEIGHTS`, avec les
+        autres paramètres de balancing. Tant qu'ils valent `none` seul, aucune
+        feature ne part d'elle-même : tests et books canoniques passent par
+        `forced_features`.
         """
         if self.forced_features:
             return self.forced_features.pop(0)
-        return None
+        drawn = get_random_outcome(self.config.dead_spin_feature_weights)
+        return None if drawn == "none" else drawn
 
     def trigger_dead_spin_feature(self) -> bool:
         """Au plus UNE feature par dead spin (règle 17)."""
@@ -342,11 +345,10 @@ class GameExecutables(GameCalculations):
     def snake_symbol(self) -> str:
         """Symbole vers lequel le Wild rampe.
 
-        Le partage Low/High n'est pas décidé à cette étape : le pool vient de la
-        bande courante, donc H4 reste impossible en Base Game.
+        Les poids vivent dans `game_config.SNAKE_SYMBOL_WEIGHTS`, par mode de
+        jeu — c'est ce qui garantit que H4 reste impossible en Base Game.
         """
-        candidates = sorted({str(name) for name in self.reelstrip[0] if str(name) != WILD_NAME})
-        return random.choice(candidates)
+        return get_random_outcome(self.config.snake_symbol_weights[self.gametype])
 
     def snake_path(self, source: dict) -> tuple:
         """Trajet orthogonal, sans case revisitée, longueur tirée de la config.

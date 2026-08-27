@@ -1,12 +1,19 @@
-"""Run minimal de PLANT VS WILD.
+"""Simulation de PLANT VS WILD.
 
-Volontairement modeste : à ce stade le jeu doit être MÉCANIQUEMENT correct, pas
-équilibré. Aucun optimizer, aucune cible de RTP, aucune fréquence finale — ces
-étapes viendront quand les règles seront figées.
+Aucun optimizer, aucune cible de RTP : ce run MESURE le jeu tel qu'il est. Les
+chiffres produits décrivent la paytable TEST_ONLY et les paramètres de
+balancing actuels — ils ne valident rien.
 
-    python games/0_0_plant_vs_wild/run.py            (depuis math/)
+    python games/0_0_plant_vs_wild/run.py                      (depuis math/)
+    python games/0_0_plant_vs_wild/run.py --base 50000 --bonus 10000
+
+Reproductible : le SDK dérive la graine de chaque simulation de son numéro
+(`simulation_seeds = range(n)`) et fige la répartition des criteria avec
+`random.seed(0)`. À configuration et volumes identiques, les books sont
+identiques.
 """
 
+import argparse
 import os
 import sys
 
@@ -19,7 +26,16 @@ from src.state.run_sims import create_books  # noqa: E402
 from src.write_data.write_configs import generate_configs  # noqa: E402
 from utils.rgs_verification import execute_all_tests  # noqa: E402
 
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Simulation PLANT VS WILD")
+    parser.add_argument("--base", type=int, default=50000, help="wagers du mode base")
+    parser.add_argument("--bonus", type=int, default=10000, help="wagers du mode bonus")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
     num_threads = 1
     # Défaut upstream connu : `GeneralGameState._payout_ints` n'est remis à zéro
     # ni entre deux batches, ni entre deux bet modes. Le fichier
@@ -27,13 +43,12 @@ if __name__ == "__main__":
     # `execute_all_tests`, alors que les books et la lookup table sont corrects
     # et rigoureusement identiques (vérifié). `math/src/` étant traité comme
     # upstream, on contourne : un seul batch, et un gamestate neuf par bet mode.
-    batching_size = 500
     compression = True
     profiling = False
 
-    # Petit volume : de quoi vérifier que la chaîne complète produit des
-    # fichiers valides, pas de quoi mesurer quoi que ce soit.
-    num_sim_args = {"base": 200, "bonus": 50}
+    num_sim_args = {"base": args.base, "bonus": args.bonus}
+    # Un seul batch par mode : voir le défaut upstream décrit ci-dessus.
+    batching_size = max(num_sim_args.values()) + 1
 
     config = GameConfig()
 

@@ -72,37 +72,37 @@ export const mathBooks: MathBook[] = [
 	{
 		id: 'math-bonus-trigger',
 		label: "Bonus Trigger",
-		payoutMultiplier: 17780,
+		payoutMultiplier: 7940,
 		events: eventsOf(mathBonusTrigger),
 	},
 	{
 		id: 'math-free-spins',
 		label: "Free Spins",
-		payoutMultiplier: 1820,
+		payoutMultiplier: 2820,
 		events: eventsOf(mathFreeSpins),
 	},
 	{
 		id: 'math-retrigger',
 		label: "Retrigger",
-		payoutMultiplier: 23840,
+		payoutMultiplier: 3620,
 		events: eventsOf(mathRetrigger),
 	},
 	{
 		id: 'math-rage',
 		label: "Rage",
-		payoutMultiplier: 3780,
+		payoutMultiplier: 26200,
 		events: eventsOf(mathRage),
 	},
 	{
 		id: 'math-snake',
 		label: "Wild Snake",
-		payoutMultiplier: 23680,
+		payoutMultiplier: 17240,
 		events: eventsOf(mathSnake),
 	},
 	{
 		id: 'math-split',
 		label: "Wild Split",
-		payoutMultiplier: 32260,
+		payoutMultiplier: 14580,
 		events: eventsOf(mathSplit),
 	},
 ];

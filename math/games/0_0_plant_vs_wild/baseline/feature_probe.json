@@ -1,0 +1,54 @@
+{
+ "note": "SONDE — une feature est forcée sur chaque dead spin éligible. Les fréquences réelles ne sont pas décidées ; seules les valeurs conditionnelles ont un sens ici.",
+ "probe_weights": {
+  "none": 0,
+  "rage": 1,
+  "wildSnake": 1,
+  "wildSplit": 1
+ },
+ "wagers": 3000,
+ "bet_mode": "bonus",
+ "free_spins_played": 34330,
+ "eligible_dead_spins": 25595,
+ "eligible_dead_spin_rate_per_free_spin": 0.74556,
+ "features": {
+  "rage": {
+   "activations": 8421,
+   "average_win_after_x": 418.988,
+   "median_win_after_x": 4.2,
+   "max_win_after_x": 9653.2,
+   "share_without_win": 0.4268
+  },
+  "wildSnake": {
+   "activations": 8566,
+   "average_win_after_x": 686.48,
+   "median_win_after_x": 60.0,
+   "max_win_after_x": 9349.6,
+   "share_without_win": 0.0
+  },
+  "wildSplit": {
+   "activations": 8608,
+   "average_win_after_x": 625.009,
+   "median_win_after_x": 32.5,
+   "max_win_after_x": 9747.4,
+   "share_without_win": 0.1399
+  }
+ },
+ "snake": {
+  "average_path_length": 3.98,
+  "max_path_length": 5,
+  "symbols": {
+   "H1": 1106,
+   "H2": 1086,
+   "H3": 1099,
+   "H4": 1043,
+   "L1": 1065,
+   "L2": 1040,
+   "L3": 1089,
+   "L4": 1038
+  },
+  "low_share": 0.494,
+  "high_share": 0.506,
+  "h4_share": 0.1218
+ }
+}

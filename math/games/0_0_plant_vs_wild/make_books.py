@@ -71,10 +71,18 @@ def find_sim(mode, criteria, predicate, candidates=range(400), features=None):
 
     La recherche est déterministe et le numéro retenu est écrit dans le fichier
     produit : le book reste reproductible sans rejouer la recherche.
+
+    Les books qui atteignent le plafond de gain sont écartés : le SDK y ajoute
+    un event `wincap` que le contrat frontend ne déclare pas encore. Ce n'est
+    pas une correction du Math — le book existe et reste valide côté Stake —
+    mais le Debug Playground ne saurait pas le rejouer.
     """
     for sim in candidates:
         book = simulated_book(mode, criteria, sim, features=features)
-        if predicate([event["type"] for event in book["events"]], book):
+        types = [event["type"] for event in book["events"]]
+        if "wincap" in types:
+            continue
+        if predicate(types, book):
             return sim, book
     raise RuntimeError("aucune simulation ne satisfait le critère")
 
