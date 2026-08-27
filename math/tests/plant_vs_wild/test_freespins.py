@@ -33,8 +33,10 @@ def bonus_books(config):
     state = GameState(config)
     state.betmode = "bonus"
     state.criteria = "freegame"
+    # 80 Bonus : le retrigger tourne autour de 10 %, un échantillon de 20
+    # pouvait n'en contenir aucun et faire échouer les tests par malchance.
     books = []
-    for sim in range(20):
+    for sim in range(80):
         state.run_spin(sim)
         books.append([dict(event) for event in state.book.events])
     return books

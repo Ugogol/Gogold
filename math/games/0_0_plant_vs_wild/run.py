@@ -31,6 +31,11 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Simulation PLANT VS WILD")
     parser.add_argument("--base", type=int, default=50000, help="wagers du mode base")
     parser.add_argument("--bonus", type=int, default=10000, help="wagers du mode bonus")
+    parser.add_argument(
+        "--optimize",
+        action="store_true",
+        help="lance l'optimizer officiel Stake sur les modes générés",
+    )
     return parser.parse_args()
 
 
@@ -52,12 +57,32 @@ if __name__ == "__main__":
 
     config = GameConfig()
 
+    if args.optimize:
+        # Doit être posé AVANT toute écriture de configuration.
+        from game_optimization import OptimizationSetup
+
+        OptimizationSetup(config)
+
     for mode, sims in num_sim_args.items():
         create_books(
             GameState(config), config, {mode: sims}, batching_size, num_threads, compression, profiling
         )
 
     generate_configs(GameState(config))
+
+    if args.optimize:
+        # Optimizer OFFICIEL Stake. Il ne cherche que les POIDS de la lookup
+        # table : il ne touche ni aux books, ni aux payouts, ni aux mécaniques.
+        #
+        # `math_config.json` ne contient les sections d'optimisation que si
+        # `opt_params` existe DÉJÀ au moment où il est écrit — sinon le binaire
+        # Rust ne trouve pas le bet mode. On repasse donc par `generate_configs`
+        # une fois le setup posé, comme le fait le sample Stake.
+        from optimization_program.run_script import OptimizationExecution
+
+        generate_configs(GameState(config))
+        OptimizationExecution().run_all_modes(config, ["base"], num_threads)
+        generate_configs(GameState(config))
 
     # Contrôle de format Stake sur les fichiers produits : cohérence entre les
     # books et les lookup tables. C'est l'outil du SDK, pas un contrôle maison.
