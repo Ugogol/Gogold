@@ -5,9 +5,11 @@ import pytest
 from game_config import WILD_MAX_CHARGE
 from tests.plant_vs_wild.conftest import load, neutral_board, place, unpad
 
-#: Simulation de base dont on sait qu'elle déclenche le Bonus naturellement.
-#: Le numéro fixe la graine : le book est identique à chaque exécution.
-TRIGGER_SIM = 216
+#: Nombre de simulations balayées pour trouver un déclenchement naturel du
+#: Bonus. On ne fige PAS un numéro : il dépendrait des bandes, et changerait à
+#: chaque réglage de balancing. Le balayage reste déterministe — même
+#: configuration, même book retenu.
+TRIGGER_SEARCH = 600
 
 
 def cluster_with_wild():
@@ -93,15 +95,18 @@ def test_09_la_quatrieme_connexion_met_le_bonus_en_attente(game):
 
 @pytest.fixture(scope="module")
 def trigger_book():
-    """Book complet d'un spin de base qui déclenche le Bonus."""
+    """Premier book de base qui déclenche le Bonus naturellement."""
     from game_config import GameConfig
     from gamestate import GameState
 
     state = GameState(GameConfig())
     state.betmode = "base"
     state.criteria = "basegame"
-    state.run_spin(TRIGGER_SIM)
-    return [dict(event) for event in state.book.events]
+    for sim in range(TRIGGER_SEARCH):
+        state.run_spin(sim)
+        if any(event["type"] == "freeSpinTrigger" for event in state.book.events):
+            return [dict(event) for event in state.book.events]
+    pytest.skip(f"aucun déclenchement naturel en {TRIGGER_SEARCH} simulations")
 
 
 def test_10_les_cascades_continuent_malgre_le_bonus_pending(trigger_book):

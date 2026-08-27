@@ -238,7 +238,21 @@ class GameExecutables(GameCalculations):
         """
         exploding = [pos for pos in self.all_positions() if self.symbol_at(pos).explode]
 
-        self.tumble_board()
+        # Les nouveaux symboles viennent d'un REELSET DE REFILL, distinct de
+        # celui du reveal. Ce n'est ni un rejet, ni un reroll : chaque symbole
+        # est tiré normalement d'une distribution fixée avant le résultat. Le
+        # reveal peut ainsi rester assez concentré pour un premier hit
+        # accessible, pendant que le refill, plus dispersé, rend la reconnexion
+        # immédiate beaucoup moins probable.
+        #
+        # `Tumble.tumble_board` du SDK n'est pas modifié : on lui présente
+        # simplement l'autre bande, le temps du refill.
+        reveal_strip = self.reelstrip
+        self.reelstrip = self.config.reels[self.config.refill_reels[self.gametype]]
+        try:
+            self.tumble_board()
+        finally:
+            self.reelstrip = reveal_strip
 
         self.keep_wild_out_of_padding()
         self.enforce_single_main_wild()

@@ -95,3 +95,32 @@ def test_17_le_premier_free_spin_herite_de_la_grille_du_spin_declencheur(bonus_b
     trigger = [index for index, event in enumerate(bonus_book) if event["type"] == "freeSpinTrigger"][0]
 
     assert first_grid_after(bonus_book, trigger) == last_grid_before(bonus_book, trigger)
+
+
+def test_43_quatre_cases_vierges_paient_x4_puis_passent_a_x2(game):
+    """Le x1 implicite compte dans la somme, et le doublement vient APRÈS.
+
+        4 cases vierges -> x1+x1+x1+x1 = x4
+        puis la grille passe à x2 sur ces quatre cases
+        connexion suivante -> x2+x2+x2+x2 = x8
+    """
+    from tests.plant_vs_wild.conftest import load, neutral_board, place
+
+    board = place(neutral_board(), [(0, 0), (0, 1), (1, 0), (1, 1)], "H1")
+    cells = [(0, 0), (0, 1), (1, 0), (1, 1)]
+
+    load(game, board)
+    game.get_clusters_update_wins()
+
+    first = game.win_data["wins"][0]
+    assert first["clusterSize"] == 4
+    assert first["meta"]["clusterMult"] == 4, "quatre x1 implicites font x4"
+    # PAY -> UPGRADE : la grille est encore vierge au moment du paiement.
+    assert all(game.position_multipliers[reel][row] == 0 for reel, row in cells)
+
+    game.update_grid_mults()
+    assert all(game.position_multipliers[reel][row] == 2 for reel, row in cells)
+
+    load(game, board, keep_charge=True)
+    game.get_clusters_update_wins()
+    assert game.win_data["wins"][0]["meta"]["clusterMult"] == 8, "quatre x2 font x8"

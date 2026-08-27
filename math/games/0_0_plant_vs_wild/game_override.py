@@ -64,6 +64,7 @@ class GameStateOverride(GameExecutables):
         self.feature_used_this_spin = False
         self.wild_charge = 0
         self.bonus_pending = False
+        self.cascade_cap_reached = False
 
     def assign_special_sym_function(self) -> None:
         """Aucun attribut spécial n'est posé à la création d'un symbole.

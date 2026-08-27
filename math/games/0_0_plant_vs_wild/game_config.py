@@ -38,6 +38,17 @@ SPLIT_WILD_COUNT = 3
 # La paytable est TEST_ONLY : voir plus bas dans `GameConfig`.
 # ─────────────────────────────────────────────────────────────────────────────
 
+#: EXPÉRIMENTAL - nombre maximum de cascades enchaînées dans un spin.
+#: `None` = aucun plafond (comportement historique).
+#:
+#: Sémantique quand le plafond est atteint : la résolution en cours est payée
+#: normalement, ses multiplicateurs sont appliqués normalement, puis aucune
+#: nouvelle cascade n'est engagée. Rien n'est annulé, aucun symbole n'est
+#: retiré, aucun gain déjà résolu n'est supprimé — le spin s'arrête simplement
+#: de se relancer. Le plafond ne touche NI la progression x2, NI la somme des
+#: multiplicateurs, NI le plafond x4096.
+MAX_CASCADES_PER_SPIN = None
+
 #: TEST_ONLY - longueur (min, max) du trajet du Wild Snake, en pas.
 #: Le minimum de 3 garantit un groupe de 4 cases converties : le contrat
 #: frontend exige un trajet non vide et la connexion doit exister.
@@ -59,6 +70,61 @@ SNAKE_SYMBOL_WEIGHTS = {
 #: forcent la feature explicitement. C'est LE paramètre à trancher avant
 #: l'optimisation.
 DEAD_SPIN_FEATURE_WEIGHTS = {"none": 1, "rage": 0, "wildSnake": 0, "wildSplit": 0}
+
+
+# ── PAYTABLE — BALANCING_V1, NON_FINAL ───────────────────────────────────────
+#
+# Construite AUTOUR de la mécanique des multiplicateurs, qui est verrouillée :
+# une case double à chaque participation et une connexion paie la SOMME des
+# multiplicateurs de ses cases. Une valeur de base minuscule y devient énorme —
+# 0,10x rencontrant x8+x16+x32+x64 paie déjà 12x.
+#
+# La paytable est donc volontairement au plus bas :
+#
+#   * chaque entrée est un multiple de 0,10x, et 0,10x est le PLANCHER absolu.
+#     Le RGS refuse tout gain hors de cet incrément (`verify_lookup_format`), et
+#     une connexion de 4 cases sans multiplicateur paie exactement la valeur de
+#     la case : les entrées ne peuvent donc pas descendre plus bas ;
+#   * la ligne de la taille 4 vaut 1 à 8 dixièmes — le minimum pour que les huit
+#     symboles restent strictement ordonnés ;
+#   * la croissance avec la taille du cluster est douce, et concentrée sur les
+#     grandes tailles qui ne se produisent presque jamais. Ce sont les
+#     multiplicateurs qui doivent faire exploser les gains, pas le nombre de
+#     symboles.
+#
+# Hiérarchie : L1 < L2 < L3 < L4 < H1 < H2 < H3 < H4 à CHAQUE palier.
+# H4 est le plus rémunérateur et reste absent du Base Game (bandes BR0/FR0).
+#
+# ⚠️ Cette table ne suffit pas à atteindre la cible de RTP — voir
+# `baseline/BASELINE.md`, section PAYTABLE_ONLY_FLOOR.
+
+#: Paliers de taille de connexion, en intervalles fermés.
+PAYTABLE_TIERS = [
+    (MIN_CLUSTER_SIZE, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 11),
+    (12, 14),
+    (15, 19),
+    (20, 25),
+]
+
+#: Gains en DIXIÈMES de mise — l'unité imposée par le RGS. Une ligne par
+#: symbole, une colonne par palier de `PAYTABLE_TIERS`.
+PAYTABLE_V1_DIMES = {
+    #        4   5   6   7   8   9  10-11 12-14 15-19 20+
+    "L1": [  1,  1,  1,  2,  2,  3,   4,    6,    9,   14],
+    "L2": [  2,  2,  2,  3,  3,  4,   6,    8,   12,   18],
+    "L3": [  3,  3,  4,  4,  5,  6,   8,   11,   16,   24],
+    "L4": [  4,  4,  5,  6,  7,  8,  11,   15,   21,   32],
+    "H1": [  5,  6,  7,  8,  9, 11,  14,   19,   27,   40],
+    "H2": [  6,  7,  8, 10, 12, 14,  18,   24,   34,   50],
+    "H3": [  7,  8, 10, 12, 14, 17,  22,   29,   41,   62],
+    "H4": [  8, 10, 12, 14, 17, 20,  26,   35,   49,   74],
+}
 
 
 class GameConfig(Config):
@@ -85,29 +151,11 @@ class GameConfig(Config):
         self.num_reels = 5
         self.num_rows = [5] * self.num_reels
 
-        # TEST_ONLY — aucune paytable définitive. Le SDK exige des payouts pour
-        # évaluer un cluster ; ces valeurs n'engagent aucun RTP et seront
-        # remplacées pendant le balancing.
-        #
-        # Contrainte de FORMAT, elle non négociable : le RGS n'accepte que des
-        # gains par incréments de 0,10x (`verify_lookup_format`). Bases et
-        # paliers restent donc des multiples de 0,10 et des entiers.
-        t1, t2, t3, t4 = (MIN_CLUSTER_SIZE, 5), (6, 8), (9, 12), (13, 25)
+        # BALANCING_V1 — NON_FINAL. Voir PAYTABLE_TIERS / PAYTABLE_V1_DIMES.
         pay_group = {}
-        for symbol, base in (
-            ("H1", 5.0),
-            ("H2", 2.5),
-            ("H3", 1.5),
-            ("H4", 1.0),
-            ("L1", 0.6),
-            ("L2", 0.4),
-            ("L3", 0.3),
-            ("L4", 0.2),
-        ):
-            pay_group[(t1, symbol)] = base
-            pay_group[(t2, symbol)] = base * 2
-            pay_group[(t3, symbol)] = base * 5
-            pay_group[(t4, symbol)] = base * 10
+        for symbol, row in PAYTABLE_V1_DIMES.items():
+            for tier, dimes in zip(PAYTABLE_TIERS, row):
+                pay_group[(tier, symbol)] = dimes / 10.0
         self.paytable = self.convert_range_table(pay_group)
 
         self.include_padding = True
@@ -129,12 +177,29 @@ class GameConfig(Config):
         self.maximum_board_mult = MAX_POSITION_MULT
         self.split_wild_count = SPLIT_WILD_COUNT
         self.snake_path_length = SNAKE_PATH_LENGTH
+        self.max_cascades_per_spin = MAX_CASCADES_PER_SPIN
+        self.refill_reels = {self.basegame_type: "BR1", self.freegame_type: "FR1"}
         self.snake_symbol_weights = SNAKE_SYMBOL_WEIGHTS
         self.dead_spin_feature_weights = DEAD_SPIN_FEATURE_WEIGHTS
 
         #: H4 n'apparaît qu'en Bonus. Garanti par les bandes : BR0 n'en contient
         #: aucun, FR0 en contient. Vérifié par les tests.
-        reels = {"BR0": "BR0.csv", "FR0": "FR0.csv"}
+        # ── BANDES — BALANCING_V2, NON_FINAL ─────────────────────────────────────
+#
+# BR0/FR0 (reveal)  concentrees : L2 et L3 a 20 %, ce qui maintient un premier
+#                   hit accessible (~14-17 %).
+# BR1/FR1 (refill)  uniformes sur tous les symboles payants, Wild tres rare.
+#                   Les cases liberees ne reforment donc presque jamais une
+#                   connexion immediate, et le multiplicateur s empile beaucoup
+#                   moins sur les memes cases.
+#
+# Effet mesure a hit rate egal (16.7 %) : RTP 15.74 -> 8.95, clusterMult
+# 134 -> 66, wincap 1/556 -> 1/1429. Voir baseline/BASELINE.md.
+#
+#: Deux reelsets par mode : `*R0` pour le reveal, `*R1` pour les refills
+        #: après tumble. Séparer les deux est le levier qui découple le premier
+        #: hit (qu'on veut accessible) de la reconnexion (qu'on veut rare).
+        reels = {"BR0": "BR0.csv", "FR0": "FR0.csv", "BR1": "BR1.csv", "FR1": "FR1.csv"}
         self.reels = {}
         for name, filename in reels.items():
             self.reels[name] = self.read_reels_csv(os.path.join(self.reels_path, filename))

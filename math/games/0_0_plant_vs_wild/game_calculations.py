@@ -34,8 +34,14 @@ class GameCalculations(Executables):
         """Paiement d'un cluster, multiplicateurs de case compris.
 
         Le multiplicateur d'une connexion est la SOMME des multiplicateurs des
-        cases qui y participent, avec un plancher à 1 : une case jamais activée
-        vaut 0 dans la grille et ne rapporte donc rien de plus.
+        cases qui y participent.
+
+        ⚠️ Une case jamais activée porte un x1 IMPLICITE : la grille la stocke à
+        0 — c'est ce que le frontend attend pour ne rien afficher — mais elle
+        compte pour 1 dans la somme. Quatre cases vierges donnent donc x4, pas
+        x1. Le doublement intervient APRÈS le paiement (`update_grid_mults`),
+        jamais avant : la connexion suivante sur ces mêmes cases lira x2 chacune
+        et paiera x8.
 
         `MIN_CLUSTER_SIZE` n'est pas testé ici : la paytable ne contient aucune
         entrée en dessous de 4, donc un groupe de 3 n'est jamais payé.
@@ -49,7 +55,7 @@ class GameCalculations(Executables):
                 if (syms_in_cluster, sym) not in config.paytable:
                     continue
 
-                board_mult = max(sum(pos_mult_grid[reel][row] for reel, row in cluster), 1)
+                board_mult = sum(max(pos_mult_grid[reel][row], 1) for reel, row in cluster)
                 sym_win = config.paytable[(syms_in_cluster, sym)]
                 symwin_mult = sym_win * board_mult * global_multiplier
                 total_win += symwin_mult

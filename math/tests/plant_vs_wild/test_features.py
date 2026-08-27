@@ -209,3 +209,69 @@ def test_32_au_plus_une_feature_par_dead_spin(forced_feature_book):
 
     for spin in spin_slices(forced_feature_book):
         assert len([event for event in spin if event["type"] == "wildFeature"]) <= 1
+
+
+# ── Plafond de cascades ─────────────────────────────────────────────────────
+
+
+def long_cascade_sim(minimum_tumbles=4):
+    """Premier numéro de simulation dont le spin de base cascade assez.
+
+    Cherché SANS plafond : le même spin est ensuite rejoué avec le plafond à
+    tester, pour comparer deux lectures d'une seule et même donnée.
+    """
+    config = GameConfig()
+    previous = config.max_cascades_per_spin
+    config.max_cascades_per_spin = None
+    try:
+        state = GameState(config)
+        state.betmode = "base"
+        state.criteria = "basegame"
+        for sim in range(600):
+            state.run_spin(sim)
+            if [event["type"] for event in state.book.events].count("tumbleBoard") >= minimum_tumbles:
+                return sim
+    finally:
+        config.max_cascades_per_spin = previous
+    pytest.skip("aucun spin assez long dans l'échantillon")
+
+
+def cascade_book(maximum, sim):
+    """Rejoue un spin donné avec le plafond demandé."""
+    config = GameConfig()
+    previous = config.max_cascades_per_spin
+    config.max_cascades_per_spin = maximum
+    try:
+        state = GameState(config)
+        state.betmode = "base"
+        state.criteria = "basegame"
+        state.run_spin(sim)
+        return [dict(event) for event in state.book.events]
+    finally:
+        config.max_cascades_per_spin = previous
+
+
+def test_44_un_plafond_jamais_atteint_ne_change_rien():
+    """Plafond très haut : le book est identique à celui sans plafond."""
+    sim = long_cascade_sim()
+    assert cascade_book(None, sim) == cascade_book(999, sim)
+
+
+def test_45_le_plafond_paie_la_derniere_resolution_puis_arrete():
+    """Au plafond : le dernier gain est payé, puis plus aucune cascade.
+
+    Rien n'est annulé — on vérifie que la dernière connexion a bien produit son
+    `winInfo` et son `updateGrid`, et qu'aucun `tumbleBoard` ne suit.
+    """
+    events = cascade_book(2, long_cascade_sim())
+    types = [event["type"] for event in events]
+
+    assert types.count("tumbleBoard") == 2, "le spin s'arrête à deux cascades"
+
+    last_tumble = len(types) - 1 - types[::-1].index("tumbleBoard")
+    after = types[last_tumble + 1 :]
+    assert "winInfo" in after, "la résolution qui suit la dernière cascade est payée"
+    assert "updateGrid" in after, "ses multiplicateurs sont appliqués"
+    assert "tumbleBoard" not in after
+    # Le spin se termine normalement : le frontend n'a besoin d'aucun event neuf.
+    assert "setTotalWin" in after

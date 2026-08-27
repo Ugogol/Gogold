@@ -61,112 +61,112 @@
  "modes": {
   "base": {
    "sdk": {
-    "rtp": 34.79049,
-    "hit_rate": 5.92417,
-    "prob_no_win": 0.8312,
-    "average_win": 34.7905,
-    "std_dev": 379.161,
-    "variance": 143763.0449,
-    "skew": 12.4829,
-    "excess_kurtosis": 157.7186,
+    "rtp": 6.97702,
+    "hit_rate": 7.12962,
+    "prob_no_win": 0.85974,
+    "average_win": 6.977,
+    "std_dev": 152.7557,
+    "variance": 23334.3151,
+    "skew": 29.6504,
+    "excess_kurtosis": 926.1901,
     "max_win_observed": 5000.0,
-    "max_win_hit_rate": 190.11406844106463
+    "max_win_hit_rate": 1315.7894736842104
    },
-   "observed_rtp": 34.79049,
+   "observed_rtp": 6.97702,
    "win_distribution": {
     "0x": {
-     "count": 41560,
-     "share": 0.8312
+     "count": 42987,
+     "share": 0.85974
     },
     ">0x-1x": {
-     "count": 5041,
-     "share": 0.10082
+     "count": 2837,
+     "share": 0.05674
     },
     "1x-2x": {
-     "count": 209,
-     "share": 0.00418
+     "count": 1951,
+     "share": 0.03902
     },
     "2x-5x": {
-     "count": 752,
-     "share": 0.01504
+     "count": 1098,
+     "share": 0.02196
     },
     "5x-10x": {
-     "count": 687,
-     "share": 0.01374
+     "count": 385,
+     "share": 0.0077
     },
     "10x-25x": {
-     "count": 408,
-     "share": 0.00816
+     "count": 230,
+     "share": 0.0046
     },
     "25x-50x": {
-     "count": 208,
-     "share": 0.00416
+     "count": 139,
+     "share": 0.00278
     },
     "50x-100x": {
-     "count": 258,
-     "share": 0.00516
+     "count": 133,
+     "share": 0.00266
     },
     "100x-500x": {
-     "count": 425,
-     "share": 0.0085
+     "count": 134,
+     "share": 0.00268
     },
     "500x+": {
-     "count": 452,
-     "share": 0.00904
+     "count": 106,
+     "share": 0.00212
     }
    },
    "payout_percentiles_in_bet_multiples": {
     "P50": 0.0,
-    "P90": 0.4,
-    "P95": 5.0,
-    "P99": 370.2,
-    "P99.9": 5000.0
+    "P90": 0.5,
+    "P95": 1.9,
+    "P99": 26.5,
+    "P99.9": 2225.0
    },
    "max_observed_win_in_bet_multiples": 5000.0,
    "basegame": {
     "spins": 50000,
-    "spins_with_win": 8440,
-    "hit_rate_per_spin": 0.1688,
+    "spins_with_win": 7013,
+    "hit_rate_per_spin": 0.14026,
     "cascades": {
      "distribution": {
-      "0": 41560,
-      "1": 5477,
-      "2": 1121,
-      "3": 579,
-      "4": 1263
+      "0": 42987,
+      "1": 2293,
+      "2": 3084,
+      "3": 833,
+      "4": 803
      },
-     "average": 0.3504,
-     "max": 19
+     "average": 0.2985,
+     "max": 26
     },
     "wild": {
-     "spins_with_wild": 37984,
-     "frequency": 0.75968,
-     "at_reveal": 37916,
-     "from_refill": 68,
+     "spins_with_wild": 27788,
+     "frequency": 0.55576,
+     "at_reveal": 27781,
+     "from_refill": 7,
      "connections_per_spin": {
-      "0": 42522,
-      "1": 4793,
-      "2": 943,
-      "3": 544,
-      "4": 1198
+      "0": 43764,
+      "1": 1886,
+      "2": 2898,
+      "3": 715,
+      "4": 737
      }
     },
     "multiplier_peaks": {
-     "2": 56658,
-     "4": 15033,
-     "8": 7506,
-     "16": 4668,
-     "32": 2898,
-     "64": 1506,
-     "128": 1063,
-     "256": 820,
-     "512": 615,
-     "1024": 485,
-     "2048": 307,
-     "4096": 109
+     "2": 51297,
+     "4": 17568,
+     "8": 4059,
+     "16": 1427,
+     "32": 560,
+     "64": 281,
+     "128": 183,
+     "256": 135,
+     "512": 106,
+     "1024": 81,
+     "2048": 61,
+     "4096": 49
     },
-    "win_amount_total": 1473272.3,
-    "win_without_multipliers_total": 23972.2,
+    "win_amount_total": 187043.2,
+    "win_without_multipliers_total": 5014.9,
     "features": {},
     "snake": {
      "average_length": null,
@@ -175,49 +175,49 @@
     }
    },
    "freegame": {
-    "spins": 12670,
-    "spins_with_win": 2709,
-    "hit_rate_per_spin": 0.21381,
+    "spins": 8105,
+    "spins_with_win": 1681,
+    "hit_rate_per_spin": 0.2074,
     "cascades": {
      "distribution": {
-      "0": 10470,
-      "1": 1531,
-      "2": 390,
-      "3": 129,
-      "4": 150
+      "0": 6480,
+      "1": 883,
+      "2": 436,
+      "3": 151,
+      "4": 155
      },
-     "average": 0.2788,
-     "max": 14
+     "average": 0.3618,
+     "max": 13
     },
     "wild": {
-     "spins_with_wild": 12670,
+     "spins_with_wild": 8105,
      "frequency": 1.0,
-     "at_reveal": 12670,
+     "at_reveal": 8105,
      "from_refill": 0,
      "connections_per_spin": {
-      "0": 10772,
-      "1": 1312,
-      "2": 341,
-      "3": 107,
-      "4": 138
+      "0": 6626,
+      "1": 819,
+      "2": 377,
+      "3": 136,
+      "4": 147
      }
     },
     "multiplier_peaks": {
-     "2": 3886,
-     "4": 3448,
-     "8": 2958,
-     "16": 2265,
-     "32": 1948,
-     "64": 1763,
-     "128": 1201,
-     "256": 815,
-     "512": 584,
-     "1024": 389,
-     "2048": 309,
-     "4096": 263
+     "2": 2845,
+     "4": 2693,
+     "8": 2461,
+     "16": 1952,
+     "32": 1513,
+     "64": 1074,
+     "128": 693,
+     "256": 427,
+     "512": 284,
+     "1024": 169,
+     "2048": 107,
+     "4096": 71
     },
-    "win_amount_total": 1694361.3,
-    "win_without_multipliers_total": 4058.5,
+    "win_amount_total": 324988.3,
+    "win_without_multipliers_total": 1001.8,
     "features": {},
     "snake": {
      "average_length": null,
@@ -226,25 +226,25 @@
     }
    },
    "bonus": {
-    "wagers_with_bonus": 1198,
-    "trigger_frequency": 0.02396,
-    "one_in": 41.7,
-    "rounds": 1198,
-    "average_total_fs": 10.576,
-    "average_win": 927.638,
-    "median_win": 85.6,
+    "wagers_with_bonus": 737,
+    "trigger_frequency": 0.01474,
+    "one_in": 67.8,
+    "rounds": 737,
+    "average_total_fs": 10.997,
+    "average_win": 343.407,
+    "median_win": 29.8,
     "max_win": 5000.0,
     "retriggers": {
-     "average": 0.1152,
-     "zero": 1070,
-     "one": 118,
-     "two_or_more": 10
+     "average": 0.1995,
+     "zero": 614,
+     "one": 101,
+     "two_or_more": 22
     }
    },
    "rtp_contribution": {
-    "basegame_share": 0.4651,
-    "freegame_share": 0.5349,
-    "position_multipliers_share": 0.99115,
+    "basegame_share": 0.3653,
+    "freegame_share": 0.6347,
+    "position_multipliers_share": 0.98825,
     "position_multipliers_note": "Isolable exactement : win - winWithoutMult, les deux montants sont dans winInfo.",
     "wild_share": "NON_ISOLABLE",
     "wild_note": "Le Wild complète des connexions qui n'existeraient pas sans lui et en agrandit d'autres. Séparer sa part demanderait de rejouer chaque spin sans Wild — ce serait un autre jeu, pas une mesure.",
@@ -254,46 +254,46 @@
   },
   "bonus": {
    "sdk": {
-    "rtp": 2.59607,
-    "hit_rate": 1.08096,
-    "prob_no_win": 0.0749,
-    "average_win": 259.607,
-    "std_dev": 936.2296,
-    "variance": 876525.872,
-    "skew": 4463844.74,
-    "excess_kurtosis": 2200722495.2603,
+    "rtp": 1.07243,
+    "hit_rate": 1.06338,
+    "prob_no_win": 0.0596,
+    "average_win": 107.243,
+    "std_dev": 542.32,
+    "variance": 294110.9688,
+    "skew": 7780069.6506,
+    "excess_kurtosis": 6633020594.1065,
     "max_win_observed": 5000.0,
-    "max_win_hit_rate": 31.847133757961785
+    "max_win_hit_rate": 119.04761904761905
    },
-   "observed_rtp": 2.59607,
+   "observed_rtp": 1.07243,
    "win_distribution": {
     "0x": {
-     "count": 749,
-     "share": 0.0749
+     "count": 596,
+     "share": 0.0596
     },
     ">0x-1x": {
-     "count": 7526,
-     "share": 0.7526
+     "count": 8397,
+     "share": 0.8397
     },
     "1x-2x": {
-     "count": 513,
-     "share": 0.0513
+     "count": 398,
+     "share": 0.0398
     },
     "2x-5x": {
-     "count": 435,
-     "share": 0.0435
+     "count": 263,
+     "share": 0.0263
     },
     "5x-10x": {
-     "count": 203,
-     "share": 0.0203
+     "count": 132,
+     "share": 0.0132
     },
     "10x-25x": {
-     "count": 182,
-     "share": 0.0182
+     "count": 84,
+     "share": 0.0084
     },
     "25x-50x": {
-     "count": 392,
-     "share": 0.0392
+     "count": 130,
+     "share": 0.013
     },
     "50x-100x": {
      "count": 0,
@@ -309,57 +309,57 @@
     }
    },
    "payout_percentiles_in_bet_multiples": {
-    "P50": 0.092,
-    "P90": 2.914,
-    "P95": 13.583,
-    "P99": 50.0,
+    "P50": 0.069,
+    "P90": 1.014,
+    "P95": 2.742,
+    "P99": 41.082,
     "P99.9": 50.0
    },
    "max_observed_win_in_bet_multiples": 50.0,
    "basegame": {
     "spins": 10000,
-    "spins_with_win": 1782,
-    "hit_rate_per_spin": 0.1782,
+    "spins_with_win": 1383,
+    "hit_rate_per_spin": 0.1383,
     "cascades": {
      "distribution": {
-      "0": 8218,
-      "1": 1154,
-      "2": 227,
-      "3": 140,
-      "4": 261
+      "0": 8617,
+      "1": 446,
+      "2": 619,
+      "3": 153,
+      "4": 165
      },
-     "average": 0.3725,
-     "max": 15
+     "average": 0.2979,
+     "max": 18
     },
     "wild": {
-     "spins_with_wild": 7616,
-     "frequency": 0.7616,
-     "at_reveal": 7601,
-     "from_refill": 15,
+     "spins_with_wild": 5621,
+     "frequency": 0.5621,
+     "at_reveal": 5619,
+     "from_refill": 2,
      "connections_per_spin": {
-      "0": 8439,
-      "1": 982,
-      "2": 201,
-      "3": 133,
-      "4": 245
+      "0": 8756,
+      "1": 372,
+      "2": 585,
+      "3": 138,
+      "4": 149
      }
     },
     "multiplier_peaks": {
-     "2": 12083,
-     "4": 3263,
-     "8": 1665,
-     "16": 997,
-     "32": 619,
-     "64": 330,
-     "128": 240,
-     "256": 171,
-     "512": 134,
-     "1024": 117,
-     "2048": 79,
-     "4096": 23
+     "2": 10162,
+     "4": 3480,
+     "8": 859,
+     "16": 303,
+     "32": 148,
+     "64": 70,
+     "128": 49,
+     "256": 39,
+     "512": 28,
+     "1024": 22,
+     "2048": 17,
+     "4096": 16
     },
-    "win_amount_total": 327323.3,
-    "win_without_multipliers_total": 5156.0,
+    "win_amount_total": 56888.2,
+    "win_without_multipliers_total": 1007.5,
     "features": {},
     "snake": {
      "average_length": null,
@@ -368,49 +368,49 @@
     }
    },
    "freegame": {
-    "spins": 108030,
-    "spins_with_win": 24757,
-    "hit_rate_per_spin": 0.22917,
+    "spins": 110350,
+    "spins_with_win": 25904,
+    "hit_rate_per_spin": 0.23474,
     "cascades": {
      "distribution": {
-      "0": 83881,
-      "1": 16414,
-      "2": 4502,
-      "3": 1499,
-      "4": 1734
+      "0": 84589,
+      "1": 13781,
+      "2": 7128,
+      "3": 2650,
+      "4": 2202
      },
-     "average": 0.3709,
-     "max": 23
+     "average": 0.4196,
+     "max": 22
     },
     "wild": {
-     "spins_with_wild": 108030,
+     "spins_with_wild": 110350,
      "frequency": 1.0,
-     "at_reveal": 108030,
+     "at_reveal": 110350,
      "from_refill": 0,
      "connections_per_spin": {
-      "0": 86550,
-      "1": 14511,
-      "2": 4080,
-      "3": 1283,
-      "4": 1606
+      "0": 86371,
+      "1": 12987,
+      "2": 6507,
+      "3": 2415,
+      "4": 2070
      }
     },
     "multiplier_peaks": {
-     "2": 91877,
-     "4": 47258,
-     "8": 25231,
-     "16": 13976,
-     "32": 8295,
-     "64": 5268,
-     "128": 3385,
-     "256": 2302,
-     "512": 1511,
-     "1024": 1011,
-     "2048": 661,
-     "4096": 413
+     "2": 98006,
+     "4": 54055,
+     "8": 30480,
+     "16": 16838,
+     "32": 9578,
+     "64": 5628,
+     "128": 3308,
+     "256": 1936,
+     "512": 1175,
+     "1024": 729,
+     "2048": 440,
+     "4096": 261
     },
-    "win_amount_total": 3894418.8,
-    "win_without_multipliers_total": 41269.8,
+    "win_amount_total": 1307018.0,
+    "win_without_multipliers_total": 15666.9,
     "features": {},
     "snake": {
      "average_length": null,
@@ -423,21 +423,21 @@
     "trigger_frequency": 1.0,
     "one_in": 1.0,
     "rounds": 10000,
-    "average_total_fs": 10.803,
-    "average_win": 244.897,
-    "median_win": 8.4,
+    "average_total_fs": 11.035,
+    "average_win": 104.448,
+    "median_win": 6.6,
     "max_win": 5000.0,
     "retriggers": {
-     "average": 0.1606,
-     "zero": 8558,
-     "one": 1285,
-     "two_or_more": 157
+     "average": 0.207,
+     "zero": 8259,
+     "one": 1449,
+     "two_or_more": 292
     }
    },
    "rtp_contribution": {
-    "basegame_share": 0.07753,
-    "freegame_share": 0.92247,
-    "position_multipliers_share": 0.989,
+    "basegame_share": 0.04171,
+    "freegame_share": 0.95829,
+    "position_multipliers_share": 0.98777,
     "position_multipliers_note": "Isolable exactement : win - winWithoutMult, les deux montants sont dans winInfo.",
     "wild_share": "NON_ISOLABLE",
     "wild_note": "Le Wild complète des connexions qui n'existeraient pas sans lui et en agrandit d'autres. Séparer sa part demanderait de rejouer chaque spin sans Wild — ce serait un autre jeu, pas une mesure.",
@@ -454,50 +454,50 @@
    "wildSnake": 1,
    "wildSplit": 1
   },
-  "wagers": 3000,
+  "wagers": 2000,
   "bet_mode": "bonus",
-  "free_spins_played": 34330,
-  "eligible_dead_spins": 25595,
-  "eligible_dead_spin_rate_per_free_spin": 0.74556,
+  "free_spins_played": 23860,
+  "eligible_dead_spins": 17738,
+  "eligible_dead_spin_rate_per_free_spin": 0.74342,
   "features": {
    "rage": {
-    "activations": 8421,
-    "average_win_after_x": 418.988,
-    "median_win_after_x": 4.2,
-    "max_win_after_x": 9653.2,
-    "share_without_win": 0.4268
+    "activations": 5880,
+    "average_win_after_x": 292.326,
+    "median_win_after_x": 2.4,
+    "max_win_after_x": 8223.4,
+    "share_without_win": 0.4158
    },
    "wildSnake": {
-    "activations": 8566,
-    "average_win_after_x": 686.48,
-    "median_win_after_x": 60.0,
-    "max_win_after_x": 9349.6,
+    "activations": 5887,
+    "average_win_after_x": 429.916,
+    "median_win_after_x": 26.6,
+    "max_win_after_x": 7432.8,
     "share_without_win": 0.0
    },
    "wildSplit": {
-    "activations": 8608,
-    "average_win_after_x": 625.009,
-    "median_win_after_x": 32.5,
-    "max_win_after_x": 9747.4,
-    "share_without_win": 0.1399
+    "activations": 5971,
+    "average_win_after_x": 425.612,
+    "median_win_after_x": 16.4,
+    "max_win_after_x": 7603.8,
+    "share_without_win": 0.1348
    }
   },
   "snake": {
-   "average_path_length": 3.98,
+   "average_path_length": 3.979,
    "max_path_length": 5,
    "symbols": {
-    "H1": 1106,
-    "H2": 1086,
-    "H3": 1099,
-    "H4": 1043,
-    "L1": 1065,
-    "L2": 1040,
-    "L3": 1089,
-    "L4": 1038
+    "H1": 729,
+    "H2": 713,
+    "H3": 724,
+    "H4": 745,
+    "L1": 723,
+    "L2": 715,
+    "L3": 769,
+    "L4": 769
    },
-   "low_share": 0.494,
-   "high_share": 0.506,
-   "h4_share": 0.1218
+   "low_share": 0.5055,
+   "high_share": 0.4945,
+   "h4_share": 0.1266
   }
  }
 }

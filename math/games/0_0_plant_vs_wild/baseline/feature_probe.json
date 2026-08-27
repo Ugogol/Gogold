@@ -6,49 +6,49 @@
   "wildSnake": 1,
   "wildSplit": 1
  },
- "wagers": 3000,
+ "wagers": 2000,
  "bet_mode": "bonus",
- "free_spins_played": 34330,
- "eligible_dead_spins": 25595,
- "eligible_dead_spin_rate_per_free_spin": 0.74556,
+ "free_spins_played": 23860,
+ "eligible_dead_spins": 17738,
+ "eligible_dead_spin_rate_per_free_spin": 0.74342,
  "features": {
   "rage": {
-   "activations": 8421,
-   "average_win_after_x": 418.988,
-   "median_win_after_x": 4.2,
-   "max_win_after_x": 9653.2,
-   "share_without_win": 0.4268
+   "activations": 5880,
+   "average_win_after_x": 292.326,
+   "median_win_after_x": 2.4,
+   "max_win_after_x": 8223.4,
+   "share_without_win": 0.4158
   },
   "wildSnake": {
-   "activations": 8566,
-   "average_win_after_x": 686.48,
-   "median_win_after_x": 60.0,
-   "max_win_after_x": 9349.6,
+   "activations": 5887,
+   "average_win_after_x": 429.916,
+   "median_win_after_x": 26.6,
+   "max_win_after_x": 7432.8,
    "share_without_win": 0.0
   },
   "wildSplit": {
-   "activations": 8608,
-   "average_win_after_x": 625.009,
-   "median_win_after_x": 32.5,
-   "max_win_after_x": 9747.4,
-   "share_without_win": 0.1399
+   "activations": 5971,
+   "average_win_after_x": 425.612,
+   "median_win_after_x": 16.4,
+   "max_win_after_x": 7603.8,
+   "share_without_win": 0.1348
   }
  },
  "snake": {
-  "average_path_length": 3.98,
+  "average_path_length": 3.979,
   "max_path_length": 5,
   "symbols": {
-   "H1": 1106,
-   "H2": 1086,
-   "H3": 1099,
-   "H4": 1043,
-   "L1": 1065,
-   "L2": 1040,
-   "L3": 1089,
-   "L4": 1038
+   "H1": 729,
+   "H2": 713,
+   "H3": 724,
+   "H4": 745,
+   "L1": 723,
+   "L2": 715,
+   "L3": 769,
+   "L4": 769
   },
-  "low_share": 0.494,
-  "high_share": 0.506,
-  "h4_share": 0.1218
+  "low_share": 0.5055,
+  "high_share": 0.4945,
+  "h4_share": 0.1266
  }
 }

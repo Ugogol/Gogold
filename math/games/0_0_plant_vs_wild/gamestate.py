@@ -23,8 +23,19 @@ class GameState(GameStateOverride):
         if not self.wincap_triggered:
             self.handle_wild_connection()
 
+        cascades = 0
+        maximum = self.config.max_cascades_per_spin
+
         while self.win_data["totalWin"] > 0 and not self.wincap_triggered:
+            # Plafond de cascades : la résolution qui précède a été payée et ses
+            # multiplicateurs appliqués. On refuse seulement d'en engager une
+            # nouvelle. Aucun gain n'est retiré, aucun symbole n'est modifié.
+            if maximum is not None and cascades >= maximum:
+                self.cascade_cap_reached = True
+                break
+
             self.tumble_game_board()
+            cascades += 1
             self.get_clusters_update_wins()
             self.emit_tumble_win_events()
             self.update_grid_mults()
