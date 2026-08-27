@@ -126,6 +126,37 @@ Le navigateur ne lit **jamais** `math/`. La frontière est le fichier généré.
 Nombre de books gardés : **quelques-uns par scénario** (2 par défaut). Jamais la
 bibliothèque Math complète.
 
+### Variante : books canoniques
+
+Un jeu peut préférer une poignée de books **versionnés** et stables plutôt que
+des cas pêchés dans une simulation. C'est le chemin de PLANT VS WILD.
+
+```text
+MATH
+  math/games/<id>/make_books.py
+        ↓
+canonical_books/*.json          versionnés, déterministes, 11 scénarios
+        ↓  tooling/debug/sync-math-books.mjs   (lecture seule, valide le contrat)
+apps/<game>/src/dev/generated-books/
+  *.json      copies conformes à l'octet près
+  index.ts    module GÉNÉRÉ
+        ↓
+Debug Panel — catégorie MATH
+        ↓  playBookEvent(event, { bookEvents })
+normal book pipeline
+```
+
+Les deux chemins coexistent : simulation pour les cas rares, canoniques pour la
+référence. Même frontière — un fichier généré, jamais `math/` à runtime.
+
+La synchronisation **échoue** si un book s'écarte du contrat (event inconnu,
+plateau mal dimensionné, position hors des lignes visibles, `finalWin` en double).
+Un book non conforme se corrige dans le Math, jamais dans le frontend.
+
+Les scénarios sont préfixés par leur origine — `MATH · Wild Connection` face à
+`MOCK · Base — Wild Connection` — pour comparer d'un clic le nouveau Math au
+contrat déjà validé.
+
 ---
 
 ## Opening the panel

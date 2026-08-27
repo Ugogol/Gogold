@@ -14,5 +14,11 @@
 	"DebugPanel",
 	"debugScenarios",
 	"genericSpins",
-	"NEXT GENERIC"
+	"NEXT MOCK",
+	"generated-books",
+	"mathBooks",
+	"genericMathSpins",
+	"genericMathSpinIds",
+	"math-bonus-trigger",
+	"NEXT MATH"
 ]

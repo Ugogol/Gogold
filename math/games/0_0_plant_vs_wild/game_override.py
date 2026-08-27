@@ -96,6 +96,7 @@ class GameStateOverride(GameExecutables):
         else:
             self.create_board_reelstrips()
 
+        self.keep_wild_out_of_padding()
         self.place_carried_wild()
         self.enforce_single_main_wild()
         self.guarantee_wild()

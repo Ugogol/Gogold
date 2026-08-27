@@ -135,6 +135,33 @@ class GameExecutables(GameCalculations):
             if pos != keep:
                 self.replace_symbol(pos, self.filler_name(pos["reel"]))
 
+    def keep_wild_out_of_padding(self) -> None:
+        """Le Wild n'arrive JAMAIS par une case de padding.
+
+        Un symbole de padding est un vrai symbole : au tumble suivant il descend
+        dans le plateau visible. Si c'est un Wild alors qu'un Wild principal est
+        déjà en jeu, le joueur en voit deux. Et le corriger après coup ne suffit
+        pas : le frontend détient déjà ce symbole — il lui a été annoncé dans le
+        `newSymbols` d'un tumble précédent — et aucun event ne peut le lui
+        reprendre. On l'écarte donc au moment où il est tiré, avant qu'il
+        n'entre dans un book.
+
+        Le Wild continue d'apparaître normalement au reveal et dans les cases
+        visibles d'un refill : ces deux chemins-là, eux, sont annoncés.
+        """
+        pending = getattr(self, "new_symbols_from_tumble", None)
+        for reel in range(self.config.num_reels):
+            for holder in (self.top_symbols, self.bottom_symbols):
+                if holder is None or holder[reel].name != WILD_NAME:
+                    continue
+                replacement = self.create_symbol(self.filler_name(reel))
+                if pending:
+                    for index, symbol in enumerate(pending[reel]):
+                        if symbol is holder[reel]:
+                            pending[reel][index] = replacement
+                            break
+                holder[reel] = replacement
+
     def place_carried_wild(self) -> None:
         """En Bonus, le Wild principal est CONSERVÉ d'un Free Spin à l'autre.
 
@@ -169,6 +196,12 @@ class GameExecutables(GameCalculations):
         La destination est choisie parmi les cases libérées par la connexion —
         la case du Wild lui-même en fait partie, il peut donc ne pas bouger. Le
         déplacement précède le refill : le Wild n'est jamais détruit.
+
+        UNE SEULE CHARGE PAR CASCADE. Un Wild peut compléter deux groupes à la
+        fois — il appartient alors aux deux et rapporte dans les deux — mais il
+        ne se charge que d'un cran. La fonction est appelée une fois par tour de
+        cascade et toutes les cases gagnantes du tour sont réunies dans
+        `released` : la règle est structurelle, pas un cas particulier.
         """
         if self.win_data["totalWin"] <= 0 or self.wild_position is None:
             return
@@ -206,6 +239,7 @@ class GameExecutables(GameCalculations):
 
         self.tumble_board()
 
+        self.keep_wild_out_of_padding()
         self.enforce_single_main_wild()
         self.sync_wild_state()
         tumble_board_event(self, exploding)

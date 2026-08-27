@@ -39,6 +39,10 @@ type BookEventReveal = {
  *
  * `clusterSize` est présent dans les books Stake réels mais absent de leur type
  * déclaré ; il est ajouté ici parce que nos books en produiront un.
+ *
+ * ⚠️ Les `positions` de deux connexions PEUVENT se recouvrir : un Wild qui
+ * complète deux groupes appartient aux deux, et compte dans les deux gains.
+ * Le frontend dédoublonne avant d'animer — une case ne s'allume qu'une fois.
  */
 type BookEventWinInfo = {
 	index: number;
@@ -196,7 +200,11 @@ type BookEventFreeSpinEnd = {
  * progresse mais ne bouge pas ». Aucun cas particulier n'est nécessaire.
  *
  * `charge` est la valeur ABSOLUE après la connexion (1 → 4), jamais un
- * incrément : le frontend ne compte rien. `charge === 4` est l'état qui mènera
+ * incrément : le frontend ne compte rien.
+ *
+ * ⚠️ UNE SEULE CHARGE PAR CASCADE, donc au plus un `wildMove` entre deux
+ * `tumbleBoard`. Un Wild qui complète deux groupes à la fois appartient aux
+ * deux et rapporte dans les deux, mais ne progresse que d'un cran. `charge === 4` est l'état qui mènera
  * au Bonus en fin de spin. Le maximum vit dans `config.ts`, c'est une règle
  * fixe et non une donnée de spin.
  *

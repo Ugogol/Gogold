@@ -18,8 +18,8 @@
   },
   {
    "name": "math-multi-cascade",
-   "events": 19,
-   "payoutMultiplier": 240
+   "events": 37,
+   "payoutMultiplier": 53660
   },
   {
    "name": "math-multipliers",
@@ -28,33 +28,33 @@
   },
   {
    "name": "math-bonus-trigger",
-   "events": 115,
-   "payoutMultiplier": 240000
+   "events": 105,
+   "payoutMultiplier": 17780
   },
   {
    "name": "math-free-spins",
-   "events": 63,
-   "payoutMultiplier": 1640
+   "events": 67,
+   "payoutMultiplier": 1820
   },
   {
    "name": "math-retrigger",
-   "events": 105,
-   "payoutMultiplier": 3540
+   "events": 120,
+   "payoutMultiplier": 23840
   },
   {
    "name": "math-rage",
-   "events": 76,
-   "payoutMultiplier": 6280
+   "events": 79,
+   "payoutMultiplier": 3780
   },
   {
    "name": "math-snake",
-   "events": 86,
-   "payoutMultiplier": 9800
+   "events": 69,
+   "payoutMultiplier": 23680
   },
   {
    "name": "math-split",
-   "events": 70,
-   "payoutMultiplier": 9640
+   "events": 93,
+   "payoutMultiplier": 32260
   }
  ]
 }

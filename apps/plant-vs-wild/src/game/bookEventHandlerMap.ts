@@ -56,10 +56,24 @@ const assertWildDestinationIsReleased = (
 	}
 };
 
-/** Mise en évidence de cases, reprise de `apps/cluster`. */
+/**
+ * Mise en évidence de cases, reprise de `apps/cluster`.
+ *
+ * Les cases sont DÉDOUBLONNÉES avant d'être animées. Un `winInfo` peut citer la
+ * même case dans deux connexions : le Wild qui complète deux groupes à la fois
+ * appartient légitimement aux deux, et les books Math en produisent. Sans ce
+ * filtre, deux attentes viseraient le même symbole, la seconde écraserait le
+ * `oncomplete` de la première, et le playback se figerait — constaté.
+ *
+ * Ce n'est pas une correction de Book : aucune connexion, aucun montant, aucune
+ * position n'est modifié. Une case ne peut simplement pas s'allumer deux fois.
+ */
 const animateSymbols = async ({ positions }: { positions: Position[] }) => {
 	eventEmitter.broadcast({ type: 'boardShow' });
-	await eventEmitter.broadcastAsync({ type: 'boardWithAnimateSymbols', symbolPositions: positions });
+	await eventEmitter.broadcastAsync({
+		type: 'boardWithAnimateSymbols',
+		symbolPositions: _.uniqWith(positions, _.isEqual),
+	});
 };
 
 export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContext> = {
@@ -280,6 +294,26 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 				positions: bookEvent.positions,
 			});
 		}
+	},
+
+	/**
+	 * Montant courant de la cascade en cours.
+	 *
+	 * Les trois events de gain écrivent le même état partagé, chacun à son
+	 * échelle : la cascade, puis le spin, puis le pari. Aucun n'additionne quoi
+	 * que ce soit — chaque montant vient du book.
+	 *
+	 * Rien ne LIT encore cet état : l'affichage du gain (bandeau, compteur,
+	 * niveaux de win) viendra avec sa propre étape. Le handler existe pour que
+	 * la séquence Stake complète soit consommée plutôt que signalée manquante.
+	 */
+	updateTumbleWin: async (bookEvent: BookEventOfType<'updateTumbleWin'>) => {
+		stateBet.winBookEventAmount = bookEvent.amount;
+	},
+
+	/** Gain du spin, cascades comprises. Même remarque que ci-dessus. */
+	setWin: async (bookEvent: BookEventOfType<'setWin'>) => {
+		stateBet.winBookEventAmount = bookEvent.amount;
 	},
 
 	/** Fin de résolution du spin. Le montant est une donnée du book, pas un calcul. */

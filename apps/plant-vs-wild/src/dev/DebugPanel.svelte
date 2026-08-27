@@ -16,7 +16,8 @@
 	import { playBookEvent } from '../game/utils';
 	import { eventEmitter } from '../game/eventEmitter';
 	import { stateGame } from '../game/stateGame.svelte';
-	import { debugScenarios, genericSpins, resetBook } from './debugScenarios';
+	import { debugScenarios, genericSpins, genericMathSpins, resetBook } from './debugScenarios';
+	import { WILD_MAX_CHARGE } from '../game/config';
 
 	let open = $state(true);
 	let scenarioId = $state(debugScenarios[0].id);
@@ -24,6 +25,8 @@
 	let replayCount = $state(0);
 	let genericIndex = $state(0);
 	let genericMode = $state(false);
+	/** Quelle série générique défile : books MOCK ou books MATH. */
+	let genericSource = $state<'mock' | 'math'>('math');
 	let currentEvent = $state('');
 	let eventStep = $state(0);
 	let eventTotal = $state(0);
@@ -32,6 +35,7 @@
 	const scenario = $derived(
 		debugScenarios.find((item) => item.id === scenarioId) ?? debugScenarios[0],
 	);
+	const genericList = $derived(genericSource === 'math' ? genericMathSpins : genericSpins);
 	const mode = $derived(stateGame.gameType === 'freegame' ? 'BONUS' : 'BASE');
 
 	/**
@@ -89,18 +93,24 @@
 	const replay = async () => {
 		clearBonusUi();
 		replayCount += 1;
-		await play(genericMode ? genericSpins[genericIndex].events : scenario.events);
+		await play(genericMode ? genericList[genericIndex].events : scenario.events);
 	};
 
 	const spinGeneric = async () => {
 		clearBonusUi();
-		await play(genericSpins[genericIndex].events);
+		await play(genericList[genericIndex].events);
 	};
 
-	const nextGeneric = async () => {
+	/**
+	 * Spin suivant de la série demandée. Changer de série repart de son début :
+	 * les deux listes n'ont ni la même longueur ni le même contenu.
+	 */
+	const nextGeneric = async (source: 'mock' | 'math') => {
 		if (playing) return;
+		const restart = !genericMode || genericSource !== source;
+		genericSource = source;
 		genericMode = true;
-		genericIndex = (genericIndex + 1) % genericSpins.length;
+		genericIndex = restart ? 0 : (genericIndex + 1) % genericList.length;
 		replayCount = 0;
 		await spinGeneric();
 	};
@@ -117,11 +127,45 @@
 		eventTotal = 0;
 	};
 
+	/**
+	 * Charge du Wild, lue directement sur le plateau — OBSERVATION PURE.
+	 *
+	 * Rien n'est calculé ni déduit : `rawSymbol.charge` est écrit par le handler
+	 * `wildMove` à partir de la valeur du Book. Le panneau l'affiche, comme il
+	 * affiche déjà le mode et l'event courant.
+	 *
+	 * Les lignes du plateau sont des index PADDÉS — 0 est hors champ, 1 à 5 sont
+	 * visibles. On n'inspecte que les lignes visibles, et la case est affichée
+	 * `(reel,row)`, exactement comme une `Position` de Book : les coordonnées se
+	 * comparent au JSON sans conversion.
+	 */
+	const wildState = $derived.by(() => {
+		const wilds: { reel: number; row: number; charge: number; temporary: boolean }[] = [];
+
+		for (const [reelIndex, reel] of stateGame.board.entries()) {
+			for (const [rowIndex, symbol] of reel.reelState.symbols.entries()) {
+				if (rowIndex < 1 || rowIndex > 5) continue;
+				if (symbol?.rawSymbol.name !== 'W') continue;
+				wilds.push({
+					reel: reelIndex,
+					row: rowIndex,
+					charge: symbol.rawSymbol.charge ?? 0,
+					temporary: Boolean(symbol.rawSymbol.temporary),
+				});
+			}
+		}
+
+		return {
+			main: wilds.find((wild) => !wild.temporary) ?? null,
+			temporary: wilds.filter((wild) => wild.temporary).length,
+		};
+	});
+
 	const status = $derived(playing ? 'Playing' : 'Ready');
 	const currentLabel = $derived(
 		genericMode
-			? `GENERIC ${genericIndex + 1}/${genericSpins.length} — ${genericSpins[genericIndex].label}`
-			: scenario.label,
+			? `${genericSource.toUpperCase()} ${genericIndex + 1}/${genericList.length} — ${genericList[genericIndex].label}`
+			: `${scenario.group} · ${scenario.label}`,
 	);
 </script>
 
@@ -153,7 +197,10 @@
 				<button onclick={replay} disabled={playing}>REPLAY</button>
 			</div>
 			<div class="row">
-				<button onclick={nextGeneric} disabled={playing}>NEXT GENERIC</button>
+				<button onclick={() => nextGeneric('math')} disabled={playing}>NEXT MATH</button>
+				<button onclick={() => nextGeneric('mock')} disabled={playing}>NEXT MOCK</button>
+			</div>
+			<div class="row">
 				<button onclick={reset} disabled={playing}>RESET</button>
 			</div>
 
@@ -162,6 +209,18 @@
 				<dd class:playing>{status}</dd>
 				<dt>mode</dt>
 				<dd>{mode}</dd>
+				<dt>charge</dt>
+				<dd class:charged={(wildState.main?.charge ?? 0) >= WILD_MAX_CHARGE}>
+					{#if wildState.main}
+						{wildState.main.charge}/{WILD_MAX_CHARGE} · ({wildState.main.reel},{wildState.main.row})
+					{:else}
+						pas de Wild
+					{/if}
+				</dd>
+				{#if wildState.temporary > 0}
+					<dt>temporaires</dt>
+					<dd>{wildState.temporary}</dd>
+				{/if}
 				<dt>courant</dt>
 				<dd class="wrap">{currentLabel}</dd>
 				{#if replayCount > 0}
@@ -278,6 +337,10 @@
 
 	dd.playing {
 		color: #7ee787;
+	}
+
+	dd.charged {
+		color: #ffcc4d;
 	}
 
 	.error {
