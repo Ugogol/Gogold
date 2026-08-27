@@ -7,16 +7,24 @@ import wild from '../stories/data/base_book_wild';
 import multiplier from '../stories/data/base_book_multiplier';
 import bonus from '../stories/data/base_book_bonus';
 import feature from '../stories/data/base_book_feature';
+import { mathBooks, genericMathSpinIds } from './generated-books';
 
 /**
  * Registre DEV des scénarios jouables — DÉVELOPPEMENT UNIQUEMENT.
  *
- * Il ne contient presque aucune donnée : il RÉFÉRENCE les Books déterministes
- * déjà écrits et validés aux étapes 5 à 9. Seuls trois plateaux perdants sont
- * ajoutés ici, faute d'équivalent existant.
+ * Il ne contient presque aucune donnée : il RÉFÉRENCE des Books existants.
+ * Deux origines cohabitent, volontairement, pour qu'on puisse les comparer :
+ *
+ *   MOCK   books écrits à la main aux étapes 5 à 9, qui ont servi à valider le
+ *          contrat et restent la référence de Storybook ;
+ *   MATH   books réellement produits par `math/games/0_0_plant_vs_wild/`,
+ *          copiés sans transformation par `tooling/debug/sync-math-books.mjs`.
+ *
+ * Les deux passent par le même pipeline : le frontend ne sait pas d'où vient un
+ * book, et ne doit surtout pas le savoir.
  *
  * Aucun tirage, aucune probabilité, aucun `Math.random` : la « variété » des
- * spins génériques est une liste écrite à la main que l'on parcourt en boucle.
+ * spins génériques est une liste ordonnée que l'on parcourt en boucle.
  */
 
 const reel = (...names: SymbolName[]): RawSymbol[] => names.map((name) => ({ name }));
@@ -77,56 +85,71 @@ export const resetBook: BookEvent[] = losingSpin(losingBoardA);
 export type DebugScenario = {
 	id: string;
 	label: string;
-	group: 'BASE' | 'BONUS' | 'GENERIC';
+	/** Origine du book, seule information que le panneau expose. */
+	group: 'MOCK' | 'MATH';
 	events: BookEvent[];
 };
 
 /** Le spin déclencheur seul : les 8 premiers events du book Bonus. */
 const bonusTriggerOnly = bonus.bookBonus.state.slice(0, 8);
 
-export const debugScenarios: DebugScenario[] = [
+/**
+ * Scénarios MATH — books réellement générés par le Math SDK.
+ *
+ * Aucun contenu n'est réécrit ici : la liste est construite à partir du module
+ * généré. Ajouter un scénario se fait dans `mathBooks.config.json`, puis en
+ * relançant la synchronisation — jamais en éditant ce fichier.
+ */
+const mathScenarios: DebugScenario[] = mathBooks.map((book) => ({
+	id: book.id,
+	label: book.label,
+	group: 'MATH',
+	events: book.events,
+}));
+
+const mockScenarios: DebugScenario[] = [
 	// ── Base Game ────────────────────────────────────────────────────────────
-	{ id: 'base-no-win', label: 'Base — No Win', group: 'BASE', events: losingSpin(losingBoardA) },
+	{ id: 'base-no-win', label: 'Base — No Win', group: 'MOCK', events: losingSpin(losingBoardA) },
 	{
 		id: 'base-simple-cluster',
 		label: 'Base — Simple Cluster',
-		group: 'BASE',
+		group: 'MOCK',
 		events: cascade.bookEvents,
 	},
 	{
 		id: 'base-multi-cascade',
 		label: 'Base — Multi Cascade',
-		group: 'BASE',
+		group: 'MOCK',
 		events: multiplier.bookMultiplierCascade.state,
 	},
 	{
 		id: 'base-wild-reveal',
 		label: 'Base — Wild Reveal',
-		group: 'BASE',
+		group: 'MOCK',
 		events: wild.bookWildAtReveal.state,
 	},
 	{
 		id: 'base-wild-connection',
 		label: 'Base — Wild Connection',
-		group: 'BASE',
+		group: 'MOCK',
 		events: wild.bookWildCharge1.state,
 	},
 	{
 		id: 'base-wild-charge',
 		label: 'Base — Wild Charge (2 → 3)',
-		group: 'BASE',
+		group: 'MOCK',
 		events: wild.bookWildCharge3.state,
 	},
 	{
 		id: 'base-multipliers',
 		label: 'Base — Multipliers (x2 puis x4)',
-		group: 'BASE',
+		group: 'MOCK',
 		events: multiplier.bookMultiplierCascade.state,
 	},
 	{
 		id: 'base-bonus-trigger',
 		label: `Base — Bonus Trigger (charge ${WILD_MAX_CHARGE})`,
-		group: 'BASE',
+		group: 'MOCK',
 		events: bonusTriggerOnly,
 	},
 
@@ -134,50 +157,57 @@ export const debugScenarios: DebugScenario[] = [
 	{
 		id: 'bonus-free-spins',
 		label: 'Bonus — Free Spins',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: bonus.bookBonus.state,
 	},
 	{
 		id: 'bonus-no-win-spins',
 		label: 'Bonus — Free Spins sans gain',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: bonus.bookBonusNoWinSpins.state,
 	},
-	{ id: 'bonus-rage', label: 'Bonus — Rage', group: 'BONUS', events: feature.bookRage.state },
+	{ id: 'bonus-rage', label: 'Bonus — Rage', group: 'MOCK', events: feature.bookRage.state },
 	{
 		id: 'bonus-snake',
 		label: 'Bonus — Wild Snake (court, Low)',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: feature.bookWildSnake.state,
 	},
 	{
 		id: 'bonus-snake-long',
 		label: 'Bonus — Wild Snake (long, High)',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: feature.bookWildSnakeLong.state,
 	},
 	{
 		id: 'bonus-split',
 		label: 'Bonus — Wild Split',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: feature.bookWildSplit.state,
 	},
 	{
 		id: 'bonus-full-demo',
 		label: 'Bonus — Full Demo (trigger → retrigger → sortie)',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: bonus.bookBonus.state,
 	},
 	{
 		id: 'bonus-back-to-base',
 		label: 'Bonus — Retour Base Game',
-		group: 'BONUS',
+		group: 'MOCK',
 		events: bonus.bookAfterBonus.state,
 	},
 ];
 
 /**
- * Série générique déterministe.
+ * Les scénarios MATH d'abord : ce sont eux que l'on valide désormais. Les MOCK
+ * restent accessibles juste en dessous, pour comparer un même cas — par exemple
+ * « MATH · Wild Connection » et « MOCK · Base — Wild Connection ».
+ */
+export const debugScenarios: DebugScenario[] = [...mathScenarios, ...mockScenarios];
+
+/**
+ * Série générique déterministe, books MOCK.
  *
  * Elle sert uniquement à cliquer plusieurs fois de suite et voir défiler des
  * spins variés — perdants, petits gains, cascades, Wild, multiplicateurs. Ce
@@ -193,3 +223,17 @@ export const genericSpins: { label: string; events: BookEvent[] }[] = [
 	{ label: 'connexion Wild', events: wild.bookWildCharge1.state },
 	{ label: 'no win', events: losingSpin(losingBoardC) },
 ];
+
+/**
+ * Série générique déterministe, books MATH.
+ *
+ * Même principe, mais chaque spin est un book réellement produit par le Math.
+ * L'ordre vient de `mathBooks.config.json` : aucun tirage côté frontend.
+ */
+export const genericMathSpins: { label: string; events: BookEvent[] }[] = genericMathSpinIds.map(
+	(id) => {
+		const book = mathBooks.find((candidate) => candidate.id === id);
+		if (!book) throw new Error(`Série générique Math : book inconnu « ${id} »`);
+		return { label: book.label, events: book.events };
+	},
+);

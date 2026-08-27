@@ -1,0 +1,503 @@
+{
+ "meta": {
+  "game_id": "0_0_plant_vs_wild",
+  "paytable": "TEST_ONLY",
+  "note": "Mesure d'un état, pas une validation. Aucun objectif de RTP n'est fixé.",
+  "rules": {
+   "min_cluster": 4,
+   "board": "5x5",
+   "max_position_multiplier": 4096,
+   "wild_max_charge": 4,
+   "free_spins": 10,
+   "retrigger": 5
+  },
+  "balancing_parameters": {
+   "snake_symbol_weights": {
+    "basegame": {
+     "L1": 1,
+     "L2": 1,
+     "L3": 1,
+     "L4": 1,
+     "H1": 1,
+     "H2": 1,
+     "H3": 1
+    },
+    "freegame": {
+     "L1": 1,
+     "L2": 1,
+     "L3": 1,
+     "L4": 1,
+     "H1": 1,
+     "H2": 1,
+     "H3": 1,
+     "H4": 1
+    }
+   },
+   "dead_spin_feature_weights": {
+    "none": 1,
+    "rage": 0,
+    "wildSnake": 0,
+    "wildSplit": 0
+   },
+   "snake_path_length": [
+    3,
+    5
+   ],
+   "split_wild_count": 3
+  }
+ },
+ "simulations": {
+  "base": {
+   "wagers": 50000,
+   "bet_cost": 1.0,
+   "seeding": "simulation_seeds = range(n), random.seed(0) — reproductible"
+  },
+  "bonus": {
+   "wagers": 10000,
+   "bet_cost": 100.0,
+   "seeding": "simulation_seeds = range(n), random.seed(0) — reproductible"
+  }
+ },
+ "modes": {
+  "base": {
+   "sdk": {
+    "rtp": 6.97702,
+    "hit_rate": 7.12962,
+    "prob_no_win": 0.85974,
+    "average_win": 6.977,
+    "std_dev": 152.7557,
+    "variance": 23334.3151,
+    "skew": 29.6504,
+    "excess_kurtosis": 926.1901,
+    "max_win_observed": 5000.0,
+    "max_win_hit_rate": 1315.7894736842104
+   },
+   "observed_rtp": 6.97702,
+   "win_distribution": {
+    "0x": {
+     "count": 42987,
+     "share": 0.85974
+    },
+    ">0x-1x": {
+     "count": 2837,
+     "share": 0.05674
+    },
+    "1x-2x": {
+     "count": 1951,
+     "share": 0.03902
+    },
+    "2x-5x": {
+     "count": 1098,
+     "share": 0.02196
+    },
+    "5x-10x": {
+     "count": 385,
+     "share": 0.0077
+    },
+    "10x-25x": {
+     "count": 230,
+     "share": 0.0046
+    },
+    "25x-50x": {
+     "count": 139,
+     "share": 0.00278
+    },
+    "50x-100x": {
+     "count": 133,
+     "share": 0.00266
+    },
+    "100x-500x": {
+     "count": 134,
+     "share": 0.00268
+    },
+    "500x+": {
+     "count": 106,
+     "share": 0.00212
+    }
+   },
+   "payout_percentiles_in_bet_multiples": {
+    "P50": 0.0,
+    "P90": 0.5,
+    "P95": 1.9,
+    "P99": 26.5,
+    "P99.9": 2225.0
+   },
+   "max_observed_win_in_bet_multiples": 5000.0,
+   "basegame": {
+    "spins": 50000,
+    "spins_with_win": 7013,
+    "hit_rate_per_spin": 0.14026,
+    "cascades": {
+     "distribution": {
+      "0": 42987,
+      "1": 2293,
+      "2": 3084,
+      "3": 833,
+      "4": 803
+     },
+     "average": 0.2985,
+     "max": 26
+    },
+    "wild": {
+     "spins_with_wild": 27788,
+     "frequency": 0.55576,
+     "at_reveal": 27781,
+     "from_refill": 7,
+     "connections_per_spin": {
+      "0": 43764,
+      "1": 1886,
+      "2": 2898,
+      "3": 715,
+      "4": 737
+     }
+    },
+    "multiplier_peaks": {
+     "2": 51297,
+     "4": 17568,
+     "8": 4059,
+     "16": 1427,
+     "32": 560,
+     "64": 281,
+     "128": 183,
+     "256": 135,
+     "512": 106,
+     "1024": 81,
+     "2048": 61,
+     "4096": 49
+    },
+    "win_amount_total": 187043.2,
+    "win_without_multipliers_total": 5014.9,
+    "features": {},
+    "snake": {
+     "average_length": null,
+     "max_length": null,
+     "symbols": {}
+    }
+   },
+   "freegame": {
+    "spins": 8105,
+    "spins_with_win": 1681,
+    "hit_rate_per_spin": 0.2074,
+    "cascades": {
+     "distribution": {
+      "0": 6480,
+      "1": 883,
+      "2": 436,
+      "3": 151,
+      "4": 155
+     },
+     "average": 0.3618,
+     "max": 13
+    },
+    "wild": {
+     "spins_with_wild": 8105,
+     "frequency": 1.0,
+     "at_reveal": 8105,
+     "from_refill": 0,
+     "connections_per_spin": {
+      "0": 6626,
+      "1": 819,
+      "2": 377,
+      "3": 136,
+      "4": 147
+     }
+    },
+    "multiplier_peaks": {
+     "2": 2845,
+     "4": 2693,
+     "8": 2461,
+     "16": 1952,
+     "32": 1513,
+     "64": 1074,
+     "128": 693,
+     "256": 427,
+     "512": 284,
+     "1024": 169,
+     "2048": 107,
+     "4096": 71
+    },
+    "win_amount_total": 324988.3,
+    "win_without_multipliers_total": 1001.8,
+    "features": {},
+    "snake": {
+     "average_length": null,
+     "max_length": null,
+     "symbols": {}
+    }
+   },
+   "bonus": {
+    "wagers_with_bonus": 737,
+    "trigger_frequency": 0.01474,
+    "one_in": 67.8,
+    "rounds": 737,
+    "average_total_fs": 10.997,
+    "average_win": 343.407,
+    "median_win": 29.8,
+    "max_win": 5000.0,
+    "retriggers": {
+     "average": 0.1995,
+     "zero": 614,
+     "one": 101,
+     "two_or_more": 22
+    }
+   },
+   "rtp_contribution": {
+    "basegame_share": 0.3653,
+    "freegame_share": 0.6347,
+    "position_multipliers_share": 0.98825,
+    "position_multipliers_note": "Isolable exactement : win - winWithoutMult, les deux montants sont dans winInfo.",
+    "wild_share": "NON_ISOLABLE",
+    "wild_note": "Le Wild complète des connexions qui n'existeraient pas sans lui et en agrandit d'autres. Séparer sa part demanderait de rejouer chaque spin sans Wild — ce serait un autre jeu, pas une mesure.",
+    "features_share": 0.0,
+    "features_note": "Gains encaissés dans un spin APRÈS l'activation d'une feature. Majorant : une partie de ces gains serait peut-être survenue sans elle."
+   }
+  },
+  "bonus": {
+   "sdk": {
+    "rtp": 1.07243,
+    "hit_rate": 1.06338,
+    "prob_no_win": 0.0596,
+    "average_win": 107.243,
+    "std_dev": 542.32,
+    "variance": 294110.9688,
+    "skew": 7780069.6506,
+    "excess_kurtosis": 6633020594.1065,
+    "max_win_observed": 5000.0,
+    "max_win_hit_rate": 119.04761904761905
+   },
+   "observed_rtp": 1.07243,
+   "win_distribution": {
+    "0x": {
+     "count": 596,
+     "share": 0.0596
+    },
+    ">0x-1x": {
+     "count": 8397,
+     "share": 0.8397
+    },
+    "1x-2x": {
+     "count": 398,
+     "share": 0.0398
+    },
+    "2x-5x": {
+     "count": 263,
+     "share": 0.0263
+    },
+    "5x-10x": {
+     "count": 132,
+     "share": 0.0132
+    },
+    "10x-25x": {
+     "count": 84,
+     "share": 0.0084
+    },
+    "25x-50x": {
+     "count": 130,
+     "share": 0.013
+    },
+    "50x-100x": {
+     "count": 0,
+     "share": 0.0
+    },
+    "100x-500x": {
+     "count": 0,
+     "share": 0.0
+    },
+    "500x+": {
+     "count": 0,
+     "share": 0.0
+    }
+   },
+   "payout_percentiles_in_bet_multiples": {
+    "P50": 0.069,
+    "P90": 1.014,
+    "P95": 2.742,
+    "P99": 41.082,
+    "P99.9": 50.0
+   },
+   "max_observed_win_in_bet_multiples": 50.0,
+   "basegame": {
+    "spins": 10000,
+    "spins_with_win": 1383,
+    "hit_rate_per_spin": 0.1383,
+    "cascades": {
+     "distribution": {
+      "0": 8617,
+      "1": 446,
+      "2": 619,
+      "3": 153,
+      "4": 165
+     },
+     "average": 0.2979,
+     "max": 18
+    },
+    "wild": {
+     "spins_with_wild": 5621,
+     "frequency": 0.5621,
+     "at_reveal": 5619,
+     "from_refill": 2,
+     "connections_per_spin": {
+      "0": 8756,
+      "1": 372,
+      "2": 585,
+      "3": 138,
+      "4": 149
+     }
+    },
+    "multiplier_peaks": {
+     "2": 10162,
+     "4": 3480,
+     "8": 859,
+     "16": 303,
+     "32": 148,
+     "64": 70,
+     "128": 49,
+     "256": 39,
+     "512": 28,
+     "1024": 22,
+     "2048": 17,
+     "4096": 16
+    },
+    "win_amount_total": 56888.2,
+    "win_without_multipliers_total": 1007.5,
+    "features": {},
+    "snake": {
+     "average_length": null,
+     "max_length": null,
+     "symbols": {}
+    }
+   },
+   "freegame": {
+    "spins": 110350,
+    "spins_with_win": 25904,
+    "hit_rate_per_spin": 0.23474,
+    "cascades": {
+     "distribution": {
+      "0": 84589,
+      "1": 13781,
+      "2": 7128,
+      "3": 2650,
+      "4": 2202
+     },
+     "average": 0.4196,
+     "max": 22
+    },
+    "wild": {
+     "spins_with_wild": 110350,
+     "frequency": 1.0,
+     "at_reveal": 110350,
+     "from_refill": 0,
+     "connections_per_spin": {
+      "0": 86371,
+      "1": 12987,
+      "2": 6507,
+      "3": 2415,
+      "4": 2070
+     }
+    },
+    "multiplier_peaks": {
+     "2": 98006,
+     "4": 54055,
+     "8": 30480,
+     "16": 16838,
+     "32": 9578,
+     "64": 5628,
+     "128": 3308,
+     "256": 1936,
+     "512": 1175,
+     "1024": 729,
+     "2048": 440,
+     "4096": 261
+    },
+    "win_amount_total": 1307018.0,
+    "win_without_multipliers_total": 15666.9,
+    "features": {},
+    "snake": {
+     "average_length": null,
+     "max_length": null,
+     "symbols": {}
+    }
+   },
+   "bonus": {
+    "wagers_with_bonus": 10000,
+    "trigger_frequency": 1.0,
+    "one_in": 1.0,
+    "rounds": 10000,
+    "average_total_fs": 11.035,
+    "average_win": 104.448,
+    "median_win": 6.6,
+    "max_win": 5000.0,
+    "retriggers": {
+     "average": 0.207,
+     "zero": 8259,
+     "one": 1449,
+     "two_or_more": 292
+    }
+   },
+   "rtp_contribution": {
+    "basegame_share": 0.04171,
+    "freegame_share": 0.95829,
+    "position_multipliers_share": 0.98777,
+    "position_multipliers_note": "Isolable exactement : win - winWithoutMult, les deux montants sont dans winInfo.",
+    "wild_share": "NON_ISOLABLE",
+    "wild_note": "Le Wild complète des connexions qui n'existeraient pas sans lui et en agrandit d'autres. Séparer sa part demanderait de rejouer chaque spin sans Wild — ce serait un autre jeu, pas une mesure.",
+    "features_share": 0.0,
+    "features_note": "Gains encaissés dans un spin APRÈS l'activation d'une feature. Majorant : une partie de ces gains serait peut-être survenue sans elle."
+   }
+  }
+ },
+ "feature_probe": {
+  "note": "SONDE — une feature est forcée sur chaque dead spin éligible. Les fréquences réelles ne sont pas décidées ; seules les valeurs conditionnelles ont un sens ici.",
+  "probe_weights": {
+   "none": 0,
+   "rage": 1,
+   "wildSnake": 1,
+   "wildSplit": 1
+  },
+  "wagers": 2000,
+  "bet_mode": "bonus",
+  "free_spins_played": 23860,
+  "eligible_dead_spins": 17738,
+  "eligible_dead_spin_rate_per_free_spin": 0.74342,
+  "features": {
+   "rage": {
+    "activations": 5880,
+    "average_win_after_x": 292.326,
+    "median_win_after_x": 2.4,
+    "max_win_after_x": 8223.4,
+    "share_without_win": 0.4158
+   },
+   "wildSnake": {
+    "activations": 5887,
+    "average_win_after_x": 429.916,
+    "median_win_after_x": 26.6,
+    "max_win_after_x": 7432.8,
+    "share_without_win": 0.0
+   },
+   "wildSplit": {
+    "activations": 5971,
+    "average_win_after_x": 425.612,
+    "median_win_after_x": 16.4,
+    "max_win_after_x": 7603.8,
+    "share_without_win": 0.1348
+   }
+  },
+  "snake": {
+   "average_path_length": 3.979,
+   "max_path_length": 5,
+   "symbols": {
+    "H1": 729,
+    "H2": 713,
+    "H3": 724,
+    "H4": 745,
+    "L1": 723,
+    "L2": 715,
+    "L3": 769,
+    "L4": 769
+   },
+   "low_share": 0.5055,
+   "high_share": 0.4945,
+   "h4_share": 0.1266
+  }
+ }
+}

@@ -70,8 +70,11 @@
 			await announce(`${emitterEvent.totalFreeSpins} FREE SPINS`, 'BONUS'),
 		freeSpinOutroShow: () => (show = true),
 		freeSpinOutroHide: () => (show = false),
+		// Le montant vient du `freeSpinEnd` du book — depuis l'étape 12 c'est le
+		// Math qui le produit, plus une valeur écrite à la main. Il est affiché
+		// tel quel : aucun calcul, aucun cumul côté frontend.
 		freeSpinOutroCountUp: async (emitterEvent) =>
-			await announce('BONUS TERMINE', `TOTAL ${emitterEvent.amount} (MOCK)`),
+			await announce('BONUS TERMINE', `TOTAL ${emitterEvent.amount}`),
 		featureAnnounce: async (emitterEvent) => {
 			await announce(emitterEvent.title, emitterEvent.subtitle);
 			show = false;

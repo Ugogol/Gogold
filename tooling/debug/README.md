@@ -4,6 +4,70 @@ Génère les fixtures de développement consommées par le Debug Panel.
 
 Processus complet et règles : [`docs/DEBUG_PANEL.md`](../../docs/DEBUG_PANEL.md).
 
+Deux scripts, deux sources :
+
+| Script | Source | Quand |
+| --- | --- | --- |
+| `sync-math-books.mjs` | `math/games/<id>/canonical_books/` — books **versionnés** | scénarios de référence, stables, comparables au contrat |
+| `export_debug_scenarios.py` | `math/games/<id>/library/` — sorties de **simulation** | cas rares pêchés dans un gros run, non versionnés |
+
+## sync-math-books.mjs
+
+Copie les Books canoniques d'un jeu Math vers son app, après validation du
+contrat. Node >= 22, aucune dépendance.
+
+```powershell
+node tooling/debug/sync-math-books.mjs `
+    --math-game math/games/0_0_plant_vs_wild `
+    --config    apps/plant-vs-wild/src/dev/mathBooks.config.json `
+    --out       apps/plant-vs-wild/src/dev/generated-books
+```
+
+Raccourci : `pnpm --filter=plant-vs-wild run sync:math-books`.
+
+### Entrées
+
+```text
+math/games/<id>/canonical_books/index.json    la liste
+math/games/<id>/canonical_books/<name>.json   les books
+apps/<app>/src/dev/mathBooks.config.json      dimensions, events autorisés, scénarios
+```
+
+Les books canoniques sont produits par `python games/<id>/make_books.py`. Ils
+sont **versionnés**, contrairement aux sorties de simulation.
+
+### Sorties
+
+```text
+<out>/<name>.json    copies conformes, à l'octet près
+<out>/index.ts       module GÉNÉRÉ — ne jamais l'éditer à la main
+```
+
+### Ce qu'il valide
+
+```text
+type d'event connu du contrat frontend
+index cohérent avec la position dans le book
+board          reels x lignes paddées, symboles nommés
+newSymbols     une liste par reel
+gridMultipliers  reels x lignes visibles, valeurs numériques
+Position       {reel, row} dans le plateau, ligne visible (padding exclu)
+finalWin       unique et dernier
+setTotalWin    un par reveal (optionnel, selon la config du jeu)
+```
+
+Un Book non conforme fait **échouer** la synchronisation et rien n'est écrit. Il
+se corrige dans le Math, jamais dans le frontend.
+
+### Ce qu'il ne fait pas
+
+Il n'ajoute aucun event, ne déplace aucune position, ne touche ni aux symboles,
+ni aux multiplicateurs, ni aux charges. Il ne répare jamais silencieusement un
+Book. Il n'écrit que dans `--out`.
+
+> `resolveJsonModule` est désactivé dans `config-ts/base.json` (upstream Stake).
+> Une app qui consomme ces books l'active dans son propre `tsconfig.json`.
+
 ## export_debug_scenarios.py
 
 Extrait **quelques books** des sorties du Math SDK et écrit un petit module

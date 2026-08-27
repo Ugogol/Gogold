@@ -1,0 +1,60 @@
+{
+ "gameId": "0_0_plant_vs_wild",
+ "books": [
+  {
+   "name": "math-base-no-win",
+   "events": 4,
+   "payoutMultiplier": 0
+  },
+  {
+   "name": "math-simple-cluster",
+   "events": 9,
+   "payoutMultiplier": 80
+  },
+  {
+   "name": "math-wild-connection",
+   "events": 15,
+   "payoutMultiplier": 150
+  },
+  {
+   "name": "math-multi-cascade",
+   "events": 20,
+   "payoutMultiplier": 320
+  },
+  {
+   "name": "math-multipliers",
+   "events": 15,
+   "payoutMultiplier": 120
+  },
+  {
+   "name": "math-bonus-trigger",
+   "events": 84,
+   "payoutMultiplier": 4400
+  },
+  {
+   "name": "math-free-spins",
+   "events": 57,
+   "payoutMultiplier": 280
+  },
+  {
+   "name": "math-retrigger",
+   "events": 128,
+   "payoutMultiplier": 34340
+  },
+  {
+   "name": "math-rage",
+   "events": 57,
+   "payoutMultiplier": 470
+  },
+  {
+   "name": "math-snake",
+   "events": 58,
+   "payoutMultiplier": 380
+  },
+  {
+   "name": "math-split",
+   "events": 109,
+   "payoutMultiplier": 4640
+  }
+ ]
+}

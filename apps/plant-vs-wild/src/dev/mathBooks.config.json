@@ -1,0 +1,55 @@
+{
+	"_comment": [
+		"Configuration de sync-math-books pour PLANT VS WILD — DEV uniquement.",
+		"Elle décrit ce que le contrat frontend attend d'un Book Math ; le script",
+		"refuse tout Book qui s'en écarte, sans jamais le corriger.",
+		"Voir apps/plant-vs-wild/src/game/typesBookEvent.ts."
+	],
+	"board": {
+		"reels": 5,
+		"paddedRows": 7,
+		"visibleRows": 5
+	},
+	"oneSetTotalWinPerReveal": true,
+	"allowedEvents": [
+		"reveal",
+		"winInfo",
+		"updateTumbleWin",
+		"updateGrid",
+		"tumbleBoard",
+		"setWin",
+		"setTotalWin",
+		"finalWin",
+		"freeSpinTrigger",
+		"freeSpinRetrigger",
+		"updateFreeSpin",
+		"freeSpinEnd",
+		"wildMove",
+		"wildFeature"
+	],
+	"scenarios": [
+		{ "name": "math-base-no-win", "label": "No Win" },
+		{ "name": "math-simple-cluster", "label": "Simple Cluster" },
+		{ "name": "math-multi-cascade", "label": "Multi Cascade" },
+		{ "name": "math-wild-connection", "label": "Wild Connection" },
+		{ "name": "math-multipliers", "label": "Multipliers" },
+		{ "name": "math-bonus-trigger", "label": "Bonus Trigger" },
+		{ "name": "math-free-spins", "label": "Free Spins" },
+		{ "name": "math-retrigger", "label": "Retrigger" },
+		{ "name": "math-rage", "label": "Rage" },
+		{ "name": "math-snake", "label": "Wild Snake" },
+		{ "name": "math-split", "label": "Wild Split" }
+	],
+	"genericSeries": [
+		"math-base-no-win",
+		"math-simple-cluster",
+		"math-multi-cascade",
+		"math-wild-connection",
+		"math-multipliers",
+		"math-base-no-win",
+		"math-rage",
+		"math-snake",
+		"math-split",
+		"math-free-spins"
+	]
+}
