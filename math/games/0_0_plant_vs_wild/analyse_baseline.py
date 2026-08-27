@@ -330,7 +330,7 @@ def build_report(config, base, bonus):
                 "snake_symbol_weights": config.snake_symbol_weights,
                 "dead_spin_feature_weights": config.dead_spin_feature_weights,
                 "snake_path_length": list(config.snake_path_length),
-                "split_wild_count": config.split_wild_count,
+                "wild_split_extra_wilds": config.wild_split_extra_wilds,
             },
         },
         "simulations": {},

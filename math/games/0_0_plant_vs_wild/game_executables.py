@@ -414,7 +414,7 @@ class GameExecutables(GameCalculations):
         free = [
             position for position in self.all_positions() if self.symbol_at(position).name != WILD_NAME
         ]
-        positions = random.sample(free, min(self.config.split_wild_count, len(free)))
+        positions = random.sample(free, min(self.config.wild_split_extra_wilds, len(free)))
         positions.sort(key=lambda p: (p["reel"], p["row"]))
 
         for position in positions:

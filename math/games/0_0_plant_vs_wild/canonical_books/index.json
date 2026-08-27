@@ -9,52 +9,52 @@
   {
    "name": "math-simple-cluster",
    "events": 9,
-   "payoutMultiplier": 50
+   "payoutMultiplier": 80
   },
   {
    "name": "math-wild-connection",
-   "events": 10,
-   "payoutMultiplier": 50
+   "events": 15,
+   "payoutMultiplier": 150
   },
   {
    "name": "math-multi-cascade",
    "events": 20,
-   "payoutMultiplier": 400
+   "payoutMultiplier": 320
   },
   {
    "name": "math-multipliers",
    "events": 15,
-   "payoutMultiplier": 210
+   "payoutMultiplier": 120
   },
   {
    "name": "math-bonus-trigger",
-   "events": 110,
-   "payoutMultiplier": 44000
+   "events": 84,
+   "payoutMultiplier": 4400
   },
   {
    "name": "math-free-spins",
-   "events": 46,
-   "payoutMultiplier": 0
+   "events": 57,
+   "payoutMultiplier": 280
   },
   {
    "name": "math-retrigger",
-   "events": 130,
-   "payoutMultiplier": 37280
+   "events": 128,
+   "payoutMultiplier": 34340
   },
   {
    "name": "math-rage",
-   "events": 105,
-   "payoutMultiplier": 7700
+   "events": 57,
+   "payoutMultiplier": 470
   },
   {
    "name": "math-snake",
-   "events": 81,
-   "payoutMultiplier": 3460
+   "events": 58,
+   "payoutMultiplier": 380
   },
   {
    "name": "math-split",
-   "events": 58,
-   "payoutMultiplier": 560
+   "events": 109,
+   "payoutMultiplier": 4640
   }
  ]
 }

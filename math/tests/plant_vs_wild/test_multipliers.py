@@ -124,3 +124,18 @@ def test_43_quatre_cases_vierges_paient_x4_puis_passent_a_x2(game):
     load(game, board, keep_charge=True)
     game.get_clusters_update_wins()
     assert game.win_data["wins"][0]["meta"]["clusterMult"] == 8, "quatre x2 font x8"
+
+
+def test_46_les_quatre_low_paient_exactement_pareil(game):
+    """Décision de design : L1, L2, L3 et L4 sont un seul niveau économique."""
+    for size in range(4, 26):
+        values = {game.config.paytable[(size, symbol)] for symbol in ("L1", "L2", "L3", "L4")}
+        assert len(values) == 1, f"taille {size} : les Low divergent ({values})"
+
+
+def test_47_la_hierarchie_low_puis_high_est_conservee(game):
+    """LOW <= H1 <= H2 <= H3 <= H4 à chaque taille, H4 le plus rémunérateur."""
+    for size in range(4, 26):
+        row = [game.config.paytable[(size, symbol)] for symbol in ("L1", "H1", "H2", "H3", "H4")]
+        assert row == sorted(row), f"taille {size} : hiérarchie rompue ({row})"
+        assert row[-1] > row[0], f"taille {size} : H4 doit payer plus que les Low"

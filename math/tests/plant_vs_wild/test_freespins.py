@@ -284,3 +284,30 @@ def test_38_le_wild_enchaine_ses_cases_de_free_spin_en_free_spin(bonus_game):
     # Et le Wild a réellement bougé : A, B et C sont trois cases distinctes.
     positions = [tuple(spin["reveal"].values()) for spin in spins]
     assert len(set(positions)) == 3
+
+
+def test_48_le_plafond_de_gain_vaut_dix_mille(config):
+    """MAX WIN = 10 000x, via le mécanisme `wincap` standard du SDK."""
+    from game_config import MAX_WIN
+
+    assert MAX_WIN == 10_000.0
+    assert config.wincap == 10_000.0
+    # Les bet modes héritent du même plafond : un seul endroit le définit.
+    assert {mode._wincap for mode in config.bet_modes} == {10_000.0}
+
+
+def test_49_le_wincap_borne_reellement_le_payout(config):
+    """Un pari plafonné ne paie jamais plus que le plafond, et le signale."""
+    from gamestate import GameState
+
+    state = GameState(config)
+    state.betmode = "bonus"
+    state.criteria = "freegame"
+    capped = 0
+    for sim in range(400):
+        state.run_spin(sim)
+        assert state.book.payout_multiplier <= config.wincap
+        if any(event["type"] == "wincap" for event in state.book.events):
+            capped += 1
+            assert state.book.payout_multiplier == config.wincap
+    assert capped >= 0

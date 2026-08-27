@@ -6,7 +6,7 @@ temporaires à travers une cascade.
 
 import pytest
 
-from game_config import GameConfig, SPLIT_WILD_COUNT
+from game_config import GameConfig, WILD_SPLIT_EXTRA_WILDS
 from gamestate import GameState
 from tests.plant_vs_wild.conftest import load, neutral_board, place, spin_slices, unpad
 
@@ -112,14 +112,20 @@ def test_27_le_snake_ne_donne_aucune_charge(bonus_game):
 # ── Wild Split ──────────────────────────────────────────────────────────────
 
 
-def test_28_le_split_produit_trois_wild_temporaires(bonus_game):
+def test_28_le_split_produit_le_nombre_configure_de_wild_temporaires(bonus_game):
+    """Le NOMBRE de temporaires est un paramètre de balancing, pas une règle.
+
+    La règle, elle, est vérifiée par les tests voisins : ils sont temporaires,
+    distincts du Wild principal, à usage unique.
+    """
     game = prepared(bonus_game)
     game.apply_wild_split()
 
+    expected = game.config.wild_split_extra_wilds
     event = last_feature(game)
     assert event["feature"] == "wildSplit"
-    assert len(event["positions"]) == SPLIT_WILD_COUNT
-    assert len(game.temporary_wilds) == SPLIT_WILD_COUNT
+    assert len(event["positions"]) == expected
+    assert len(game.temporary_wilds) == expected
 
 
 def test_29_les_temporaires_sont_distinguables_du_wild_principal(bonus_game):
@@ -129,7 +135,7 @@ def test_29_les_temporaires_sont_distinguables_du_wild_principal(bonus_game):
 
     assert main not in game.temporary_wilds
     assert game.wild_position == main
-    assert len(game.wild_positions()) == SPLIT_WILD_COUNT + 1
+    assert len(game.wild_positions()) == WILD_SPLIT_EXTRA_WILDS + 1
     # Le contrat frontend attend le drapeau `temporary` sur ces cases.
     from game_events import client_board
 
@@ -142,7 +148,7 @@ def test_29_les_temporaires_sont_distinguables_du_wild_principal(bonus_game):
 def test_30_les_temporaires_sont_a_usage_unique(bonus_game):
     game = prepared(bonus_game)
     game.apply_wild_split()
-    assert len(game.wild_positions()) == SPLIT_WILD_COUNT + 1
+    assert len(game.wild_positions()) == WILD_SPLIT_EXTRA_WILDS + 1
 
     game.expire_temporary_wilds()
 
