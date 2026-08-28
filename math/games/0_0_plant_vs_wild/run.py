@@ -37,6 +37,12 @@ def parse_args():
         help="repart des books deja generes au lieu de les recalculer",
     )
     parser.add_argument(
+        "--opt-threads",
+        type=int,
+        default=4,
+        help="threads de l'optimizer (voir la note sur les chaines de records)",
+    )
+    parser.add_argument(
         "--optimize",
         action="store_true",
         help="lance l'optimizer officiel Stake sur les modes générés",
@@ -87,7 +93,18 @@ if __name__ == "__main__":
         from optimization_program.run_script import OptimizationExecution
 
         generate_configs(GameState(config))
-        OptimizationExecution().run_all_modes(config, ["base"], num_threads)
+        # THREADS DE L'OPTIMIZER — distinct de ceux de la generation de books.
+        #
+        # `create_show_pigs` ne garde une distribution que si son score bat le
+        # meilleur precedent : `show_pigs` n'est donc pas un echantillon mais une
+        # CHAINE DE RECORDS, dont la longueur croit en ln(nombre de tirages).
+        # Mesure : 2 000 tirages -> 5 records, 5 000 -> 6.
+        #
+        # Or la boucle d'affichage du SDK indexe `show_pigs[0..10]` en dur
+        # (`main.rs:261`) : moins de 10 records et le binaire panique. Chaque
+        # thread construisant sa PROPRE chaine, augmenter les threads est le
+        # levier fiable — et il ne touche pas au SDK.
+        OptimizationExecution().run_all_modes(config, ["base"], args.opt_threads)
         generate_configs(GameState(config))
 
     # Contrôle de format Stake sur les fichiers produits : cohérence entre les

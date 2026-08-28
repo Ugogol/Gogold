@@ -15,7 +15,11 @@
  *   node tooling/debug/sync-math-books.mjs \
  *       --math-game math/games/0_0_plant_vs_wild \
  *       --config    apps/plant-vs-wild/src/dev/mathBooks.config.json \
- *       --out       apps/plant-vs-wild/src/dev/generated-books
+ *       --out       apps/plant-vs-wild/src/dev/generated-books \n *       --contract  apps/plant-vs-wild/src/game/typesBookEvent.ts
+ *
+ * `--contract` (optionnel) verifie que la liste `allowedEvents` et l'union
+ * TypeScript decrivent le meme contrat. `--check` ne synchronise rien : il
+ * dit seulement si les copies frontend sont perimees.
  *
  * Outil du monorepo : aucun nom propre à un jeu ici. Les dimensions du plateau,
  * les types d'events autorisés et les scénarios exposés vivent dans le fichier
@@ -26,11 +30,24 @@
 
 import { readdir, readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join, relative, resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 
 const BOOKS_DIR = 'canonical_books';
+const MANIFEST = 'manifest.json';
+
+/** Empreinte du CONTENU SOURCE, seule chose qui dit si une copie est périmée. */
+const digest = (content) => createHash('sha256').update(content).digest('hex');
 
 function parseArgs(argv) {
 	const args = {};
+	// `--check` est un drapeau sans valeur ; le parseur lit par paires, on le
+	// sort donc de la liste avant de la parcourir.
+	const checkIndex = argv.indexOf('--check');
+	if (checkIndex !== -1) {
+		argv = argv.slice();
+		argv.splice(checkIndex, 1);
+		args.check = true;
+	}
 	for (let index = 0; index < argv.length; index += 2) {
 		const key = argv[index];
 		if (!key.startsWith('--')) throw new Error(`Argument inattendu : ${key}`);
@@ -266,6 +283,10 @@ async function main() {
 		});
 	}
 
+	if (args.contract) {
+		await checkContractParity(resolve(root, args.contract), config.allowedEvents, problems);
+	}
+
 	const generic = config.genericSeries ?? config.scenarios.map((scenario) => scenario.name);
 	for (const name of generic) {
 		if (!config.scenarios.some((scenario) => scenario.name === name)) {
@@ -281,6 +302,11 @@ async function main() {
 				'Voir apps/<app>/src/game/typesBookEvent.ts pour le contrat attendu.\n',
 		);
 		process.exitCode = 1;
+		return;
+	}
+
+	if (args.check) {
+		await checkFreshness(entries, outDir, root);
 		return;
 	}
 
@@ -306,7 +332,91 @@ async function main() {
 		'utf8',
 	);
 
+	// Manifeste de FRAÎCHEUR. Aucune date : seulement l'empreinte de la source
+	// de chaque Book, pour que le fichier ne change que si un Book change
+	// vraiment. `--check` le rejoue pour dire si les copies sont périmées.
+	await writeFile(
+		join(outDir, MANIFEST),
+		JSON.stringify({ books: sourceHashes(entries) }, null, '\t') + '\n',
+		'utf8',
+	);
+
 	console.log(`\n${entries.length} Books synchronisés vers ${relative(root, outDir)}\n`);
+}
+
+/**
+ * `allowedEvents` et l'union TypeScript decrivent-ils le MEME contrat ?
+ *
+ * Les deux listes sont tenues a la main, dans deux fichiers differents. Sans ce
+ * controle, declarer un event dans la configuration sans ecrire son type le
+ * ferait passer la synchronisation puis echouer au typecheck — ou pire, passer
+ * partout et n'avoir aucun handler. On lit les `type: '<nom>';` du fichier de
+ * contrat : c'est la forme qu'y prend chaque BookEvent.
+ */
+async function checkContractParity(contractPath, allowedEvents, problems) {
+	let source;
+	try {
+		source = await readFile(contractPath, 'utf8');
+	} catch {
+		problems.push(`contrat introuvable : ${contractPath}`);
+		return;
+	}
+	const declared = new Set([...source.matchAll(/type:\s*'([^']+)'/g)].map((match) => match[1]));
+	if (declared.size === 0) {
+		// Sans ce garde, un contrat illisible ferait echouer TOUS les events avec
+		// un message trompeur : on croirait le contrat vide alors qu'il n'a pas
+		// ete lu comme attendu.
+		problems.push(`contrat illisible — aucun type declare dans ${contractPath}`);
+		return;
+	}
+	for (const name of allowedEvents) {
+		if (!declared.has(name)) {
+			problems.push(`${name} : autorisé par la configuration mais absent du contrat TypeScript`);
+		}
+	}
+	for (const name of declared) {
+		if (!allowedEvents.includes(name)) {
+			problems.push(`${name} : déclaré dans le contrat TypeScript mais absent de la configuration`);
+		}
+	}
+}
+
+/** {nom: empreinte du Book source}. */
+function sourceHashes(entries) {
+	const hashes = {};
+	for (const entry of entries) hashes[entry.name] = digest(entry.raw);
+	return hashes;
+}
+
+/**
+ * Les copies frontend correspondent-elles encore a leur source Math ?
+ *
+ * Répond sans rien écrire. Sert a ne pas valider un rendu sur des Books
+ * périmés après une modification du Math — le piège que ce mode évite.
+ */
+async function checkFreshness(entries, outDir, root) {
+	let manifest;
+	try {
+		manifest = JSON.parse(await readFile(join(outDir, MANIFEST), 'utf8'));
+	} catch {
+		console.error(`\n✗ Aucun manifeste dans ${relative(root, outDir)} — lancer la synchronisation.\n`);
+		process.exitCode = 1;
+		return;
+	}
+
+	const current = sourceHashes(entries);
+	const stale = Object.keys(current).filter((name) => current[name] !== manifest.books?.[name]);
+	const removed = Object.keys(manifest.books ?? {}).filter((name) => !(name in current));
+
+	if (stale.length === 0 && removed.length === 0) {
+		console.log(`\n✓ ${entries.length} Books frontend à jour.\n`);
+		return;
+	}
+	console.error('\n✗ Books frontend périmés — relancer la synchronisation.\n');
+	stale.forEach((name) => console.error(`  modifié depuis la copie : ${name}`));
+	removed.forEach((name) => console.error(`  n'existe plus côté Math : ${name}`));
+	console.error('');
+	process.exitCode = 1;
 }
 
 main().catch((error) => {

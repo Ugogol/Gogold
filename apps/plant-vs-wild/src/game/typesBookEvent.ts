@@ -120,6 +120,35 @@ type BookEventSetTotalWin = {
 };
 
 /**
+ * Le plafond de gain est atteint.
+ *
+ * ⚠️ N'AJOUTE RIEN AU TOTAL. Relevé sur un vrai Book V4 (sim 93353), la
+ * séquence est :
+ *
+ *     updateTumbleWin  amount 848880     le cumul avant écrêtage
+ *     wincap           amount 1000000    le plafond, déjà écrêté
+ *     updateGrid
+ *     setTotalWin      amount 1000000    le total, même valeur
+ *     …                                  le Bonus CONTINUE
+ *     freeSpinEnd      amount 1000000
+ *     finalWin         amount 1000000
+ *
+ * `setTotalWin` porte donc déjà le montant final : additionner `wincap`
+ * doublerait le gain. `amount` est le total écrêté, pas un incrément.
+ *
+ * Le frontend ne décide JAMAIS que le plafond est atteint et n'écrête aucun
+ * gain : le Math est seul juge, cet event est une annonce.
+ *
+ * Le Book ne s'arrête pas là — les Free Spins restants se jouent, tous leurs
+ * `setTotalWin` valant le plafond.
+ */
+type BookEventWincap = {
+	index: number;
+	type: 'wincap';
+	amount: number;
+};
+
+/**
  * Fin du PARI COMPLET, tous spins confondus — pas la fin d'un spin.
  *
  * ⚠️ CONTRAINTE POUR LE MATH — `finalWin` ne doit JAMAIS être émis entre deux
@@ -347,6 +376,7 @@ export type BookEvent =
 	| BookEventSetWin
 	| BookEventSetTotalWin
 	| BookEventFinalWin
+	| BookEventWincap
 	| BookEventFreeSpinTrigger
 	| BookEventFreeSpinRetrigger
 	| BookEventUpdateFreeSpin

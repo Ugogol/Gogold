@@ -1,0 +1,2708 @@
+{
+ "id": 90732,
+ "payoutMultiplier": 2040,
+ "events": [
+  {
+   "index": 0,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    76,
+    263,
+    27,
+    7,
+    217
+   ],
+   "gameType": "basegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 1,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 2,
+   "type": "winInfo",
+   "totalWin": 90,
+   "wins": [
+    {
+     "symbol": "L4",
+     "clusterSize": 5,
+     "win": 50,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      },
+      {
+       "reel": 3,
+       "row": 1
+      },
+      {
+       "reel": 0,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 5,
+      "winWithoutMult": 10,
+      "overlay": {
+       "reel": 1,
+       "row": 1
+      }
+     }
+    },
+    {
+     "symbol": "L2",
+     "clusterSize": 4,
+     "win": 40,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 3
+      },
+      {
+       "reel": 0,
+       "row": 2
+      },
+      {
+       "reel": 1,
+       "row": 2
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 4,
+      "winWithoutMult": 10,
+      "overlay": {
+       "reel": 1,
+       "row": 2
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 3,
+   "type": "updateTumbleWin",
+   "amount": 90
+  },
+  {
+   "index": 4,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     2,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     2,
+     2,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     2,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 5,
+   "type": "wildMove",
+   "from": {
+    "reel": 0,
+    "row": 2
+   },
+   "to": {
+    "reel": 3,
+    "row": 1
+   },
+   "charge": 1
+  },
+  {
+   "index": 6,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [],
+    []
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 0,
+     "row": 1
+    },
+    {
+     "reel": 0,
+     "row": 2
+    },
+    {
+     "reel": 0,
+     "row": 3
+    },
+    {
+     "reel": 1,
+     "row": 1
+    },
+    {
+     "reel": 1,
+     "row": 2
+    },
+    {
+     "reel": 2,
+     "row": 1
+    },
+    {
+     "reel": 2,
+     "row": 2
+    }
+   ]
+  },
+  {
+   "index": 7,
+   "type": "winInfo",
+   "totalWin": 70,
+   "wins": [
+    {
+     "symbol": "L2",
+     "clusterSize": 4,
+     "win": 70,
+     "positions": [
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      },
+      {
+       "reel": 3,
+       "row": 1
+      },
+      {
+       "reel": 4,
+       "row": 1
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 7,
+      "winWithoutMult": 10,
+      "overlay": {
+       "reel": 2,
+       "row": 1
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 8,
+   "type": "updateTumbleWin",
+   "amount": 160
+  },
+  {
+   "index": 9,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     2,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     4,
+     2,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     2,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 10,
+   "type": "wildMove",
+   "from": {
+    "reel": 3,
+    "row": 1
+   },
+   "to": {
+    "reel": 1,
+    "row": 1
+   },
+   "charge": 2
+  },
+  {
+   "index": 11,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [],
+    [],
+    [
+     {
+      "name": "H3"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     }
+    ]
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 2,
+     "row": 1
+    },
+    {
+     "reel": 3,
+     "row": 1
+    },
+    {
+     "reel": 4,
+     "row": 1
+    }
+   ]
+  },
+  {
+   "index": 12,
+   "type": "winInfo",
+   "totalWin": 180,
+   "wins": [
+    {
+     "symbol": "L1",
+     "clusterSize": 6,
+     "win": 180,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      },
+      {
+       "reel": 3,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      },
+      {
+       "reel": 1,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 18,
+      "winWithoutMult": 10,
+      "overlay": {
+       "reel": 2,
+       "row": 1
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 13,
+   "type": "updateTumbleWin",
+   "amount": 340
+  },
+  {
+   "index": 14,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     4,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     8,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     8,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     8,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     2,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 15,
+   "type": "wildMove",
+   "from": {
+    "reel": 1,
+    "row": 1
+   },
+   "to": {
+    "reel": 2,
+    "row": 2
+   },
+   "charge": 3
+  },
+  {
+   "index": 16,
+   "type": "tumbleBoard",
+   "newSymbols": [
+    [
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     }
+    ],
+    []
+   ],
+   "explodingSymbols": [
+    {
+     "reel": 0,
+     "row": 1
+    },
+    {
+     "reel": 1,
+     "row": 1
+    },
+    {
+     "reel": 1,
+     "row": 2
+    },
+    {
+     "reel": 2,
+     "row": 1
+    },
+    {
+     "reel": 3,
+     "row": 1
+    }
+   ]
+  },
+  {
+   "index": 17,
+   "type": "winInfo",
+   "totalWin": 1700,
+   "wins": [
+    {
+     "symbol": "H3",
+     "clusterSize": 6,
+     "win": 1700,
+     "positions": [
+      {
+       "reel": 0,
+       "row": 1
+      },
+      {
+       "reel": 1,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 1
+      },
+      {
+       "reel": 3,
+       "row": 1
+      },
+      {
+       "reel": 4,
+       "row": 1
+      },
+      {
+       "reel": 2,
+       "row": 2
+      }
+     ],
+     "meta": {
+      "globalMult": 1,
+      "clusterMult": 34,
+      "winWithoutMult": 50,
+      "overlay": {
+       "reel": 2,
+       "row": 1
+      }
+     }
+    }
+   ]
+  },
+  {
+   "index": 18,
+   "type": "updateTumbleWin",
+   "amount": 2040
+  },
+  {
+   "index": 19,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 20,
+   "type": "wildMove",
+   "from": {
+    "reel": 2,
+    "row": 2
+   },
+   "to": {
+    "reel": 4,
+    "row": 1
+   },
+   "charge": 4
+  },
+  {
+   "index": 21,
+   "type": "setWin",
+   "amount": 2040,
+   "winLevel": 6
+  },
+  {
+   "index": 22,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 23,
+   "type": "freeSpinTrigger",
+   "totalFs": 10,
+   "positions": [
+    {
+     "reel": 4,
+     "row": 1
+    }
+   ]
+  },
+  {
+   "index": 24,
+   "type": "updateFreeSpin",
+   "amount": 1,
+   "total": 10
+  },
+  {
+   "index": 25,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    32,
+    95,
+    75,
+    84,
+    182
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 26,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 27,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 28,
+   "type": "updateFreeSpin",
+   "amount": 2,
+   "total": 10
+  },
+  {
+   "index": 29,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     }
+    ],
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    167,
+    188,
+    241,
+    278,
+    148
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 30,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 31,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 32,
+   "type": "updateFreeSpin",
+   "amount": 3,
+   "total": 10
+  },
+  {
+   "index": 33,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    189,
+    103,
+    225,
+    296,
+    52
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 34,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 35,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 36,
+   "type": "updateFreeSpin",
+   "amount": 4,
+   "total": 10
+  },
+  {
+   "index": 37,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    214,
+    166,
+    29,
+    44,
+    229
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 38,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 39,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 40,
+   "type": "updateFreeSpin",
+   "amount": 5,
+   "total": 10
+  },
+  {
+   "index": 41,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    129,
+    25,
+    65,
+    73,
+    271
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 42,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 43,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 44,
+   "type": "updateFreeSpin",
+   "amount": 6,
+   "total": 10
+  },
+  {
+   "index": 45,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    34,
+    35,
+    105,
+    66,
+    14
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 46,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 47,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 48,
+   "type": "updateFreeSpin",
+   "amount": 7,
+   "total": 10
+  },
+  {
+   "index": 49,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    64,
+    157,
+    13,
+    288,
+    108
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 50,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 51,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 52,
+   "type": "updateFreeSpin",
+   "amount": 8,
+   "total": 10
+  },
+  {
+   "index": 53,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H1"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    86,
+    276,
+    29,
+    114,
+    119
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 54,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 55,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 56,
+   "type": "updateFreeSpin",
+   "amount": 9,
+   "total": 10
+  },
+  {
+   "index": 57,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    49,
+    286,
+    170,
+    282,
+    153
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 58,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 59,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 60,
+   "type": "updateFreeSpin",
+   "amount": 10,
+   "total": 10
+  },
+  {
+   "index": 61,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     }
+    ],
+    [
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L2"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H4"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "W",
+      "charge": 0
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H3"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    122,
+    48,
+    202,
+    144,
+    38
+   ],
+   "gameType": "freegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 62,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     8,
+     2,
+     2,
+     0,
+     0
+    ],
+    [
+     16,
+     4,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     8,
+     0,
+     0,
+     0
+    ],
+    [
+     16,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     4,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 63,
+   "type": "setTotalWin",
+   "amount": 2040
+  },
+  {
+   "index": 64,
+   "type": "freeSpinEnd",
+   "amount": 0,
+   "winLevel": 1
+  },
+  {
+   "index": 65,
+   "type": "finalWin",
+   "amount": 2040
+  }
+ ],
+ "criteria": "basegame",
+ "baseGameWins": 20.4,
+ "freeGameWins": 0.0
+}

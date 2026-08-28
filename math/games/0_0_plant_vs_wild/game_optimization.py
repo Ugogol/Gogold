@@ -56,28 +56,40 @@ BONUS_HIT = 78.0
 
 #: Répartition visée des Bonus, en part de tous les Bonus. Au milieu des
 #: fourchettes cibles : beaucoup de faibles, une longue queue mince.
-#: `medium_long` est la part des Bonus 20-100x QUI ONT retrigge. C'est la
-#: seule facon de viser une frequence de retrigger sans deformer la forme des
-#: gains : les deux grandeurs deviennent enfin independantes.
-BONUS_SHARE = {"low": 0.72, "medium_long": 0.02, "medium": 0.16,
+#:
+#: `medium_long` est la part des Bonus 20-100x QUI ONT retriggé. C'est la seule
+#: façon de viser une fréquence de retrigger sans déformer la forme des gains :
+#: les deux grandeurs deviennent indépendantes. Le Math corrigé lie encore plus
+#: fort le niveau de gain au retrigger — mesuré sur la population V5 : low
+#: 3.02 %, medium 45.35 %, high 79.81 %, mega 98.48 %. Le plancher imposé par
+#: `high` et `mega` seuls vaut déjà 10.5 % ; `medium_long` sert à ne pas monter
+#: au-dessus.
+BONUS_SHARE = {"low": 0.70, "medium_long": 0.01, "medium": 0.19,
                "high": 0.08, "mega": 0.02}
 
-#: Gain moyen visé dans chaque fence, en multiplicateurs de mise. Chaque valeur
-#: doit tomber dans l'intervalle RÉEL des Books de sa fence, sinon l'optimizer
-#: cherche une moyenne que sa population ne peut pas produire. Intervalles
-#: mesurés sur 100 000 Books :
-#:    low      0.00 -   19.90   (médiane   3.30)
-#:    medium  20.00 -   99.90   (médiane  33.50)
-#:    high   100.10 -  498.20   (médiane 157.60)
-#:    mega   500.60 - 8779.80   (médiane 989.90)
-BONUS_AVERAGE = {"low": 8.0, "medium_long": 60.0, "medium": 36.0, "high": 190.0}
+#: Gain moyen visé dans chaque fence, en multiplicateurs de mise.
+#:
+#: Chaque valeur doit non seulement tomber dans l'intervalle des Books de sa
+#: fence, mais y occuper un percentile raisonnable : viser le 95e obligerait
+#: l'optimizer à écraser toute la fence sur son extrémité haute. Vérifié avec
+#: `plan_fences.py` — les cinq cibles tiennent entre le 59e et le 79e
+#: percentile de leur propre population.
+#:
+#: Population V5 mesurée (Math corrigé), 100 000 Books :
+#:    low            0.00 -   19.90   médiane   3.30   moyenne    4.81
+#:    medium        20.00 -   99.80   médiane  29.00   moyenne   34.75
+#:    medium_long   20.00 -   99.90   médiane  39.60   moyenne   45.21
+#:    high         100.10 -  499.30   médiane 162.95   moyenne  194.65
+#:    mega         503.10 - 8772.80   médiane 935.70   moyenne 1364.02
+BONUS_AVERAGE = {"low": 8.0, "medium_long": 45.0, "medium": 35.0, "high": 195.0}
 
-#: Base Game : sec par construction. 1 pari sur 12.5 paie, 2.75x en moyenne.
-#: Les Books de cette fence vont de 0.40x à 16.10x (médiane 1.10x) : cette
-#: moyenne y est atteignable sans déformer la forme. On ne monte pas plus
-#: haut : le Base Game ne doit pas devenir le moyen d'atteindre 96 %.
+#: Base Game : sec par construction. 1 pari sur 12.5 paie, 2.00x en moyenne.
+#: Les Books de cette fence vont de 0.40x à 16.10x (médiane 1.10x, moyenne
+#: 1.36x) : la cible est au 76e percentile, atteignable sans déformer la forme.
+#: On ne monte pas plus haut — le Base Game ne doit pas devenir le moyen
+#: d'atteindre 96 %.
 BASEGAME_HIT = 12.5
-BASEGAME_RTP = 0.20
+BASEGAME_RTP = 0.16
 
 #: Max Win. Convention du sample officiel : une part de RTP infime, dont la
 #: fréquence se DÉDUIT (hr = av_win / rtp). 0.001 sur un plafond de 10 000x
@@ -85,24 +97,21 @@ BASEGAME_RTP = 0.20
 WINCAP_RTP = 0.001
 
 
-#: CONFLIT MESURE — forme des Bonus contre frequence de retrigger.
+#: RETRIGGER — plancher imposé par la forme.
 #:
-#: Dans PLANT VS WILD, un Bonus n'atteint les gros paliers qu'en retriggant.
-#: Part des Bonus AVEC retrigger, relevee sur 100 000 Books :
+#: Dans PLANT VS WILD, un Bonus n'atteint les paliers élevés qu'en retriggant, et
+#: le Math corrigé renforce ce lien. Part des Bonus AVEC retrigger, mesurée sur
+#: la population V5 :
 #:
-#:    low (<20x)        2.93 %
-#:    medium (20-100x) 42.66 %
-#:    high (100-500x)  73.28 %
-#:    mega (500x+)     92.27 %
+#:    low (<20x)        3.02 %
+#:    medium (20-100x) 45.35 %
+#:    high (100-500x)  79.81 %
+#:    mega (500x+)     98.48 %
 #:
-#: La forme de Bonus demandee impose donc arithmetiquement son taux de
-#: retrigger. Meme la repartition la plus favorable autorisee (low 75 %,
-#: medium 18 %, high 6 %, mega 1 %) donne 0.75x2.93 + 0.18x42.66 + 0.06x73.28
-#: + 0.01x92.27 = 15.2 %, au-dessus de la cible 8-12 %.
-#:
-#: Ce n'est pas un defaut de reglage : c'est la mecanique verrouillee
-#: (4 connexions Wild pendant un Free Spin -> +5) qui lie les deux grandeurs.
-#: Aucun poids de lookup table ne peut les separer.
+#: `high` à 8 % et `mega` à 2 % apportent à eux seuls 6.38 + 1.97 = 8.35 points,
+#: et `low` 2.11 : le plancher est donc de 10.5 % AVANT toute autre décision.
+#: Scinder `medium` par retrigger permet de ne pas monter au-delà — sans ce
+#: découpage, la forme visée donnerait mécaniquement 19.5 %.
 
 
 class OptimizationSetup:
@@ -181,15 +190,21 @@ class OptimizationSetup:
                 #: les huit fences. Ajouter des `scale_factor` par-dessus
                 #: déformerait une répartition qu'on vient de contraindre.
                 "scaling": ConstructScaling([]).return_dict(),
+                #: Volumes repris du sample officiel `0_0_cluster`. Avec les
+                #: valeurs plus basses (2000/5000), l'optimizer ne trouvait plus
+                #: que 5 distributions valides sur la population corrigée — et
+                #: le SDK plante alors, sa boucle d'affichage étant codée en dur
+                #: sur 10 (`main.rs:261`). Plus de matière première, plus de
+                #: combinaisons valides.
                 "parameters": ConstructParameters(
-                    num_show=2000,
-                    num_per_fence=5000,
+                    num_show=5000,
+                    num_per_fence=10000,
                     #: Rapport moyenne/médiane toléré DANS une fence. Le premier
                     #: candidat tournait à 2-60 : une fence pouvait y prendre une
                     #: forme arbitrairement déformée. Resserré sur la plage du
                     #: sample officiel, élargie pour une machine plus volatile.
                     min_m2m=2,
-                    max_m2m=12,
+                    max_m2m=20,
                     pmb_rtp=1.0,
                     sim_trials=2000,
                     test_spins=[50, 100, 200],

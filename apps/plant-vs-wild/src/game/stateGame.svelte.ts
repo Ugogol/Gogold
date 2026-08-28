@@ -57,6 +57,18 @@ export type TumbleSymbol = {
 export const stateGame = $state({
 	board,
 	gameType: 'basegame' as GameType,
+	/**
+	 * Le plafond de gain a ete atteint pendant CE pari.
+	 *
+	 * Drapeau d'etat, pas un calcul : seul l'event `wincap` du Book le leve, et
+	 * `finalWin` le rabaisse a la fin du pari. Le frontend ne detecte jamais le
+	 * plafond lui-meme.
+	 *
+	 * Rien ne le LIT encore — l'animation Max Win viendra avec sa propre etape.
+	 * Il existe pour que la celebration s'y accroche sans avoir a reinterpreter
+	 * les montants, exactement comme `stateBet.winBookEventAmount`.
+	 */
+	wincapReached: false,
 	/** Symboles qui arrivent par le haut pendant la cascade. */
 	tumbleBoardAdding: [] as TumbleSymbol[][],
 	/** Symboles déjà en place au moment où la cascade commence. */

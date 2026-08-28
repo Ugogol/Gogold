@@ -3,7 +3,10 @@
 		"Configuration de sync-math-books pour PLANT VS WILD — DEV uniquement.",
 		"Elle décrit ce que le contrat frontend attend d'un Book Math ; le script",
 		"refuse tout Book qui s'en écarte, sans jamais le corriger.",
-		"Voir apps/plant-vs-wild/src/game/typesBookEvent.ts."
+		"Voir apps/plant-vs-wild/src/game/typesBookEvent.ts.",
+		"Les scenarios prefixes v5- sont des Books REELS, extraits de la population",
+		"ponderee par BALANCING_V5 — voir math/.../freeze_balancing.py. Ils ne sont ni",
+		"rejoues ni retouches."
 	],
 	"board": {
 		"reels": 5,
@@ -25,7 +28,8 @@
 		"updateFreeSpin",
 		"freeSpinEnd",
 		"wildMove",
-		"wildFeature"
+		"wildFeature",
+		"wincap"
 	],
 	"scenarios": [
 		{ "name": "math-base-no-win", "label": "No Win" },
@@ -38,7 +42,16 @@
 		{ "name": "math-retrigger", "label": "Retrigger" },
 		{ "name": "math-rage", "label": "Rage" },
 		{ "name": "math-snake", "label": "Wild Snake" },
-		{ "name": "math-split", "label": "Wild Split" }
+		{ "name": "math-split", "label": "Wild Split" },
+
+		{ "name": "v5-zero", "label": "V5 / ZERO" },
+		{ "name": "v5-basegame", "label": "V5 / BASEGAME" },
+		{ "name": "v5-freegame-low", "label": "V5 / FREEGAME LOW" },
+		{ "name": "v5-freegame-medium", "label": "V5 / FREEGAME MEDIUM" },
+		{ "name": "v5-freegame-medium-long", "label": "V5 / FREEGAME MEDIUM LONG" },
+		{ "name": "v5-freegame-high", "label": "V5 / FREEGAME HIGH" },
+		{ "name": "v5-freegame-mega", "label": "V5 / FREEGAME MEGA" },
+		{ "name": "v5-wincap", "label": "V5 / WINCAP" }
 	],
 	"genericSeries": [
 		"math-base-no-win",

@@ -21,6 +21,14 @@ import mathRetrigger from './math-retrigger.json';
 import mathRage from './math-rage.json';
 import mathSnake from './math-snake.json';
 import mathSplit from './math-split.json';
+import v5Zero from './v5-zero.json';
+import v5Basegame from './v5-basegame.json';
+import v5FreegameLow from './v5-freegame-low.json';
+import v5FreegameMedium from './v5-freegame-medium.json';
+import v5FreegameMediumLong from './v5-freegame-medium-long.json';
+import v5FreegameHigh from './v5-freegame-high.json';
+import v5FreegameMega from './v5-freegame-mega.json';
+import v5Wincap from './v5-wincap.json';
 
 /**
  * Unique frontière de typage entre le JSON du Math et le contrat frontend.
@@ -104,6 +112,54 @@ export const mathBooks: MathBook[] = [
 		label: "Wild Split",
 		payoutMultiplier: 4640,
 		events: eventsOf(mathSplit),
+	},
+	{
+		id: 'v5-zero',
+		label: "V5 / ZERO",
+		payoutMultiplier: 0,
+		events: eventsOf(v5Zero),
+	},
+	{
+		id: 'v5-basegame',
+		label: "V5 / BASEGAME",
+		payoutMultiplier: 80,
+		events: eventsOf(v5Basegame),
+	},
+	{
+		id: 'v5-freegame-low',
+		label: "V5 / FREEGAME LOW",
+		payoutMultiplier: 80,
+		events: eventsOf(v5FreegameLow),
+	},
+	{
+		id: 'v5-freegame-medium',
+		label: "V5 / FREEGAME MEDIUM",
+		payoutMultiplier: 2040,
+		events: eventsOf(v5FreegameMedium),
+	},
+	{
+		id: 'v5-freegame-medium-long',
+		label: "V5 / FREEGAME MEDIUM LONG",
+		payoutMultiplier: 2060,
+		events: eventsOf(v5FreegameMediumLong),
+	},
+	{
+		id: 'v5-freegame-high',
+		label: "V5 / FREEGAME HIGH",
+		payoutMultiplier: 16170,
+		events: eventsOf(v5FreegameHigh),
+	},
+	{
+		id: 'v5-freegame-mega',
+		label: "V5 / FREEGAME MEGA",
+		payoutMultiplier: 56250,
+		events: eventsOf(v5FreegameMega),
+	},
+	{
+		id: 'v5-wincap',
+		label: "V5 / WINCAP",
+		payoutMultiplier: 1000000,
+		events: eventsOf(v5Wincap),
 	},
 ];
 

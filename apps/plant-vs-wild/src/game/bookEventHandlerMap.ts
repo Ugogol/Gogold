@@ -222,6 +222,8 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	finalWin: async () => {
 		eventEmitter.broadcast({ type: 'multiplierGridClear' });
 		eventEmitter.broadcast({ type: 'multiplierGridHide' });
+		// Le pari est clos : le plafond ne doit pas déteindre sur le suivant.
+		stateGame.wincapReached = false;
 	},
 
 	/**
@@ -319,5 +321,25 @@ export const bookEventHandlerMap: BookEventHandlerMap<BookEvent, BookEventContex
 	/** Fin de résolution du spin. Le montant est une donnée du book, pas un calcul. */
 	setTotalWin: async (bookEvent: BookEventOfType<'setTotalWin'>) => {
 		stateBet.winBookEventAmount = bookEvent.amount;
+	},
+
+	/**
+	 * Plafond de gain atteint.
+	 *
+	 * ⚠️ AUCUNE ADDITION. `amount` est le total DÉJÀ écrêté, et le `setTotalWin`
+	 * qui suit immédiatement porte la même valeur — additionner doublerait le
+	 * gain. On assigne, comme les trois autres handlers de gain : le montant
+	 * reste une donnée du book.
+	 *
+	 * Le frontend ne décide jamais que le plafond est atteint et n'écrête rien :
+	 * il reçoit l'annonce et lève un drapeau. Le Book continue ensuite
+	 * normalement — les Free Spins restants se jouent.
+	 *
+	 * Aucun second système de total win n'est créé : `winBookEventAmount` est
+	 * celui qu'utilisent déjà `updateTumbleWin`, `setWin` et `setTotalWin`.
+	 */
+	wincap: async (bookEvent: BookEventOfType<'wincap'>) => {
+		stateBet.winBookEventAmount = bookEvent.amount;
+		stateGame.wincapReached = true;
 	},
 };

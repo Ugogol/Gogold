@@ -22,6 +22,9 @@ DEV_GAME_ID = "0_0_plant_vs_wild"
 #   multiplicateur implicite d'une case = x1
 #   une connexion paie la SOMME des multiplicateurs de ses cases
 #   ordre PAY -> UPGRADE : on paie à la valeur courante, la case double ensuite
+#   UN SEUL CRAN PAR RÉSOLUTION : les positions gagnantes sont dédoublonnées
+#     avant l'upgrade. Une case partagée par 1, 2, 6 ou 8 connexions simultanées
+#     ne progresse que de xN à x2N — jamais x2^nombre de connexions.
 #   progression x1 -> x2 -> x4 -> ... -> x4096
 #   multiplicateurs persistants entre les Free Spins
 #   Wild principal : charge et déplacement

@@ -1,0 +1,196 @@
+{
+ "id": 0,
+ "payoutMultiplier": 0,
+ "events": [
+  {
+   "index": 0,
+   "type": "reveal",
+   "board": [
+    [
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     }
+    ],
+    [
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "H3"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ],
+    [
+     {
+      "name": "L3"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     }
+    ],
+    [
+     {
+      "name": "H3"
+     },
+     {
+      "name": "H1"
+     },
+     {
+      "name": "H2"
+     },
+     {
+      "name": "L1"
+     },
+     {
+      "name": "L4"
+     },
+     {
+      "name": "L2"
+     },
+     {
+      "name": "L3"
+     }
+    ]
+   ],
+   "paddingPositions": [
+    32,
+    130,
+    60,
+    253,
+    230
+   ],
+   "gameType": "basegame",
+   "anticipation": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "index": 1,
+   "type": "updateGrid",
+   "gridMultipliers": [
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ]
+  },
+  {
+   "index": 2,
+   "type": "setTotalWin",
+   "amount": 0
+  },
+  {
+   "index": 3,
+   "type": "finalWin",
+   "amount": 0
+  }
+ ],
+ "criteria": "basegame",
+ "baseGameWins": 0.0,
+ "freeGameWins": 0.0
+}

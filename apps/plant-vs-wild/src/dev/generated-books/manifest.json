@@ -1,0 +1,23 @@
+{
+	"books": {
+		"math-base-no-win": "c98af62e9c5720ecbeec06f17b012d64b85b823a54a3ef8b6a8a75dd450b2135",
+		"math-simple-cluster": "408519690c30c34af8fa79587ba76f5312b634b8e099d820c54eab58533a9ee5",
+		"math-multi-cascade": "9b7c0aaf01d1ed48a73e91ebbb3a5e83f47b40e37490cc4c551cd0bf7f535df8",
+		"math-wild-connection": "4c5b420b5a8d074650a6949d224ba1f2411d495a2ae4056fb5edf1adcbfec159",
+		"math-multipliers": "ae2e2b77f5143c1cc5f6ec3d3fe6a237268201129198b453d59ff4ce0ec43c2f",
+		"math-bonus-trigger": "2ddfc3c26f6512575a0d6cb9d140433e84c42648b82e95420de989d327970460",
+		"math-free-spins": "878e1013a64230585f3340424be3f79184a5f5c0efc5d9c6e766ffd97db46c78",
+		"math-retrigger": "e90dec31a74fdeb98e4e15b159a9a1653de7c4ebf8aedcca4d172648d6fe2907",
+		"math-rage": "eefea0f11c2879cf5aa0bf50eb14d5e03036e9d825c1f54ceffcf6b325984ce2",
+		"math-snake": "630d81e814d7f6eedfa57a60fd1cfab63c791b3c36d80168e2d990494b600f16",
+		"math-split": "1cb82712686824945250b3c9643689fb15e7bf4e6f8b1762d36f2ba03c5fc128",
+		"v5-zero": "e1de8ea48a6260f8920fce56f584adb42837d4d9c7272b829370f612b436e52d",
+		"v5-basegame": "7ecf18a6f9ba4a915242c8fafc6f3efbaf6852820a46bca0fb0cc803acd762ca",
+		"v5-freegame-low": "6e22fe9a986fe426e7c74181a7ec1a11d86815d2b8570d4a117a944dd093ad2d",
+		"v5-freegame-medium": "c1ee6e192579dbcfeb25849179266b1f41cc881245b8c5fe5527b2dd8260a73a",
+		"v5-freegame-medium-long": "d517ba7581491d92e6031e462715b016ed2e03e7baed797304fbee4bcfdaf188",
+		"v5-freegame-high": "d0c704d53c6bf8deee39517967e793ec1e493cf092b6c40dd81fed7913388d43",
+		"v5-freegame-mega": "a37126106b016bd6f0cb2c26992c29cc162dbf13722590a1ba95162f6b25c4d9",
+		"v5-wincap": "bc8fc00a1c04323ac79ec28c287dfe88c4206b09ce1d7feacf23550065b5e464"
+	}
+}

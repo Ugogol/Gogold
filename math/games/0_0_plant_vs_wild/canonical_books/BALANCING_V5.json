@@ -1,0 +1,82 @@
+{
+ "version": "BALANCING_V5",
+ "status": "FROZEN_FOR_INTEGRATION",
+ "mode": "base",
+ "population": 100000,
+ "sources": {
+  "game_config.py": "3cce277c4a096ee0b2cb98147c55fc26809c84c0c440342e5eff584c1110ddd7",
+  "game_optimization.py": "5d2d64a0cfd80e1d01a7532629eb4c4bd812280e25f6157e4fe0930290ca78e8",
+  "game_override.py": "4e1bc22a9110db408f290229e633cca0d41736e1bb9e0ea55569721709b1f184",
+  "game_executables.py": "481ffca42eb18753c592f417a6b056662a1dc25e65bce4fe05dba64dc35ff702",
+  "game_calculations.py": "622eed9d5f29a26db284d0607552ca369b1b5b2e8974d64cbfc0954e3bc7afce",
+  "game_events.py": "9ce74d08024629f424425f99e3fdf5b04b88635f39503a1e16759c65cb0cafff",
+  "gamestate.py": "c9baa3aa76ccbef6b66b40de60758f466651b11055e63ba59eb27b446791dd14",
+  "reels/BR0.csv": "e52aa132d1ce19e57996c1ae4f75b3917dfc01d3c01731d7fc346832c989f8c0",
+  "reels/BR1.csv": "3ec94146decb5aa80290d8324a4c18b500117a9c299dae5f04a5d27546b797bf",
+  "reels/FR0.csv": "c671eaf2c8f0b0dcad98274b6a4c537f2a5531736a0546a98e4132595e299eea",
+  "reels/FR1.csv": "b66bd37d626df3e6891f287452a6875c0a287c6181c949fc3db48994ad7320a0"
+ },
+ "artefacts": {
+  "lookUpTable_base_0.csv": "cc952c349e975b6f4385637833d84dc7c6d383cec31b1c56ea5386d56e025d87",
+  "books_base.jsonl.zst": "d4a839f6bc20cd350ec3c93cc36cfd7f651c46baba061ff2809d81a20e40fb53",
+  "force_record_base.json": "9e8da32ce019f1b46244b3bf97fcb46c16f44851b195995ac0312df98fb806d1"
+ },
+ "books": [
+  {
+   "name": "v5-wincap",
+   "criteria": "WINCAP",
+   "simId": 10917,
+   "events": 158,
+   "payoutMultiplier": 1000000
+  },
+  {
+   "name": "v5-freegame-mega",
+   "criteria": "FREEGAME_MEGA",
+   "simId": 17295,
+   "events": 110,
+   "payoutMultiplier": 56250
+  },
+  {
+   "name": "v5-freegame-high",
+   "criteria": "FREEGAME_HIGH",
+   "simId": 54334,
+   "events": 84,
+   "payoutMultiplier": 16170
+  },
+  {
+   "name": "v5-freegame-medium-long",
+   "criteria": "FREEGAME_MEDIUM_LONG",
+   "simId": 97377,
+   "events": 87,
+   "payoutMultiplier": 2060
+  },
+  {
+   "name": "v5-freegame-medium",
+   "criteria": "FREEGAME_MEDIUM",
+   "simId": 90732,
+   "events": 66,
+   "payoutMultiplier": 2040
+  },
+  {
+   "name": "v5-freegame-low",
+   "criteria": "FREEGAME_LOW",
+   "simId": 289,
+   "events": 51,
+   "payoutMultiplier": 80
+  },
+  {
+   "name": "v5-zero",
+   "criteria": "ZERO",
+   "simId": 0,
+   "events": 4,
+   "payoutMultiplier": 0
+  },
+  {
+   "name": "v5-basegame",
+   "criteria": "BASEGAME",
+   "simId": 20,
+   "events": 9,
+   "payoutMultiplier": 80
+  }
+ ]
+}

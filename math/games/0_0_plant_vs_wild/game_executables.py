@@ -40,15 +40,27 @@ class GameExecutables(GameCalculations):
         `0 -> 2 -> 4 -> 8 ... -> 4096`. C'est la différence de fond avec le
         sample cluster, qui incrémente de 1 : le frontend affiche la valeur brute
         reçue, elle doit donc déjà être le multiplicateur montré au joueur.
+
+        UN SEUL CRAN PAR RÉSOLUTION. Une case peut appartenir à PLUSIEURS
+        connexions simultanées — c'est même la norme autour d'un Wild, qui
+        remplace tous les symboles. Doubler une fois par connexion donnerait
+        `x2^nombre de connexions` : mesuré sur un Book réel, une case partagée
+        par six connexions passait de x1 à x64 d'un coup, et jusqu'à x256 dans
+        la population. L'identité du jeu dit « la case double ensuite », au
+        singulier. On dédoublonne donc les positions avant de doubler.
         """
         if self.win_data["totalWin"] <= 0:
             return
 
-        for win in self.win_data["wins"]:
-            for pos in win["positions"]:
-                current = self.position_multipliers[pos["reel"]][pos["row"]]
-                doubled = 2 if current == 0 else current * 2
-                self.position_multipliers[pos["reel"]][pos["row"]] = min(doubled, MAX_POSITION_MULT)
+        connected = {
+            (pos["reel"], pos["row"])
+            for win in self.win_data["wins"]
+            for pos in win["positions"]
+        }
+        for reel, row in connected:
+            current = self.position_multipliers[reel][row]
+            doubled = 2 if current == 0 else current * 2
+            self.position_multipliers[reel][row] = min(doubled, MAX_POSITION_MULT)
 
         update_grid_event(self)
 

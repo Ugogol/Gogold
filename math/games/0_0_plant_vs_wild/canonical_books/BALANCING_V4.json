@@ -1,0 +1,25 @@
+{
+ "version": "BALANCING_V4",
+ "status": "INVALIDATED_BY_MULTIPLIER_BUG",
+ "mode": "base",
+ "population": 100000,
+ "sources": {
+  "game_config.py": "5e594c13b83df9af603c7f93453100ac996e99e778cbc2eee66c4de7301b7de6",
+  "game_optimization.py": "2cbe97e44159b4fa72a2e45e71c7bf11e4c50c3b6d9f240c6a3cec6215059c00",
+  "game_override.py": "4e1bc22a9110db408f290229e633cca0d41736e1bb9e0ea55569721709b1f184",
+  "game_executables.py": "b225c6a09c00e56ca588e8755306a2ad68ccbbb170b95e70c4d0d23385065527",
+  "game_calculations.py": "622eed9d5f29a26db284d0607552ca369b1b5b2e8974d64cbfc0954e3bc7afce",
+  "game_events.py": "9ce74d08024629f424425f99e3fdf5b04b88635f39503a1e16759c65cb0cafff",
+  "gamestate.py": "c9baa3aa76ccbef6b66b40de60758f466651b11055e63ba59eb27b446791dd14",
+  "reels/BR0.csv": "e52aa132d1ce19e57996c1ae4f75b3917dfc01d3c01731d7fc346832c989f8c0",
+  "reels/BR1.csv": "3ec94146decb5aa80290d8324a4c18b500117a9c299dae5f04a5d27546b797bf",
+  "reels/FR0.csv": "c671eaf2c8f0b0dcad98274b6a4c537f2a5531736a0546a98e4132595e299eea",
+  "reels/FR1.csv": "b66bd37d626df3e6891f287452a6875c0a287c6181c949fc3db48994ad7320a0"
+ },
+ "artefacts": {
+  "lookUpTable_base_0.csv": "1baa3c8ec75b50d051b7c2da989e95a4ab9174408d2a90cbea5763d4b1169b26",
+  "books_base.jsonl.zst": "38cd7d719f4266a6a7745dfe208693855ea2674b3c387ef4bbd9ce42e0833545",
+  "force_record_base.json": "426b1c8d0c7138773b82c350663f062ddc90f198280a6e2d3af16f71a5adf3a6"
+ },
+ "invalidation": "Genere avec update_grid_mults() doublant une case UNE FOIS PAR CONNEXION. Une case partagee par 6 connexions passait de x1 a x64 en une resolution (jusqu'a x256 dans la population). 58,23 % du RTP transitait par des rounds touches. Ni la LUT, ni les poids, ni les Books de cette version ne sont utilisables. Conserve comme historique de diagnostic uniquement."
+}

@@ -83,7 +83,7 @@ def main():
             keys = {k["name"]: k["value"] for k in entry["search"]}
             if "bucket" in keys:
                 for book_id in entry["bookIds"]:
-                    bucket_of[book_id] = keys["bucket"]
+                    bucket_of[book_id] = (keys["bucket"], keys.get("retrigger"))
 
     by_criteria = defaultdict(list)
     for book in books:
@@ -96,7 +96,13 @@ def main():
         if payout >= config.wincap:
             fence = "WINCAP"
         elif bucket is not None:
-            fence = f"FREEGAME_{bucket.upper()}"
+            name, retrigger = bucket
+            # `medium` est scinde par retrigger : c'est la seule facon de viser
+            # une frequence de retrigger sans deformer la forme des gains.
+            if name == "medium":
+                fence = "FREEGAME_MEDIUM_LONG" if retrigger == "yes" else "FREEGAME_MEDIUM"
+            else:
+                fence = f"FREEGAME_{name.upper()}"
         elif payout == 0:
             fence = "ZERO"
         else:
@@ -104,18 +110,19 @@ def main():
         by_criteria[fence].append(payout)
 
     order = ["ZERO", "BASEGAME", "FREEGAME_LOW", "FREEGAME_MEDIUM",
-             "FREEGAME_HIGH", "FREEGAME_MEGA", "WINCAP"]
+             "FREEGAME_MEDIUM_LONG", "FREEGAME_HIGH", "FREEGAME_MEGA", "WINCAP"]
     total = len(books)
 
     print(f"CRITERIA POPULATION — mode {mode}   ({total} Books)\n")
-    print(f"{'criteria':16} {'books':>7} {'part':>7}  {'min':>9} {'median':>9} {'max':>10}")
+    print(f"{'criteria':22} {'books':>7} {'part':>7}  {'min':>9} {'median':>9} {'mean':>10} {'max':>10}")
     for name in order:
         vals = sorted(by_criteria.get(name, []))
         if not vals:
-            print(f"{name:16} {0:>7}   VIDE   —")
+            print(f"{name:22} {0:>7}   VIDE   —")
             continue
-        print(f"{name:16} {len(vals):>7} {len(vals)/total*100:6.2f}% "
-              f"{vals[0]:9.2f} {statistics.median(vals):9.2f} {vals[-1]:10.2f}")
+        print(f"{name:22} {len(vals):>7} {len(vals)/total*100:6.2f}% "
+              f"{vals[0]:9.2f} {statistics.median(vals):9.2f} "
+              f"{statistics.mean(vals):10.2f} {vals[-1]:10.2f}")
 
     extra = set(by_criteria) - set(order)
     if extra:

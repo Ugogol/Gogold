@@ -25,6 +25,44 @@ def test_13_une_case_deja_activee_double(game):
     assert hit(game) == 4
 
 
+def test_13b_une_case_partagee_par_plusieurs_connexions_ne_monte_que_d_un_cran(game):
+    """UN SEUL CRAN PAR RESOLUTION, quel que soit le nombre de connexions.
+
+    Autour d'un Wild — qui remplace tous les symboles — une meme case appartient
+    couramment a plusieurs connexions simultanees. Doubler une fois par connexion
+    donnerait `x2^nombre de connexions`.
+
+    Regression : un Book reel (freegame high, free spin 4) montrait une case
+    partagee par six connexions passer de x1 a x64 en une seule resolution,
+    pendant que les cases d'une seule connexion faisaient x1 -> x2.
+    """
+    partagee = {"reel": 2, "row": 2}
+    propre = {"reel": 0, "row": 0}
+    game.win_data = {
+        "totalWin": 1.0,
+        "wins": [
+            {"positions": [dict(partagee), dict(propre)]},
+            {"positions": [dict(partagee)]},
+            {"positions": [dict(partagee)]},
+        ],
+    }
+    game.update_grid_mults()
+    assert game.position_multipliers[partagee["reel"]][partagee["row"]] == 2
+    assert game.position_multipliers[propre["reel"]][propre["row"]] == 2
+
+
+def test_13c_le_cran_unique_se_cumule_bien_de_resolution_en_resolution(game):
+    """Une seule marche par resolution, mais les resolutions s'enchainent."""
+    partagee = {"reel": 2, "row": 2}
+    for attendu in (2, 4, 8):
+        game.win_data = {
+            "totalWin": 1.0,
+            "wins": [{"positions": [dict(partagee)]} for _ in range(5)],
+        }
+        game.update_grid_mults()
+        assert game.position_multipliers[partagee["reel"]][partagee["row"]] == attendu
+
+
 def test_14_la_progression_va_jusqu_a_x4096_et_plafonne(game):
     values = [hit(game) for _ in range(20)]
     expected = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]

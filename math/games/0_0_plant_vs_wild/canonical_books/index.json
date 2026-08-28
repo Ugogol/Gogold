@@ -55,6 +55,46 @@
    "name": "math-split",
    "events": 109,
    "payoutMultiplier": 4640
+  },
+  {
+   "name": "v5-wincap",
+   "events": 158,
+   "payoutMultiplier": 1000000
+  },
+  {
+   "name": "v5-freegame-mega",
+   "events": 110,
+   "payoutMultiplier": 56250
+  },
+  {
+   "name": "v5-freegame-high",
+   "events": 84,
+   "payoutMultiplier": 16170
+  },
+  {
+   "name": "v5-freegame-medium-long",
+   "events": 87,
+   "payoutMultiplier": 2060
+  },
+  {
+   "name": "v5-freegame-medium",
+   "events": 66,
+   "payoutMultiplier": 2040
+  },
+  {
+   "name": "v5-freegame-low",
+   "events": 51,
+   "payoutMultiplier": 80
+  },
+  {
+   "name": "v5-zero",
+   "events": 4,
+   "payoutMultiplier": 0
+  },
+  {
+   "name": "v5-basegame",
+   "events": 9,
+   "payoutMultiplier": 80
   }
  ]
 }

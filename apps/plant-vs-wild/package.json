@@ -8,7 +8,7 @@
 		"lint": "eslint \"src\"",
 		"storybook": "cross-env PUBLIC_CHROMATIC=true storybook dev -p 6002 public",
 		"dev": "vite dev --host --port 3002",
-		"sync:math-books": "node ../../tooling/debug/sync-math-books.mjs --math-game ../../math/games/0_0_plant_vs_wild --config src/dev/mathBooks.config.json --out src/dev/generated-books",
+		"sync:math-books": "node ../../tooling/debug/sync-math-books.mjs --math-game ../../math/games/0_0_plant_vs_wild --config src/dev/mathBooks.config.json --out src/dev/generated-books --contract src/game/typesBookEvent.ts",
 		"build": "vite build",
 		"preview": "vite preview",
 		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
