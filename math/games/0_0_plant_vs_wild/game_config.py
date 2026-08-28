@@ -119,6 +119,30 @@ SNAKE_SYMBOL_WEIGHTS = {
 #: aucune ne se déclenche d'elle-même. Les tests et les books canoniques
 #: forcent la feature explicitement. C'est LE paramètre à trancher avant
 #: l'optimisation.
+# ── POPULATION D'OPTIMISATION — ni identite, ni gameplay, ni balancing ──────
+#
+# Ces valeurs ne decrivent PAS le jeu : elles disent seulement combien de books
+# de chaque sorte la simulation doit produire pour que l'optimizer ait de quoi
+# travailler. La probabilite reelle de chaque issue est fixee ensuite par les
+# POIDS de la lookup table, pas par ces quotas.
+#
+# Le run precedent n'avait qu'un seul criteria couvrant tous les paris :
+# l'optimizer traitait 100 000 books comme une population interchangeable et
+# detruisait la forme du jeu. Les quotas ci-dessous garantissent au contraire
+# une population reelle dans chaque categorie, y compris les rares.
+WINCAP_QUOTA = 0.01
+FREEGAME_QUOTA = 0.30
+ZERO_QUOTA = 0.34
+BASEGAME_QUOTA = 0.35
+
+#: Bornes de classement des Bonus, en multiplicateurs de mise. Convention :
+#: INTERVALLE FERME A GAUCHE, OUVERT A DROITE. Un Book tombe donc dans un seul
+#: bucket, et tout Book Bonus est classable. Le classement porte sur le payout
+#: TOTAL du round (spin declencheur + Free Spins), jamais sur le seul Bonus :
+#: c'est ce total que la lookup table pondere.
+BONUS_BUCKET_BOUNDS = {"low": (0.0, 20.0), "medium": (20.0, 100.0),
+                       "high": (100.0, 500.0), "mega": (500.0, MAX_WIN)}
+
 DEAD_SPIN_FEATURE_WEIGHTS = {"none": 95.35, "rage": 2.4, "wildSplit": 1.6, "wildSnake": 0.65}
 
 
@@ -264,11 +288,70 @@ class GameConfig(Config):
                 auto_close_disabled=False,
                 is_feature=True,
                 is_buybonus=False,
+                #: ORDRE SIGNIFICATIF. L'optimizer traite les fences dans l'ordre
+                #: des criteria et RETIRE les books au fur et a mesure : le
+                #: criteria attrape-tout doit venir en dernier, sinon il vide la
+                #: table avant les autres. Meme ordre que le sample officiel.
                 distributions=[
                     Distribution(
-                        criteria="basegame",
-                        quota=1.0,
+                        criteria="wincap",
+                        quota=WINCAP_QUOTA,
+                        win_criteria=self.wincap,
                         conditions={
+                            #: Le sample officiel atteint le plafond avec une bande
+                            #: dediee (WCAP). Mesure ici : FR1, deja presente, y
+                            #: parvient 1,07 % du temps contre 0,00 % pour FR0
+                            #: (1500 Bonus forces chacun). Une bande de plus serait
+                            #: donc inutile. C'est coherent avec l'etape 15 : un
+                            #: reveal disperse concentre les gains autour du Wild.
+                            #: Ce melange ne sert QU'a peupler le criteria `wincap` ;
+                            #: la probabilite reelle du Max Win est fixee ensuite
+                            #: par le poids de la lookup table.
+                            "reel_weights": {
+                                self.basegame_type: {"BR0": 1},
+                                self.freegame_type: {"FR0": 1, "FR1": 5},
+                            },
+                            "force_wincap": True,
+                            "force_freegame": True,
+                        },
+                    ),
+                    Distribution(
+                        criteria="freegame",
+                        quota=FREEGAME_QUOTA,
+                        conditions={
+                            "reel_weights": {
+                                self.basegame_type: {"BR0": 1},
+                                self.freegame_type: {"FR0": 1},
+                            },
+                            "force_wincap": False,
+                            "force_freegame": True,
+                        },
+                    ),
+                    Distribution(
+                        criteria="0",
+                        quota=ZERO_QUOTA,
+                        win_criteria=0.0,
+                        conditions={
+                            #: PLANT VS WILD declenche le Bonus sur la 4e connexion
+                            #: du Wild, pas sur des scatters : meme sans
+                            #: `force_freegame`, un round peut y entrer. Les bandes
+                            #: du Bonus doivent donc etre declarees ici aussi.
+                            "reel_weights": {
+                                self.basegame_type: {"BR0": 1},
+                                self.freegame_type: {"FR0": 1},
+                            },
+                            "force_wincap": False,
+                            "force_freegame": False,
+                        },
+                    ),
+                    Distribution(
+                        criteria="basegame",
+                        quota=BASEGAME_QUOTA,
+                        conditions={
+                            #: PLANT VS WILD declenche le Bonus sur la 4e connexion
+                            #: du Wild, pas sur des scatters : meme sans
+                            #: `force_freegame`, un round peut y entrer. Les bandes
+                            #: du Bonus doivent donc etre declarees ici aussi.
                             "reel_weights": {
                                 self.basegame_type: {"BR0": 1},
                                 self.freegame_type: {"FR0": 1},

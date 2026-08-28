@@ -65,6 +65,9 @@ class GameState(GameStateOverride):
             self.evaluate_finalwin()
             self.check_repeat()
 
+        # Hors de la boucle : `final_win` est celui du round ACCEPTE, et
+        # `reset_book` a efface les enregistrements des tentatives rejetees.
+        self.record_optimization_criteria()
         self.imprint_wins()
 
     def run_freespin(self):

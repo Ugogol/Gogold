@@ -32,6 +32,11 @@ def parse_args():
     parser.add_argument("--base", type=int, default=50000, help="wagers du mode base")
     parser.add_argument("--bonus", type=int, default=10000, help="wagers du mode bonus")
     parser.add_argument(
+        "--reuse-books",
+        action="store_true",
+        help="repart des books deja generes au lieu de les recalculer",
+    )
+    parser.add_argument(
         "--optimize",
         action="store_true",
         help="lance l'optimizer officiel Stake sur les modes générés",
@@ -63,10 +68,11 @@ if __name__ == "__main__":
 
         OptimizationSetup(config)
 
-    for mode, sims in num_sim_args.items():
-        create_books(
-            GameState(config), config, {mode: sims}, batching_size, num_threads, compression, profiling
-        )
+    if not args.reuse_books:
+        for mode, sims in num_sim_args.items():
+            create_books(
+                GameState(config), config, {mode: sims}, batching_size, num_threads, compression, profiling
+            )
 
     generate_configs(GameState(config))
 

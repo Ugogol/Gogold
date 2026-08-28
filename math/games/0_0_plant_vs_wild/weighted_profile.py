@@ -7,6 +7,11 @@ ci-dessous sont donc pondérées par `weight / sum(weights)`.
 C'est la différence entre « ce que la simulation a produit » et « ce que le
 joueur rencontrera ».
 
+CONVENTION : un « gain de Bonus » est ici le payout TOTAL du pari — spin
+déclencheur et Free Spins additionnés. C'est la grandeur qui classe les Books
+dans les fences de l'optimizer ; mesurer autre chose reviendrait à contrôler des
+cibles qui n'ont pas été optimisées.
+
     python games/0_0_plant_vs_wild/weighted_profile.py base
 """
 
@@ -140,9 +145,12 @@ def main():
         if triggered:
             bonus_prob += share
             retrigger_prob[min(retriggers, 2)] += share
-            if bonus_win is not None:
-                bonus_pairs.append((bonus_win, share))
-                bonus_buckets[bucket(bonus_win, BONUS_BUCKETS)] += share
+            # Le Bonus est mesure sur le payout TOTAL du round, pas sur le seul
+            # `freeSpinEnd`. C'est la meme grandeur que celle qui classe les
+            # Books dans les fences de l'optimizer : sans cela, les cibles
+            # verifiees ici ne porteraient pas sur ce qui a ete optimise.
+            bonus_pairs.append((payout, share))
+            bonus_buckets[bucket(payout, BONUS_BUCKETS)] += share
         for feature in features:
             feature_prob[feature] += share
 

@@ -14,7 +14,7 @@ import random
 
 from game_events import reveal_event
 from game_executables import GameExecutables
-from game_config import WILD_MAX_CHARGE
+from game_config import WILD_MAX_CHARGE, BONUS_BUCKET_BOUNDS
 
 
 class GameStateOverride(GameExecutables):
@@ -162,6 +162,72 @@ class GameStateOverride(GameExecutables):
         )
         self.update_freespin_amount()
         self.run_freespin()
+
+    # ── Population d'optimisation ───────────────────────────────────────────
+
+    def bonus_bucket(self) -> str:
+        """Bucket du round, d'apres son payout TOTAL.
+
+        CONVENTION : intervalles fermes a gauche, ouverts a droite. Un round
+        appartient donc a exactement un bucket, et tout round Bonus en a un.
+
+        Le classement porte sur `final_win`, le payout TOTAL du pari — spin
+        declencheur ET Free Spins additionnes. Le gain du spin declencheur n'est
+        donc jamais compte deux fois : il n'existe qu'une seule valeur.
+
+        Le plafond n'est PAS un bucket : un round a `wincap` est saisi par sa
+        propre fence, definie sur un payout exact. Le renvoyer ici en `mega`
+        serait sans effet — cette fence est traitee avant — mais brouillerait la
+        lecture, donc on le nomme.
+        """
+        if self.final_win >= self.config.wincap:
+            return "wincap"
+        for name, (low, high) in BONUS_BUCKET_BOUNDS.items():
+            if low <= self.final_win < high:
+                return name
+        raise AssertionError(f"payout non classable : {self.final_win}")
+
+    def record_optimization_criteria(self) -> None:
+        """Inscrit la categorie du round au force record.
+
+        C'est le mecanisme OFFICIEL de segmentation : `record()` alimente le
+        force record, que l'optimizer interroge via `search_conditions={cle:
+        valeur}`. Aucun systeme de ponderation parallele n'est cree.
+
+        Sans cela, tous les Books Bonus forment une seule population et
+        l'optimizer est libre d'en detruire la forme interne — c'est exactement
+        ce qui a fait rejeter le premier candidat.
+
+        Rien n'est enregistre pour les rounds sans Bonus : ils sont saisis par
+        les fences `0` (payout exact 0) et `basegame` (attrape-tout).
+        """
+        if not self.triggered_freegame:
+            return
+        # `retrigger` est une SECONDE dimension, independante du bucket. Dans ce
+        # jeu, un Bonus n'atteint les paliers eleves qu'en retriggant : sans
+        # cette cle, viser une frequence de retrigger revient a viser une forme
+        # de Bonus, et les deux cibles se contredisent. Mesure sur 100 000
+        # Books — part des Bonus AVEC retrigger : low 2.93 %, medium 42.66 %,
+        # high 73.28 %, mega 92.27 %.
+        #
+        # Ajouter une cle ne casse rien : le Rust exige que les cles CHERCHEES
+        # figurent dans l'enregistrement, pas l'inverse. Une fence qui ne
+        # demande que `bucket` continue donc de matcher.
+        self.record(
+            {
+                "criteria": "freegame",
+                "bucket": self.bonus_bucket(),
+                "retrigger": "yes" if self.retriggered_freegame() else "no",
+            }
+        )
+
+    def retriggered_freegame(self) -> bool:
+        """Le Bonus a-t-il ete prolonge ?
+
+        Se lit sur les events du Book, pas sur un compteur parallele : c'est la
+        meme source que celle que le frontend rejoue.
+        """
+        return any(event.get("type") == "freeSpinRetrigger" for event in self.book.events)
 
     def check_repeat(self) -> None:
         """Rejoue le pari s'il ne satisfait pas la criteria de la distribution."""
