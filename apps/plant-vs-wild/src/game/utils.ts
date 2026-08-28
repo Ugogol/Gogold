@@ -27,3 +27,22 @@ export const getSymbolY = (symbolIndexOfBoard: number) => (symbolIndexOfBoard + 
  */
 export const boardRowToGridRow = (boardRow: number) => boardRow - 1;
 export const gridRowToBoardRow = (gridRow: number) => gridRow + 1;
+
+/**
+ * Rectangle réellement occupé à l'écran par le sprite de fond.
+ *
+ * `createBackgroundLayout` ne renvoie QU'UNE dimension — `width` ou `height`,
+ * selon l'axe qu'il a choisi d'étirer — et laisse Pixi déduire l'autre du
+ * ratio de la texture. Pour poser quelque chose sur le décor il faut les deux :
+ * on complète donc la manquante avec le même ratio.
+ *
+ * `x` et `y` sont le CENTRE du sprite : il est ancré en (0.5, 0.5).
+ */
+export const backgroundRect = (
+	layout: { x: number; y: number; width?: number; height?: number },
+	ratio: number,
+) => {
+	const width = layout.width ?? (layout.height ?? 0) * ratio;
+	const height = layout.height ?? (layout.width ?? 0) / ratio;
+	return { x: layout.x, y: layout.y, width, height };
+};

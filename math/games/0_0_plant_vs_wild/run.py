@@ -32,9 +32,19 @@ def parse_args():
     parser.add_argument("--base", type=int, default=50000, help="wagers du mode base")
     parser.add_argument("--bonus", type=int, default=10000, help="wagers du mode bonus")
     parser.add_argument(
+        "--modes",
+        default="base,bonus",
+        help="bet modes a (re)generer, separes par des virgules",
+    )
+    parser.add_argument(
         "--reuse-books",
         action="store_true",
         help="repart des books deja generes au lieu de les recalculer",
+    )
+    parser.add_argument(
+        "--opt-modes",
+        default="base",
+        help="bet modes a optimiser, separes par des virgules",
     )
     parser.add_argument(
         "--opt-threads",
@@ -74,8 +84,16 @@ if __name__ == "__main__":
 
         OptimizationSetup(config)
 
+    # GARDE-FOU. Regenerer un mode ECRASE ses books. Le mode `base` est gele sur
+    # BALANCING_V5 : `--modes bonus` permet de travailler le Bonus Buy sans
+    # jamais toucher a ses artefacts.
+    wanted = {m.strip() for m in args.modes.split(",") if m.strip()}
+    unknown = wanted - set(num_sim_args)
+    if unknown:
+        raise SystemExit(f"bet mode inconnu : {sorted(unknown)}")
+
     if not args.reuse_books:
-        for mode, sims in num_sim_args.items():
+        for mode, sims in ((m, n) for m, n in num_sim_args.items() if m in wanted):
             create_books(
                 GameState(config), config, {mode: sims}, batching_size, num_threads, compression, profiling
             )
@@ -104,7 +122,8 @@ if __name__ == "__main__":
         # (`main.rs:261`) : moins de 10 records et le binaire panique. Chaque
         # thread construisant sa PROPRE chaine, augmenter les threads est le
         # levier fiable — et il ne touche pas au SDK.
-        OptimizationExecution().run_all_modes(config, ["base"], args.opt_threads)
+        opt_modes = [m.strip() for m in args.opt_modes.split(",") if m.strip()]
+        OptimizationExecution().run_all_modes(config, opt_modes, args.opt_threads)
         generate_configs(GameState(config))
 
     # Contrôle de format Stake sur les fichiers produits : cohérence entre les

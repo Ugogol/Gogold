@@ -5,6 +5,7 @@
 	import { MainContainer } from 'components-layout';
 
 	import Background from './Background.svelte';
+	import BackgroundGoo from './BackgroundGoo.svelte';
 	import BoardCells from './BoardCells.svelte';
 	import MultiplierGrid from './MultiplierGrid.svelte';
 	import Board from './Board.svelte';
@@ -49,6 +50,7 @@
 	<EnablePixiExtension />
 
 	<Background />
+	<BackgroundGoo />
 
 	<MainContainer>
 		<BoardCells />

@@ -32,6 +32,9 @@
  * (étape 3). La grille est constituée des seules cases, dessinées en Graphics.
  * `board.psd` / `board.webp` sont conservés dans `source-assets/plant-vs-wild/`.
  *
+ * Les trois sprites `goo*` sont le décor animé de la plante de droite. Ils sont
+ * dessinés PAR-DESSUS le fond, pas dedans : le fond reste une image fixe.
+ *
  * Aucun son, aucune animation Spine à ce stade.
  */
 export default {
@@ -54,6 +57,21 @@ export default {
 		type: 'sprite',
 		src: new URL('../../assets/sprites/background/background-bonus-mobile.webp', import.meta.url)
 			.href,
+		preload: true,
+	},
+	gooHang: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/background/goo/goo_hang.webp', import.meta.url).href,
+		preload: true,
+	},
+	gooDrop: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/background/goo/goo_drop.webp', import.meta.url).href,
+		preload: true,
+	},
+	gooSplash: {
+		type: 'sprite',
+		src: new URL('../../assets/sprites/background/goo/goo_splash.webp', import.meta.url).href,
 		preload: true,
 	},
 	symbols: {

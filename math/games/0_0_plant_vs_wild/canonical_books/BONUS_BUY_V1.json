@@ -1,0 +1,61 @@
+{
+ "version": "BONUS_BUY_V1",
+ "status": "FROZEN_FOR_INTEGRATION",
+ "mode": "bonus",
+ "population": 200000,
+ "sources": {
+  "game_config.py": "8e21b7d86f2cb4bd0d10663cdbb67c86d3733959a0dd7bf3c73852ee7d793026",
+  "game_optimization.py": "c46a6c7860ff88a3e2487b41d4b34656b1a22951b5195d7d774cdb7c9238c77a",
+  "game_override.py": "4e1bc22a9110db408f290229e633cca0d41736e1bb9e0ea55569721709b1f184",
+  "game_executables.py": "481ffca42eb18753c592f417a6b056662a1dc25e65bce4fe05dba64dc35ff702",
+  "game_calculations.py": "622eed9d5f29a26db284d0607552ca369b1b5b2e8974d64cbfc0954e3bc7afce",
+  "game_events.py": "9ce74d08024629f424425f99e3fdf5b04b88635f39503a1e16759c65cb0cafff",
+  "gamestate.py": "c9baa3aa76ccbef6b66b40de60758f466651b11055e63ba59eb27b446791dd14",
+  "reels/BR0.csv": "e52aa132d1ce19e57996c1ae4f75b3917dfc01d3c01731d7fc346832c989f8c0",
+  "reels/BR1.csv": "3ec94146decb5aa80290d8324a4c18b500117a9c299dae5f04a5d27546b797bf",
+  "reels/FR0.csv": "c671eaf2c8f0b0dcad98274b6a4c537f2a5531736a0546a98e4132595e299eea",
+  "reels/FR1.csv": "b66bd37d626df3e6891f287452a6875c0a287c6181c949fc3db48994ad7320a0"
+ },
+ "artefacts": {
+  "lookUpTable_bonus_0.csv": "86e2d8ab2350191806d5e45a1c985452c606e98c79d576dc44ed8af8f417a9ab",
+  "books_bonus.jsonl.zst": "7d7836471a26e737480d67d20caff7922d6f57517b4ac946c34d61c0e1ac6228",
+  "force_record_bonus.json": "49e26ba927eebe4736717b4a2ce94d3792b138a72aab9d3a62e2cda96d62cf7f"
+ },
+ "books": [
+  {
+   "name": "buy-wincap",
+   "criteria": "WINCAP",
+   "simId": 102757,
+   "events": 165,
+   "payoutMultiplier": 1000000
+  },
+  {
+   "name": "buy-mega",
+   "criteria": "MEGA",
+   "simId": 121383,
+   "events": 102,
+   "payoutMultiplier": 63400
+  },
+  {
+   "name": "buy-high",
+   "criteria": "HIGH",
+   "simId": 54334,
+   "events": 84,
+   "payoutMultiplier": 16170
+  },
+  {
+   "name": "buy-medium",
+   "criteria": "MEDIUM",
+   "simId": 135902,
+   "events": 63,
+   "payoutMultiplier": 2270
+  },
+  {
+   "name": "buy-low",
+   "criteria": "LOW",
+   "simId": 216,
+   "events": 51,
+   "payoutMultiplier": 40
+  }
+ ]
+}

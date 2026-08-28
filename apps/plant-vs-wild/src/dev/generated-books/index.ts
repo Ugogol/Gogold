@@ -29,6 +29,11 @@ import v5FreegameMediumLong from './v5-freegame-medium-long.json';
 import v5FreegameHigh from './v5-freegame-high.json';
 import v5FreegameMega from './v5-freegame-mega.json';
 import v5Wincap from './v5-wincap.json';
+import buyLow from './buy-low.json';
+import buyMedium from './buy-medium.json';
+import buyHigh from './buy-high.json';
+import buyMega from './buy-mega.json';
+import buyWincap from './buy-wincap.json';
 
 /**
  * Unique frontière de typage entre le JSON du Math et le contrat frontend.
@@ -160,6 +165,36 @@ export const mathBooks: MathBook[] = [
 		label: "V5 / WINCAP",
 		payoutMultiplier: 1000000,
 		events: eventsOf(v5Wincap),
+	},
+	{
+		id: 'buy-low',
+		label: "BUY / LOW",
+		payoutMultiplier: 40,
+		events: eventsOf(buyLow),
+	},
+	{
+		id: 'buy-medium',
+		label: "BUY / MEDIUM",
+		payoutMultiplier: 2270,
+		events: eventsOf(buyMedium),
+	},
+	{
+		id: 'buy-high',
+		label: "BUY / HIGH",
+		payoutMultiplier: 16170,
+		events: eventsOf(buyHigh),
+	},
+	{
+		id: 'buy-mega',
+		label: "BUY / MEGA",
+		payoutMultiplier: 63400,
+		events: eventsOf(buyMega),
+	},
+	{
+		id: 'buy-wincap',
+		label: "BUY / WINCAP",
+		payoutMultiplier: 1000000,
+		events: eventsOf(buyWincap),
 	},
 ];
 

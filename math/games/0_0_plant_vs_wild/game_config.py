@@ -138,6 +138,12 @@ FREEGAME_QUOTA = 0.30
 ZERO_QUOTA = 0.34
 BASEGAME_QUOTA = 0.35
 
+#: Quotas du mode Bonus Buy. Le gros de la population joue les bandes normales ;
+#: une petite part force le plafond, sans quoi la fence `wincap` serait vide —
+#: la population naturelle n'en produisait qu'UN sur 5 000 Books.
+BUY_WINCAP_QUOTA = 0.004
+BUY_FREEGAME_QUOTA = 0.996
+
 #: Bornes de classement des Bonus, en multiplicateurs de mise. Convention :
 #: INTERVALLE FERME A GAUCHE, OUVERT A DROITE. Un Book tombe donc dans un seul
 #: bucket, et tout Book Bonus est classable. Le classement porte sur le payout
@@ -373,11 +379,34 @@ class GameConfig(Config):
                 auto_close_disabled=False,
                 is_feature=True,
                 is_buybonus=True,
+                #: ORDRE SIGNIFICATIF, comme pour le mode base : l'optimizer
+                #: traite les fences dans l'ordre et retire les Books attribués.
                 distributions=[
                     Distribution(
-                        criteria="freegame",
-                        quota=1.0,
+                        criteria="wincap",
+                        quota=BUY_WINCAP_QUOTA,
+                        win_criteria=self.wincap,
                         conditions={
+                            #: Même recette que le criteria `wincap` du mode base :
+                            #: FR1 rend le plafond atteignable (1,07 % contre
+                            #: 0,00 % pour FR0, mesuré sur 1500 Bonus forcés).
+                            #: Ce mélange ne sert QU'À peupler la fence ; la
+                            #: probabilité réelle vient du poids de la LUT.
+                            "reel_weights": {
+                                self.basegame_type: {"BR0": 1},
+                                self.freegame_type: {"FR0": 1, "FR1": 5},
+                            },
+                            "force_wincap": True,
+                            "force_freegame": True,
+                        },
+                    ),
+                    Distribution(
+                        criteria="freegame",
+                        quota=BUY_FREEGAME_QUOTA,
+                        conditions={
+                            #: Bandes NORMALES. Le Bonus acheté joue exactement le
+                            #: même jeu que le Bonus naturel : payer l'accès ne
+                            #: donne ni meilleurs reels, ni plus de Free Spins.
                             "reel_weights": {
                                 self.basegame_type: {"BR0": 1},
                                 self.freegame_type: {"FR0": 1},

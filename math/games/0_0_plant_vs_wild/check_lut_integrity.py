@@ -80,12 +80,18 @@ def check(mode: str) -> int:
     book_payouts = set(books.values())
     synthetic = sorted(lut_payouts - book_payouts)
 
+    # Le RTP d'un bet mode est sa moyenne de payout RAPPORTEE A SON COUT
+    # (`calculate_rtp` du SDK). Diviser seulement par 100 donnait un RTP de 96
+    # pour le Bonus Buy, qui coute 100x : juste au facteur pres, faux a lire.
+    cost = next(b.get_cost() for b in config.bet_modes if b.get_name() == mode)
     total_weight = sum(weight for _, weight, _ in rows)
     weighted_rtp = (
-        sum(weight * payout for _, weight, payout in rows) / total_weight / 100.0 if total_weight else 0.0
+        sum(weight * payout for _, weight, payout in rows) / total_weight / 100.0 / cost
+        if total_weight
+        else 0.0
     )
 
-    print(f"mode                  {mode}")
+    print(f"mode                  {mode}   (cout {cost:.0f}x)")
     print(f"lignes LUT            {len(rows)}")
     print(f"books                 {len(books)}")
     print(f"sim_id manquants      {len(missing_ids)}")

@@ -27,7 +27,7 @@ n'est fabriqué — un book extrait est bit pour bit celui que le RGS servirait.
 Pour chaque criteria on retient le book le PLUS COURT, pour garder le playback
 lisible en debug.
 
-    python games/0_0_plant_vs_wild/freeze_balancing.py     (depuis math/)
+    python games/0_0_plant_vs_wild/freeze_balancing.py base|bonus   (depuis math/)
 """
 
 import hashlib
@@ -47,9 +47,13 @@ OUTPUT_DIR = os.path.join(HERE, "canonical_books")
 
 #: Version gelée par ce script. Elle nomme le fichier de gel ET le préfixe des
 #: Books extraits : aucun mélange de versions n'est possible dans le dossier.
-VERSION = "V5"
-PREFIX = VERSION.lower()
-FREEZE_FILE = os.path.join(OUTPUT_DIR, f"BALANCING_{VERSION}.json")
+#: Une version par bet mode. Le mode `base` porte le balancing du jeu, le mode
+#: `bonus` celui du Bonus Buy : ce sont deux artefacts indépendants, gelés
+#: séparément, et l'un ne doit jamais invalider l'autre.
+VERSIONS = {
+    "base": {"version": "BALANCING_V5", "prefix": "v5"},
+    "bonus": {"version": "BONUS_BUY_V1", "prefix": "buy"},
+}
 
 #: Fichiers VERSIONNÉS qui définissent le candidat. Les régénérer à partir de
 #: ceux-ci doit redonner la même LUT : c'est ce que leurs empreintes garantissent.
@@ -70,16 +74,15 @@ SOURCE_FILES = [
 #: Le nom du criteria, tel que l'optimizer le nomme, et le nom du fichier
 #: produit. L'ordre est celui des fences : `wincap` d'abord, attrape-tout à la
 #: fin — voir `game_optimization.py`.
-CRITERIA_FILES = [
-    ("WINCAP", f"{PREFIX}-wincap"),
-    ("FREEGAME_MEGA", f"{PREFIX}-freegame-mega"),
-    ("FREEGAME_HIGH", f"{PREFIX}-freegame-high"),
-    ("FREEGAME_MEDIUM_LONG", f"{PREFIX}-freegame-medium-long"),
-    ("FREEGAME_MEDIUM", f"{PREFIX}-freegame-medium"),
-    ("FREEGAME_LOW", f"{PREFIX}-freegame-low"),
-    ("ZERO", f"{PREFIX}-zero"),
-    ("BASEGAME", f"{PREFIX}-basegame"),
-]
+#: Fences dont on extrait un Book représentatif, dans l'ordre des fences.
+CRITERIA_BY_MODE = {
+    "base": [
+        "WINCAP", "FREEGAME_MEGA", "FREEGAME_HIGH", "FREEGAME_MEDIUM_LONG",
+        "FREEGAME_MEDIUM", "FREEGAME_LOW", "ZERO", "BASEGAME",
+    ],
+    #: Le Bonus Buy n'a ni spin perdant ni Base Game : chaque achat EST un Bonus.
+    "bonus": ["WINCAP", "MEGA", "HIGH", "MEDIUM", "LOW"],
+}
 
 
 def file_hash(path):
@@ -101,7 +104,7 @@ def read_books(path):
             yield json.loads(buffer)
 
 
-def classify(book, bucket_of, wincap_hundredths):
+def classify(book, bucket_of, wincap_hundredths, mode):
     """Fence à laquelle ce book appartient.
 
     MÊME ordre de décision que l'optimizer : le plafond d'abord (fence à payout
@@ -111,6 +114,9 @@ def classify(book, bucket_of, wincap_hundredths):
     if book["payoutMultiplier"] >= wincap_hundredths:
         return "WINCAP"
     key = bucket_of.get(book["id"])
+    if mode == "bonus":
+        # Un achat sans bucket serait une anomalie : tout achat déclenche le Bonus.
+        return key[0].upper() if key is not None else None
     if key is not None:
         bucket, retrigger = key
         if bucket == "medium":
@@ -122,12 +128,19 @@ def classify(book, bucket_of, wincap_hundredths):
 
 
 def main():
+    mode = sys.argv[1] if len(sys.argv) > 1 else "base"
+    if mode not in VERSIONS:
+        raise SystemExit(f"bet mode inconnu : {mode}")
+    version = VERSIONS[mode]["version"]
+    prefix = VERSIONS[mode]["prefix"]
+    criteria_files = [(c, f"{prefix}-{c.lower().replace('_', '-')}") for c in CRITERIA_BY_MODE[mode]]
+    freeze_file = os.path.join(OUTPUT_DIR, f"{version}.json")
     config = GameConfig()
     wincap_hundredths = int(round(config.wincap * 100))
 
-    lut_path = os.path.join(config.publish_path, "lookUpTable_base_0.csv")
-    books_path = os.path.join(config.publish_path, "books_base.jsonl.zst")
-    force_path = os.path.join(config.library_path, "forces", "force_record_base.json")
+    lut_path = os.path.join(config.publish_path, f"lookUpTable_{mode}_0.csv")
+    books_path = os.path.join(config.publish_path, f"books_{mode}.jsonl.zst")
+    force_path = os.path.join(config.library_path, "forces", f"force_record_{mode}.json")
     for path in (lut_path, books_path, force_path):
         if not os.path.exists(path):
             raise SystemExit(
@@ -150,7 +163,7 @@ def main():
     total = 0
     for book in read_books(books_path):
         total += 1
-        criteria = classify(book, bucket_of, wincap_hundredths)
+        criteria = classify(book, bucket_of, wincap_hundredths, mode)
         # Hors `ZERO`, on ne retient qu'un book qui PAIE. Le bucket faible
         # commence a 0x — un Bonus peut se declencher sans rien rapporter — et un
         # tel book serait indiscernable de `ZERO` en playback, donc inutile pour
@@ -162,13 +175,13 @@ def main():
         if current is None or len(book["events"]) < len(current["events"]):
             shortest[criteria] = book
 
-    missing = [name for name, _ in CRITERIA_FILES if name not in shortest]
+    missing = [name for name, _ in criteria_files if name not in shortest]
     if missing:
         raise SystemExit(f"aucun book pour : {missing}")
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     selected = []
-    for criteria, filename in CRITERIA_FILES:
+    for criteria, filename in criteria_files:
         book = shortest[criteria]
         with open(os.path.join(OUTPUT_DIR, filename + ".json"), "w", encoding="utf-8") as handle:
             json.dump(book, handle, indent=1)
@@ -188,19 +201,19 @@ def main():
         )
 
     freeze = {
-        "version": f"BALANCING_{VERSION}",
+        "version": version,
         "status": "FROZEN_FOR_INTEGRATION",
-        "mode": "base",
+        "mode": mode,
         "population": total,
         "sources": {name: file_hash(os.path.join(HERE, name)) for name in SOURCE_FILES},
         "artefacts": {
-            "lookUpTable_base_0.csv": file_hash(lut_path),
-            "books_base.jsonl.zst": file_hash(books_path),
-            "force_record_base.json": file_hash(force_path),
+            f"lookUpTable_{mode}_0.csv": file_hash(lut_path),
+            f"books_{mode}.jsonl.zst": file_hash(books_path),
+            f"force_record_{mode}.json": file_hash(force_path),
         },
         "books": selected,
     }
-    with open(FREEZE_FILE, "w", encoding="utf-8") as handle:
+    with open(freeze_file, "w", encoding="utf-8") as handle:
         json.dump(freeze, handle, indent=1)
         handle.write("\n")
 
@@ -213,7 +226,7 @@ def main():
             index = json.load(handle)
     # Aucune version n'en cotoie une autre : les entrees d'une version
     # precedente disparaissent de l'index en meme temps que ses fichiers.
-    kept = [b for b in index.get("books", []) if not b["name"].split("-")[0].startswith("v")]
+    kept = [b for b in index.get("books", []) if not b["name"].startswith(prefix + "-")]
     index["books"] = kept + [
         {"name": b["name"], "events": b["events"], "payoutMultiplier": b["payoutMultiplier"]}
         for b in selected
@@ -222,8 +235,8 @@ def main():
         json.dump(index, handle, indent=1)
         handle.write("\n")
 
-    print(f"\n{len(selected)} books {VERSION} extraits de {total} books")
-    print(f"gel écrit : {os.path.relpath(FREEZE_FILE, HERE)}")
+    print(f"\n{len(selected)} books {version} extraits de {total} books")
+    print(f"gel écrit : {os.path.relpath(freeze_file, HERE)}")
 
 
 if __name__ == "__main__":

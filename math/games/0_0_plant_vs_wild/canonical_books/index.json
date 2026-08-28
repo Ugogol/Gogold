@@ -95,6 +95,31 @@
    "name": "v5-basegame",
    "events": 9,
    "payoutMultiplier": 80
+  },
+  {
+   "name": "buy-wincap",
+   "events": 165,
+   "payoutMultiplier": 1000000
+  },
+  {
+   "name": "buy-mega",
+   "events": 102,
+   "payoutMultiplier": 63400
+  },
+  {
+   "name": "buy-high",
+   "events": 84,
+   "payoutMultiplier": 16170
+  },
+  {
+   "name": "buy-medium",
+   "events": 63,
+   "payoutMultiplier": 2270
+  },
+  {
+   "name": "buy-low",
+   "events": 51,
+   "payoutMultiplier": 40
   }
  ]
 }

@@ -5,7 +5,8 @@
 		"refuse tout Book qui s'en écarte, sans jamais le corriger.",
 		"Voir apps/plant-vs-wild/src/game/typesBookEvent.ts.",
 		"Les scenarios prefixes v5- sont des Books REELS, extraits de la population",
-		"ponderee par BALANCING_V5 — voir math/.../freeze_balancing.py. Ils ne sont ni",
+		"ponderee par BALANCING_V5, les buy- de celle de BONUS_BUY_V1 — voir",
+		"math/.../freeze_balancing.py. Ils ne sont ni",
 		"rejoues ni retouches."
 	],
 	"board": {
@@ -51,7 +52,13 @@
 		{ "name": "v5-freegame-medium-long", "label": "V5 / FREEGAME MEDIUM LONG" },
 		{ "name": "v5-freegame-high", "label": "V5 / FREEGAME HIGH" },
 		{ "name": "v5-freegame-mega", "label": "V5 / FREEGAME MEGA" },
-		{ "name": "v5-wincap", "label": "V5 / WINCAP" }
+		{ "name": "v5-wincap", "label": "V5 / WINCAP" },
+
+		{ "name": "buy-low", "label": "BUY / LOW" },
+		{ "name": "buy-medium", "label": "BUY / MEDIUM" },
+		{ "name": "buy-high", "label": "BUY / HIGH" },
+		{ "name": "buy-mega", "label": "BUY / MEGA" },
+		{ "name": "buy-wincap", "label": "BUY / WINCAP" }
 	],
 	"genericSeries": [
 		"math-base-no-win",

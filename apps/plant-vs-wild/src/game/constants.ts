@@ -225,12 +225,97 @@ export const SPIN_OPTIONS_FAST = {
  * autorité, pas l'ordre de montage. Indispensable ici — le plateau se démonte et
  * se remonte à chaque tumble, et repasserait sinon devant les multiplicateurs.
  */
+/**
+ * Ratio des sprites de fond. Ce n'est pas une préférence de cadrage : c'est la
+ * forme RÉELLE des assets, dont `createBackgroundLayout` se sert pour choisir
+ * l'axe à étirer — c'est ce qui produit le comportement « cover ».
+ *
+ * Vit ici parce que deux endroits en ont besoin : `stateLayout.ts` pour cadrer
+ * le fond, et `BackgroundGoo.svelte` pour retrouver la taille à l'écran du
+ * sprite (le helper de layout ne renvoie qu'UNE dimension, l'autre se déduit
+ * de ce ratio).
+ *
+ * À corriger si un fond est réexporté dans un autre format.
+ */
+export const BACKGROUND_RATIO = {
+	normal: 1920 / 1080,
+	portrait: 1080 / 1920,
+};
+
+/**
+ * Glu orange qui goutte de la grande plante, à droite du décor.
+ *
+ * PUREMENT DÉCORATIF : n'écoute aucun bookEvent, ne lit aucun résultat, ne peut
+ * donc rien révéler d'un round et n'interfère avec aucun gameplay.
+ *
+ * ── TOUT EST EN FRACTIONS DE L'IMAGE DE FOND, JAMAIS EN PIXELS ──────────────
+ * La plante est peinte DANS le fond, lequel est mis à l'échelle en « cover » :
+ * sa position à l'écran change avec le viewport. Exprimer l'effet en fractions
+ * de l'image le colle donc à la plante sur tous les formats, sans un seul
+ * réglage par appareil.
+ *
+ * Valeurs relevées sur les assets eux-mêmes, pas estimées à l'œil : la pointe
+ * basse de la bave peinte est à (0.786, 0.500) sur `background.webp` et à
+ * (0.761, 0.437) sur `background-mobile.webp`. Les fonds Bonus portent la
+ * plante au même endroit (écart < 0.01), l'effet n'a donc pas à se masquer
+ * pendant le Bonus.
+ *
+ * ── POUR AJUSTER ────────────────────────────────────────────────────────────
+ *   `anchor`  déplace la glu suspendue      (x et y, fractions du fond)
+ *   `ground`  hauteur d'impact de la goutte (fraction de la hauteur du fond)
+ *   `hangWidth` / `dropWidth` / `splashWidth`  tailles, fractions de la largeur
+ *   `delay`   intervalle entre deux gouttes, en millisecondes
+ *   les autres durées sont en millisecondes
+ */
+export const BACKGROUND_GOO = {
+	/** Réglages propres aux écrans couchés, où le fond est le 1920×1080. */
+	landscape: {
+		anchor: { x: 0.786, y: 0.5 },
+		ground: 0.78,
+		hangWidth: 0.052,
+		dropWidth: 0.018,
+		splashWidth: 0.05,
+	},
+	/** Écrans debout : autre asset, autre cadrage, donc autres fractions. */
+	portrait: {
+		anchor: { x: 0.761, y: 0.437 },
+		ground: 0.63,
+		hangWidth: 0.085,
+		dropWidth: 0.03,
+		splashWidth: 0.08,
+	},
+
+	/** Respiration de la glu suspendue : très discrète, jamais un mouvement. */
+	breathe: { amplitude: 0.045, duration: 2400 },
+
+	/** Attente entre deux gouttes, bornes en millisecondes. */
+	delay: { min: 4000, max: 9000 },
+
+	/** La goutte s'étire avant de se détacher, puis tombe en accélérant. */
+	stretchDuration: 420,
+	fallDuration: 780,
+
+	/** L'éclaboussure : petit scale-up et fondu. */
+	splashDuration: 300,
+	splashScaleFrom: 0.45,
+
+	/** Variation aléatoire d'une goutte à l'autre, pour éviter la répétition. */
+	jitter: { x: 0.008, size: 0.2 },
+};
+
 export const zIndexes = {
+	/**
+	 * Décor, sous tout le reste. Numéroté par dizaines : la glu doit s'insérer
+	 * ENTRE les fonds et le jeu, et des entiers consécutifs ne laissaient pas
+	 * de place. Seul l'ordre relatif compte.
+	 */
 	background: {
-		backdrop: -3,
-		normal: -2,
+		backdrop: -40,
+		normal: -30,
 		/** Le fond Bonus se superpose au fond Base pendant le fondu croisé. */
-		bonus: -1,
+		bonus: -20,
+		/** La glu est devant les deux fonds, et derrière tout le jeu. */
+		goo: -10,
 	},
 	boardCells: 0,
 	board: 1,

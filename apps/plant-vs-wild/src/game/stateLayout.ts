@@ -1,6 +1,6 @@
 import { createLayout } from 'utils-layout';
 
-import { MAIN_SIZES_MAP } from './constants';
+import { MAIN_SIZES_MAP, BACKGROUND_RATIO } from './constants';
 
 /**
  * `mainSizesMap` définit l'espace de design du jeu par `layoutType`.
@@ -19,9 +19,6 @@ export const { stateLayout, stateLayoutDerived } = createLayout({
 	 *
 	 * À corriger si l'asset est réexporté dans un autre format.
 	 */
-	backgroundRatio: {
-		normal: 1920 / 1080,
-		portrait: 1080 / 1920,
-	},
+	backgroundRatio: BACKGROUND_RATIO,
 	mainSizesMap: MAIN_SIZES_MAP,
 });
